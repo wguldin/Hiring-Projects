@@ -67,13 +67,14 @@ The Problems:
 
  1. Policy Three (effective 1/1/2015) is on a monthly billing schedule,
     the developers haven't gotten around to implementing monthly invoices,
-    so please go ahead and do that now so that Policy Three can have some invoices.
+    so please go ahead and implement that function without modifying the data
+    so that Policy Three can have some invoices.
 
  2. Now that you've written monthly invoices, you should probably write a unit test for it.
     I recommend using Python's built-in unit test framework for this, but suggest running
     your tests with nosetests.
 
- 3. Oh no, one of the test suites is completely failing! Figure out what caused this and fix it.
+ 3. Oh no, one of the test suites is completely failing! Figure out what caused this and fix it. Assume that it's a bug in the code and not in the test. 
 
  4. Geez, whoever wrote PolicyAccounting sure didn't like making comments. Would you add
     some comments to the code and functions? You could even add some logging if you'd like.
