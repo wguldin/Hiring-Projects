@@ -124,7 +124,7 @@ The Problems:
  change it. Be sure to put "Bonus" in the commit message please. :)
  
  
- Finished?
-=====
+Finished?
+-----
 
 When you're done with the above problems, please submit your changes in the form of a pull request back to the IWS repo. For the pull request's description, go ahead and write a quick summary of the changes that you made, any major problems that you encountered, and any other comments that you'd like to add. 
