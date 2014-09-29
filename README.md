@@ -4,8 +4,11 @@ SupportOps Software Engineering Intern Project
 Getting started:
 -----
 
- - Fork this repo on Github. When you make a commit, please include which
-   problem(s) that you were working on in the commit message. (See more info below.)
+ - Fork this repo on Github.
+ 
+ - Please label each commit with the problem that it solves. (See more info below.)
+
+ - Please have one commit per problem. (Use rebase if needed.)
 
  - I highly reccommend running all this from a \*nix terminal.
    If you don't have one currently set up, you can create an Ubuntu instance using Virtual Box.
