@@ -50,6 +50,7 @@ Helpful Links
 * [SQLAlchemy Declarative Base](http://docs.sqlalchemy.org/en/rel_0_8/orm/extensions/declarative.html)
 * [A List of Responsive Frameworks for HTML](http://komelin.com/en/5tips/5-most-popular-html5-responsive-frameworks)
 * [Testing Flask](http://flask.pocoo.org/docs/testing/)
+* [Knockout.js](http://knockoutjs.com/)
 * [jQuery API](http://api.jquery.com/)
 * [pip](https://pypi.python.org/pypi/pip)
 * [flake8 (pep8 & syntax analyzer)](https://flake8.readthedocs.org/)
@@ -120,11 +121,21 @@ The Problems
      and a date and be able to see the account balance and invoices (even the paid ones).
      There's already a Flask server, but if there's something that you'd rather use
      go ahead. Also, she wouldn't mind looking at a pretty display, but she'd rather
-     it be more functional than pretty. If you can think of anything else that
-     Mary Sue Client might find useful on the interface, feel free to add it.
+     it be more functional than pretty.
 
- Bonus: If there's anything else bothering you about the code, go ahead and feel free to
- change it. Be sure to put "Bonus" in the commit message please. :)
+ 11. The interface needs to be built with mobile devices in mind - so we recommend a responsive HTML/CSS
+     framework that will do a lot of the work for you. We use [Bootstrap](http://getbootstrap.com/) at IWS -
+     so it'd be a good choice.
+
+ 12. The interface should be hooked up with Knockout.js and be representative of good MVVM design.
+
+ 13. Ensure to prevent any input errors with both Knockout validation & backend enforcement.
+
+ 14. Besides viewing a policy's account balance & invoices, add a way to apply payments to a policy and change
+     its billing schedule.
+
+Bonus: If there's anything else bothering you about the code, go ahead and feel free to
+change it. Be sure to put "Bonus" in the commit message please. :)
  
  
 Finished?
