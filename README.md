@@ -1,8 +1,9 @@
-SupportOps Software Engineering Intern Project
-=====
+IWS Software Engineering Project
+================================
 
-Getting started:
------
+
+Getting Started
+---------------
 
  - Fork this repo on Github.
  
@@ -10,15 +11,15 @@ Getting started:
 
  - Please have one commit per problem. (Use rebase if needed.)
 
- - I highly reccommend running all this from a \*nix terminal.
-   If you don't have one currently set up, you can create an Ubuntu instance using Virtual Box.
+ - We highly reccommend running all this from a \*nix terminal.
+   If you don't have one currently set up, you can create an Ubuntu instance using [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
 
  - Install the requirements for the project. They're all found in requirements.txt. You'll probably
    want to use [pip](https://pypi.python.org/pypi/pip) for this.
 
  - Use python2.7
 
- - We're just using a sqlite3 db for this project. Run ```build_or_refresh_db()``` to populate it with the initial data. You might want to take a look at this data and the models before you get started. I personally use a SQLite Manager Add-On for Firefox to view the db, but you can use whatever.
+ - We're just using a sqlite3 db for this project. Run ```build_or_refresh_db()``` to populate it with the initial data. You might want to take a look at this data and the models before you get started. For example, you can use [DB Browser for SQLite](http://sqlitebrowser.org/) graphically view the db, but feel free to use whatever.
 
  - A little bit about the files and dirs in this project:
    - runserver.py will start the Flask server
@@ -33,8 +34,8 @@ Getting started:
    Send an email to amanda@britecore.com
 
 
-Requirements:
------
+Requirements
+------------
 - Flask 0.9
 - SQLAlchemy 0.7.9
 - Flask-SQLAlchemy 0.16
@@ -42,8 +43,8 @@ Requirements:
 - nose 1.1.2
 
 
-Helpful Links:
------
+Helpful Links
+-------------
 * [Flask SQLAlchemy Plugin](http://pythonhosted.org/Flask-SQLAlchemy/)
 * [SQLite Firefox Plugin](https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/)
 * [SQLAlchemy Declarative Base](http://docs.sqlalchemy.org/en/rel_0_8/orm/extensions/declarative.html)
@@ -51,19 +52,18 @@ Helpful Links:
 * [Testing Flask](http://flask.pocoo.org/docs/testing/)
 * [jQuery API](http://api.jquery.com/)
 * [pip](https://pypi.python.org/pypi/pip)
-* [PEP-8 Auto Checker](https://pypi.python.org/pypi/pep8)
-* [PyFlakes](https://pypi.python.org/pypi/pyflakes)
+* [flake8 (pep8 & syntax analyzer)](https://flake8.readthedocs.org/)
 * [JS Hint](http://www.jshint.com/)
 
 And some good things to know about writing Python:
+
 * [PEP-8, a Style guide for Python](http://www.python.org/dev/peps/pep-0008/)
 * [pudb, a full-screen, console-base, visual debugger for Python](https://pypi.python.org/pypi/pudb)
 * [ipython, an enhanced interface to the Python interpreter](http://ipython.org/)
-* [bpython, another enhanced interface to the Python interpreter](http://bpython-interpreter.org/)
 
 
-The Problems:
-=====
+The Problems
+------------
 (remember to put which problem(s) you're working on in your commit message!)
 
 **NOTE: Populate your database. Run the following function in the shell: ```build_or_refresh_db()``` Any time you think that your db is getting messed up, you can run this again to start from fresh.**
@@ -74,7 +74,7 @@ The Problems:
     so that Policy Three can have some invoices.
 
  2. Now that you've written monthly invoices, you should probably write a unit test for it.
-    I recommend using Python's built-in unit test framework for this, but suggest running
+    Use Python's built-in [unittest](https://docs.python.org/2/library/unittest.html) framework for this. We suggest running
     your tests with nosetests.
 
  3. Oh no, one of the test suites is completely failing! Figure out what caused this and fix it. Assume that it's a bug in the code and not in the test. 
@@ -128,6 +128,6 @@ The Problems:
  
  
 Finished?
------
+---------
 
 When you're done with the above problems, please submit your changes in the form of a pull request back to the IWS repo. For the pull request's description, go ahead and write a quick summary of the changes that you made, any major problems that you encountered, and any other comments that you'd like to add. 
