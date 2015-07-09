@@ -6,7 +6,6 @@ Create a basic contact management app that allows me to keep track of sales lead
 Minimum Requirements
 --------------------
 
- - Minimum Requirements
  - Name
  - Position
  - Company
