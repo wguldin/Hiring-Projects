@@ -1,42 +1,37 @@
-var app = $.sammy('#main', function() {
-    
-    // Load View function courtesy of Stack Overflow. 
-    // Way to load partials using Sammy and Knockout.
-    // Cleans up bindings when view is no longer used.
-    function loadView(url, viewModel) {
-        $.get(url, function (response) {
-            var $container = $('#main'),
-                $view = $container.find('.view'),
-                $newView = $('<div>').addClass('view').html(response);
-            if ($view.length) {
-                ko.removeNode($view[0]); // Clean up previous view
-            }
-            $container.append($newView);
-            ko.applyBindings(viewModel, $newView[0]);
-        });
+$(function(){
+  $('#main').on('click', '.app-navigation', function(event) {
+      
+      // Remove active class from all buttons
+      $('a').removeClass('active');
+
+      // Add active class to just triggered button.
+      var target = $(event.target);
+      target.addClass('active');
+  });
+
+  var contactsSearch = new Bloodhound({
+    datumTokenizer: function (datum) {
+        return Bloodhound.tokenizers.whitespace(datum.value);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+        url: 'http://localhost:3000/contacts?q=%QUERY',
+        wildcard: '%QUERY',
+        filter: function (data) {
+            return $.map(data, function (contact) {
+                return {
+                    value: contact.lastname,
+                };
+            });
+        }
     }
+  });
 
-    // Loads authentication view
-    this.get('#/', function(context) {
-        loadView('views/authenticate/index.html', new authenticateViewModel());
-    });
+  contactsSearch.initialize();
 
-    this.bind('user-authenticated', function (e, data) {
-        this.redirect('#/contacts');
-    });
+  $('.typeahead').typeahead(null, {
+      displayKey: 'value',
+      source: contactsSearch.ttAdapter()
+  });
 
-    // Make Sammy.js leave forms alone (otherwise values from form submit are added as query strings)!
-    // See relevant SO: http://stackoverflow.com/questions/14861461/weird-redirect-using-data-bind-submit-sammy-js-and-knockout-js-together/14861466#14861466
-    this._checkFormSubmission = function(form) {
-        return false;
-    };
-
-    // List of all Contacts
-    this.get('#/contacts', function(context) {
-        loadView('views/list/index.html', new listViewModel());
-    });
-});
-
-$(function() {
-    app.run('#/');
-});
+}, jQuery);

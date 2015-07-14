@@ -27,9 +27,16 @@
     <h3 class="tagline">Keep close to key business contacts</h3>
   </header>
 
-  <div id="main" role="main">
+  <form>
+    <div class="form-group search">
+      <label>Search</label>
+      <input type="text" class="form-control typeahead" />
+    </div>
+  </form>
 
-  </div>
+  <main id="main" role="main">
+
+  </main>
 
   <footer>
     <!--Vendor libraries-->
@@ -37,13 +44,18 @@
     <script src="static/js/vendor/sammy.js"></script>
     <script src="static/js/vendor/knockout-3.3.0.js"></script>
     <script src="static/js/vendor/bootstrap.js"></script>
-    
+    <script src="static/js/vendor/typeahead.min.js"></script>
+
     <!--View Models-->
     <script src="static/js/viewmodels/authenticateViewModel.js"></script>
     <script src="static/js/viewmodels/listViewModel.js"></script>
+    <script src="static/js/viewmodels/searchViewModel.js"></script>
+    <script src="static/js/viewmodels/navigationViewModel.js"></script>
+    <script src="static/js/viewmodels/remindersViewModel.js"></script>
 
     <!--App-->
     <script src="static/js/helpers.js"></script>
+    <script src="static/js/routes.js"></script>
     <script src="static/js/app.js"></script>
   </footer>
 </body>

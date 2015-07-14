@@ -26,13 +26,62 @@ h1, h2, h3, h4, h5, h6, span, strong, p {
   color: inherit;
 }
 
-form {
+.form-group {
   max-width: 28em;
-  margin: 1em auto; 
+}
+
+.btn.active:focus {
+  outline: 0;
+}
+
+// Typeahead styling from bootstrap
+
+.twitter-typeahead {
+  display: block !important; // Overrides js
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-menu {    // used to be tt-dropdown-menu in older versions
+  width: 422px;
+  margin-top: 4px;
+  padding: 4px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
 }
 
 // ==================================================================
-// Header Styling
+// Header
 // ==================================================================
 
 header {
@@ -55,7 +104,15 @@ header {
 }
 
 // ==================================================================
-// Contacts Styling
+// Sign In
+// ==================================================================
+
+.sign-in {
+  margin: 1em auto; 
+}
+
+// ==================================================================
+// Contacts
 // ==================================================================
 
 .contact-list {
