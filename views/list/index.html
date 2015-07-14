@@ -1,0 +1,10 @@
+<ul class="contact-list" data-bind="foreach: contacts">
+  <li class="contact clearfix">
+    <img class="contact__image" data-bind="attr:{src: image, alt: name}" />
+    <h3 class="contact__name" data-bind="text: name"></h3>
+    <p class="contact__description">
+      <span data-bind="text: position"></span>,
+      <span data-bind="text: company"></span>
+    </p> 
+  </li>
+</ul> 

@@ -1,0 +1,101 @@
+@import 'partials/variables.less';
+@import 'partials/mixins.less';
+@import 'partials/animated.less';
+@import 'partials/bordered-pulled.less';
+@import 'partials/core.less';
+@import 'partials/fixed-width.less';
+@import 'partials/icons.less';
+@import 'partials/larger.less';
+@import 'partials/list.less';
+@import 'partials/path.less';
+@import 'partials/rotated-flipped.less';
+@import 'partials/stacked.less';
+
+// ==================================================================
+// Base Styling / Bootstrap overrides
+// ==================================================================
+
+@text: #383838;
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: @text;
+}
+
+h1, h2, h3, h4, h5, h6, span, strong, p {
+  color: inherit;
+}
+
+form {
+  max-width: 28em;
+  margin: 1em auto; 
+}
+
+// ==================================================================
+// Header Styling
+// ==================================================================
+
+header {
+  background-color: #fefefe;
+  padding: .5em 0;
+}
+
+.logo, .tagline {
+  margin: 0;
+  margin-bottom: 8px;
+  margin-bottom: .5rem;
+}
+
+.logo {
+  font-weight: 700;
+}
+
+.tagline {
+  font-size: 1em;
+}
+
+// ==================================================================
+// Contacts Styling
+// ==================================================================
+
+.contact-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.contact {
+  width: 100%;
+  border-top: 1px solid #ccc;
+  padding-top: 1em;
+  margin-top: 1em;
+
+  .clearfix();
+
+  &:first-child { 
+    border: 0;
+    padding: 0;
+  } 
+}
+
+.contact__image {
+  float: left;
+  width: 3em;
+  height: 3em;
+  margin-right: 1em;
+  border-radius: 4px;
+}
+
+.contact__name {
+  font-size: 1.33em;
+  margin: 0;
+}
+
+.contact__description {
+  font-size: 1em;
+  color: #787878;
+  margin: .25em 0 0 0;
+
+  span {
+    color: inherit;
+  }
+}
