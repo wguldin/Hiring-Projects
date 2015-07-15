@@ -54,7 +54,8 @@ var app = $.sammy('#main', function() {
     
     this.get('#/contacts', function(context) {
         loadView('views/list/index.html', new listViewModel());
-        loadPartialView('views/navigation/index.html', new navigationViewModel(), 'navigation');
+        loadPartialView('views/navigation/index.html', new navigationViewModel(), 'navigationContainer');
+        loadPartialView('views/search/index.html', new searchViewModel(), 'searchContainer');
     });
 
     // =======================================================
@@ -63,7 +64,18 @@ var app = $.sammy('#main', function() {
 
     this.get('#/reminders', function(context) {
         loadView('views/reminders/index.html', new remindersViewModel());
-        loadPartialView('views/navigation/index.html', new navigationViewModel(), 'navigation');
+        loadPartialView('views/navigation/index.html', new navigationViewModel(), 'navigationContainer');
+        loadPartialView('views/search/index.html', new searchViewModel(), 'searchContainer');
+    });
+
+
+    // =======================================================
+    // Signout
+    // =======================================================
+
+    this.get('#/signout', function(context) {
+        localStorage.setItem("user", "")
+        this.redirect('#/');
     });
 
     // =======================================================

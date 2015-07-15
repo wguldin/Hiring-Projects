@@ -1,4 +1,4 @@
-<ul class="contact-list" data-bind="foreach: contacts.sort(arrangeContacts)">
+<ul id="contactList" class="contact-list" data-bind="foreach: contacts">
   <li class="contact clearfix">
     <img class="contact__image" data-bind="attr:{src: image, alt: fullName}" />
     <h3 class="contact__name" data-bind="text: fullName"></h3>
