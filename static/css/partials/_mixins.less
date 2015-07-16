@@ -1,0 +1,71 @@
+// ========================================================
+// Imports
+// ========================================================
+
+@import 'font-awesome/variables.less';
+@import 'font-awesome/mixins.less';
+@import 'font-awesome/animated.less';
+@import 'font-awesome/bordered-pulled.less';
+@import 'font-awesome/core.less';
+@import 'font-awesome/fixed-width.less';
+@import 'font-awesome/icons.less';
+@import 'font-awesome/larger.less';
+@import 'font-awesome/list.less';
+@import 'font-awesome/path.less';
+@import 'font-awesome/rotated-flipped.less';
+@import 'font-awesome/stacked.less';
+
+// ========================================================
+// Variables
+// ========================================================
+
+@text: #383838;
+@primary: #FD6366;
+@secondary: softlight(@primary, #555);
+@grey: #ccc;
+@darkgrey: softlight(@grey, @text);
+
+// Timing from google's material design.
+@swift-out: cubic-bezier(.55,0,.1,1);
+
+// ========================================================
+// Mixins
+// ========================================================
+
+.clearfix() {
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+
+// Find better mixin.
+// .calc(@property, @declaration, @fallback) { 
+//   @property: @fallback;
+//   @property: -moz-calc(@declaration); 
+//   @property: -o-calc(@declaration); 
+//   @property: -webkit-calc(@declaration); 
+//   @property: calc(@declaration);
+// }
+
+.transition (@declaration) {
+  -webkit-transition: @declaration;  
+  -moz-transition:    @declaration;
+  -ms-transition:     @declaration; 
+  -o-transition:      @declaration;  
+}
+
+.box-shadow (@declaration) {
+  -webkit-box-shadow: @declaration;
+  -moz-box-shadow:    @declaration;
+  box-shadow:         @declaration;
+}
+
+.box-sizing (@declaration) {
+  -webkit-box-sizing: @declaration;
+  -moz-box-sizing:    @declaration;
+  box-sizing:         @declaration;
+}

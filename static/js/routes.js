@@ -41,6 +41,12 @@ var app = $.sammy('#main', function() {
     // =======================================================
     
     this.get('#/', function(context) {
+
+        // Redirect if already authenticated.
+        if (localStorage.getItem("user")) {
+            this.redirect('#/contacts');
+        }
+
         loadView('views/authenticate/index.html', new authenticateViewModel());
     });
 

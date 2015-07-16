@@ -1,83 +1,133 @@
-@import 'partials/variables.less';
-@import 'partials/mixins.less';
-@import 'partials/animated.less';
-@import 'partials/bordered-pulled.less';
-@import 'partials/core.less';
-@import 'partials/fixed-width.less';
-@import 'partials/icons.less';
-@import 'partials/larger.less';
-@import 'partials/list.less';
-@import 'partials/path.less';
-@import 'partials/rotated-flipped.less';
-@import 'partials/stacked.less';
+@import "partials/_mixins";
 
 // ==================================================================
 // Base Styling / Bootstrap overrides
+//
+// Style sheet uses BEM naming convention where applicable. 
+// https://css-tricks.com/bem-101/
 // ==================================================================
 
-@text: #383838;
+html {
+  font-size: 16px; // Use browser standard.
+  .box-sizing(border-box); // Paul Irish FTW: http://www.paulirish.com/2012/box-sizing-border-box-ftw/
+}
+
+*, *:before, *:after {
+  .box-sizing(inherit);
+}
 
 body {
+  color: @text;  
   font-family: 'Open Sans', sans-serif;
-  color: @text;
+  font-weight: 400;
+  font-size: 1em;
+  min-width: 19em;
 }
 
 h1, h2, h3, h4, h5, h6, span, strong, p {
   color: inherit;
 }
 
-.form-group {
-  max-width: 28em;
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 300;
+}
+
+h5, h6 {
+  font-weight: 700;
+}
+
+// Customizing bootstrap loadout for ems instead of pixel messed up headline hierarchy, resetting it.
+h1 {
+  // BriteCore-esque headline treatment
+  font-size: 2.7em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 2.4em;
+}
+
+h3 {
+  font-size: 1.8em;
+}
+
+h4 {
+  font-size: 1.6em;
+}
+
+h5 {
+  font-size: 1.2em;
+}
+
+h6 {
+  font-size: 1em;
+}
+
+form {
+  max-width: 23em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit !important;
+  
+  &:visited, &:hover {
+    text-decoration: none;
+  }
+  
+  &:active {
+    text-decoration: none;
+  }
+}
+
+// If this was applied to all links, some buttons and header elements would have to be overridden.
+.text-link {
+  .transition(color 150ms ease, border-color 150ms ease;);
+
+  border-bottom: 1px dotted rgba(252, 79, 82, 0);
+  color: @primary;
+
+  &:visited, &:hover {
+    color: @secondary;
+    border-color: rgba(252, 79, 82, .5);
+  }
+
+  &:active {
+    color: lighten(@secondary, 5%); 
+  }
+}
+
+.form-control {
+  color: #383838;
+  height: 2.3em;
+
+  &:focus {
+    // This trailing ';' allows multiple declarations to be passed.
+    .box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px @grey;);
+    
+    border-color: @darkgrey;
+  }
 }
 
 .btn.active:focus {
   outline: 0;
 }
 
-// Typeahead styling from bootstrap
+.btn.btn-primary {
+  .transition(background-color 120ms @swift-out);
 
-.twitter-typeahead {
-  display: block !important; // Overrides js
-}
+  &:hover, &:focus, &:focus:active {
+    background-color: @secondary;
+  }
 
-.tt-query {
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-}
-
-.tt-hint {
-  color: #999
-}
-
-.tt-menu {    // used to be tt-dropdown-menu in older versions
-  width: 422px;
-  margin-top: 4px;
-  padding: 4px 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-          box-shadow: 0 5px 10px rgba(0,0,0,.2);
-}
-
-.tt-suggestion {
-  padding: 3px 20px;
-  line-height: 24px;
-}
-
-.tt-suggestion.tt-cursor {
-  color: #fff;
-  background-color: #0097cf;
-
-}
-
-.tt-suggestion p {
-  margin: 0;
+  &:active {
+    background-color: lighten(@secondary, 5%);
+  }
 }
 
 // ==================================================================
@@ -85,22 +135,28 @@ h1, h2, h3, h4, h5, h6, span, strong, p {
 // ==================================================================
 
 header {
-  background-color: #fefefe;
-  padding: .5em 0;
-}
-
-.logo, .tagline {
-  margin: 0;
-  margin-bottom: 8px;
-  margin-bottom: .5rem;
+  .box-shadow(0 2px 8px -4px #ccc);
+  
+  border-bottom: 1px solid @grey;
+  margin-bottom: 1.2em;
+  padding: 0 1em;
 }
 
 .logo {
-  font-weight: 700;
+  border: 0;
 }
 
-.tagline {
-  font-size: 1em;
+.logo__image {
+  display: block;
+  margin: 0 0 .25em 0.05em; // '.05' aligns it with tagline.
+  max-width: 12em;
+  width: 100%;
+}
+
+.logo__tagline {
+  display: inline-block;
+  font-size: .9em;
+  margin: 0 0 .85em 0;
 }
 
 // ==================================================================
@@ -108,7 +164,34 @@ header {
 // ==================================================================
 
 .sign-in {
-  margin: 1em auto; 
+  margin: 1em auto;
+}
+
+// ==================================================================
+// Navigation
+// ==================================================================
+
+.btn-group, .add-contact {
+  font-size: .78em; // Fit on one line at smallest resolution.
+}
+
+.btn-group {
+  margin-bottom: .8em;
+}
+
+.add-contact {
+  position: absolute;
+  top: .8em;
+  right: .8em;
+
+  &:after {
+    content: ' Add';
+    display: none;
+
+    @media screen and (min-width: 24em) {
+      display: inline;
+    }
+  }
 }
 
 // ==================================================================
@@ -121,16 +204,15 @@ header {
 }
 
 .contact {
-  width: 100%;
-  border-top: 1px solid #ccc;
-  padding-top: 1em;
-  margin-top: 1em;
-
+  .calc(width, 100% + 2em, 100%);
   .clearfix();
+
+  border-top: 1px solid #ccc;
+  padding: 0.8em 1em;
+  margin: 0 -1em;
 
   &:first-child { 
     border: 0;
-    padding: 0;
   } 
 }
 
@@ -139,7 +221,7 @@ header {
   width: 3em;
   height: 3em;
   margin-right: 1em;
-  border-radius: 4px;
+  border-radius: 0.8em;
 }
 
 .contact__name {

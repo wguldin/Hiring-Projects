@@ -1,20 +1,36 @@
 // Binds json db data to each contact.
 function contact(data) {
-  this.firstName = ko.observable(data.firstname);
-  this.lastName = ko.observable(data.lastname);
+  var self = this;
 
-  this.fullName = ko.computed(function() {
-      return this.firstName() + " " + this.lastName();    
-  }, this);
 
-  this.image = ko.observable(data.image);
-  this.position = ko.observable(data.position);
-  this.company = ko.observable(data.company);
+  self.firstName = ko.observable(data.firstname);
+  self.lastName = ko.observable(data.lastname);
+
+  self.fullName = ko.computed(function() {
+      return self.firstName() + " " + self.lastName();    
+  }, self);
+
+  self.id = ko.observable(data.id);
+
+  self.link = ko.computed(function() {
+    return "/#/contacts/" + self.id();
+  }, self);
+
+  self.image = ko.observable(data.image);
+  self.position = ko.observable(data.position);
+  self.company = ko.observable(data.company);
 }
 
 function listViewModel() {
   var self = this;
+
   self.contacts = ko.observableArray([]);
+  self.selectedContact = ko.observable();
+  
+  self.selectContact = function(contact) {
+    self.selectedContact(contact);   
+  }
+
   self.searchType = ko.observable("").subscribeTo("searchQueryType");
 
   // Whenever the search result changes to a new value, update the contacts.

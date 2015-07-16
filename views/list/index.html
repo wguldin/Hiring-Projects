@@ -1,10 +1,16 @@
 <ul id="contactList" class="contact-list" data-bind="foreach: contacts">
-  <li class="contact clearfix">
-    <img class="contact__image" data-bind="attr:{src: image, alt: fullName}" />
-    <h3 class="contact__name" data-bind="text: fullName"></h3>
-    <p class="contact__description">
-      <span data-bind="text: position"></span>,
-      <span data-bind="text: company"></span>
-    </p> 
+  <li class="contact clearfix" data-bind="click: $root.selectContact">
+    <!-- <a data-bind="attr:{href: link, title: fullName}"> -->
+      <img class="contact__image" data-bind="attr:{src: image, alt: fullName}" />
+      <h3 class="contact__name" data-bind="text: fullName"></h3>
+      <p class="contact__description">
+        <span data-bind="text: position"></span>,
+        <span data-bind="text: company"></span>
+      </p>
+    <!-- </a> -->
   </li>
 </ul>  
+
+<p data-bind="with: selectedContact">
+  <h1 data-bind="text: $parent.fullName"></h1>
+</p>

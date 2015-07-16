@@ -20,40 +20,43 @@
   <script src="static/js/vendor/modernizr.js"></script>
 </head>
 
-<body class="container">
+<body>
 
   <header role="banner">
-    <h2 class="logo">BriteSpark</h2>
-    <h3 class="tagline">Keep close to key business contacts</h3>
+    <a class="logo" title="BriteSpark Homepage" href="/#/">
+      <img class="logo__image" src="static/img/britespark_logo_v3.png" alt="BriteSpark Logo"/>
+      <h2 class="logo__tagline text-link">Keep close to key business contacts</h2>
+    </a>
+    <a class="btn btn-default add-contact"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
   </header>
 
-  <ul class="searchresults"></ul>
+  <div class="container">
+    <main id="main" role="main">
 
-  <main id="main" role="main">
+    </main>
 
-  </main>
+    <footer>
+      <a href="#/signout" class="sign-out text-link">Sign out</a>
 
-  <footer>
-    <!--Vendor libraries-->
-    <script src="static/js/vendor/jquery-1.11.3.min.js"></script>
-    <script src="static/js/vendor/sammy.js"></script>
-    <script src="static/js/vendor/knockout-3.3.0.js"></script>
-    <script src="static/js/vendor/bootstrap.js"></script>
-    <script src="static/js/vendor/knockout-postbox.js"></script>
+      <!--Vendor libraries-->
+      <script src="static/js/vendor/jquery-1.11.3.min.js"></script>
+      <script src="static/js/vendor/sammy.js"></script>
+      <script src="static/js/vendor/knockout-3.3.0.js"></script>
+      <script src="static/js/vendor/bootstrap.js"></script>
+      <script src="static/js/vendor/knockout-postbox.js"></script>
 
-    <!--View Models-->
-    <script src="static/js/viewmodels/authenticateViewModel.js"></script>
-    <script src="static/js/viewmodels/listViewModel.js"></script>
-    <script src="static/js/viewmodels/searchViewModel.js"></script>
-    <script src="static/js/viewmodels/navigationViewModel.js"></script>
-    <script src="static/js/viewmodels/remindersViewModel.js"></script>
+      <!--View Models-->
+      <script src="static/js/viewmodels/authenticateViewModel.js"></script>
+      <script src="static/js/viewmodels/listViewModel.js"></script>
+      <script src="static/js/viewmodels/searchViewModel.js"></script>
+      <script src="static/js/viewmodels/navigationViewModel.js"></script>
+      <script src="static/js/viewmodels/remindersViewModel.js"></script>
 
-    <!--App-->
-    <script src="static/js/helpers.js"></script>
-    <script src="static/js/routes.js"></script>
-    <script src="static/js/app.js"></script>
-
-    <a href="#/signout">Sign out</a>
-  </footer>
+      <!--App-->
+      <script src="static/js/helpers.js"></script>
+      <script src="static/js/routes.js"></script>
+      <script src="static/js/app.js"></script>
+    </footer>
+  </div>
 </body>
 </html>
