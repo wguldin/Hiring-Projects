@@ -3,8 +3,18 @@
 function addViewModel() {
   var self = this;
 
-  self.firstname = ko.observable();
-  self.lastname = ko.observable();
+  self.fullname = ko.observable("");
+
+  // Split the full name (http://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurence)
+  // Given 'Paul Smith Johnson', firstname: 'Paul', lastname: 'Smith Johnson'
+  self.firstname = ko.computed(function() {
+    return self.fullname().substr(0, self.fullname().indexOf(' '));
+  }, self);
+
+  self.lastname = ko.computed(function() {
+    return self.fullname().substr(self.fullname().indexOf(' ') + 1);
+  }, self);
+
   self.position = ko.observable();
   self.company = ko.observable();
   self.email = ko.observable();
@@ -14,7 +24,7 @@ function addViewModel() {
   self.createdBy = localStorage.getItem("user");
 
   self.addContact = function() {
-    //console.log(self.contactInformation());
+    console.log(self.contactInformation());
 
     setTimeout(function(){
       $.ajax({

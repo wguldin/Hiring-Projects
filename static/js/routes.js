@@ -2,11 +2,9 @@
 // Way to load partials using Sammy and Knockout.
 // Cleans up bindings when view is no longer used.
 
-var loadViewRequest;
-
 function loadView(url, viewModel) {
 
-    loadViewRequest = $.ajax({
+    var loadViewRequest = $.ajax({
         type: 'GET',
         url: url
     });
@@ -29,15 +27,16 @@ function loadPartialView(url, viewModel, partialViewContainerId) {
     $.get(url, function (response) {
         var container = $('#main');
 
-        // Prevent adding partials multiple times, such as when back button is used.
-        if(document.getElementById(partialViewContainerId)) {
-            return;
-        }
+        var view = container.find('#' + partialViewContainerId);
 
         // Dynamically create wrapper for partial view, so KO has something to bind to. 
-        var partialViewContainer = $('<div>').attr('id', partialViewContainerId).html(response);
-        container.prepend(partialViewContainer);
+        var newView = $('<div>').attr('id', partialViewContainerId).html(response);
+        
+        if (view.length) {
+            ko.removeNode(view[0]); // Clean up previous view
+        }
 
+        container.prepend(newView);
         ko.applyBindings(viewModel, document.getElementById(partialViewContainerId));
     });
 }
@@ -49,7 +48,6 @@ var app = $.sammy('#main', function() {
     // =======================================================
     
     this.get('#/', function(context) {
-
         // Redirect if already authenticated.
         if (localStorage.getItem("user")) {
             this.redirect('#/contacts');

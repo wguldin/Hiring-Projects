@@ -7,6 +7,14 @@ function unfilterContacts() {
   filterContacts('', '');
 }
 
+function showLetterHeadings() {
+  var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+  jQuery.each(alphabet, function(index, value) {
+    var contactsThatMatchLetter = jQuery('li[data-initialLetter="' + value + '"]');
+    contactsThatMatchLetter.first().before('<h2 class="contact__header">' + value.toUpperCase() + '</h2>')
+  });
+}
+
 $(function(){
 
   $('#main').on('click', '[data-nav="my-contacts"]', function() {

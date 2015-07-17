@@ -12,4 +12,12 @@
 
   <h5>Notes on <span data-bind="text: fullName"></span></h5>
   <p data-bind="text: notes"></p>
+
+  <!-- ko foreach: tags -->
+  <p data-bind="text: tagLabel"></p>
+  <!-- /ko -->
+
+  <!-- ko foreach: reminders -->
+  <p data-bind="text: reminderNote"></p>
+  <!-- /ko -->
 <!-- /ko -->

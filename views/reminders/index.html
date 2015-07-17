@@ -1,1 +1,7 @@
-<p data-bind="text: todo"></p>
+<ul class="reminder-list" data-bind="foreach: reminders">
+  <li class="reminder clearfix">
+    <p class="reminder__date" data-bind="text: reminderName"></p>
+    <p class="reminder__note" data-bind="text: reminderNote"></p>
+    <p class="reminder__date" data-bind="text: reminderDate"></p>
+  </li>
+</ul>

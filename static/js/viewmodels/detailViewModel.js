@@ -1,3 +1,21 @@
+function tag(id, contactID, tagLabel) {
+    var self = this;
+
+    self.id = id;
+    self.contactID = contactID;
+    self.tagLabel = tagLabel;
+}
+
+function reminder(id, contactID, reminderName, reminderNote, reminderDate) {
+    var self = this;
+
+    self.id = id;
+    self.contactID = contactID;
+    self.reminderName = reminderName;
+    self.reminderNote = reminderNote;
+    self.reminderDate = reminderDate;
+}
+
 // Binds json db data to each contact.
 function singleContact(data) {
   var self = this;
@@ -16,6 +34,18 @@ function singleContact(data) {
   self.email = data.email;
   self.address = data.address;
   self.notes = data.notes;
+
+  var processTags =  ko.utils.arrayMap(data.tags, function(item) {
+      return new tag(item.id, item.contactID, item.tagLabel);
+  });
+
+  self.tags = ko.observableArray(processTags); 
+
+  var processReminders = ko.utils.arrayMap(data.reminders, function(item) {
+      return new reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate);
+  });
+
+  self.reminders = ko.observableArray(processReminders); 
 };
 
 function detailViewModel(contactID) {
@@ -28,10 +58,10 @@ function detailViewModel(contactID) {
     setTimeout(function() { 
       $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/contacts/' + id,
+        url: 'http://localhost:3000/contacts/' + id + '?_embed=tags&_embed=reminders',
         dataType: 'json',
         success: function(data) {
-          var contactData = new singleContact(data);
+          var contactData = [new singleContact(data)];
           self.contact(contactData);
         }
       });

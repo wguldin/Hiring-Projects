@@ -1864,8 +1864,33 @@ h5 {
 h6 {
   font-size: 1em;
 }
-form {
+label {
+  margin-bottom: 1em;
+  font-weight: 500;
+  width: 100%;
+}
+input,
+.form-control {
+  font-weight: normal;
+  color: #383838;
+}
+.form-control {
+  height: 2.3em;
+  margin-top: .35em;
+}
+.form-control:focus {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #cccccc;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #cccccc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #cccccc;
+  border-color: #b5b5b5;
+}
+.form {
   max-width: 23em;
+  margin: 1em 0;
+}
+.form__note {
+  font-size: .85em;
+  color: #787878;
 }
 a {
   text-decoration: none;
@@ -1893,16 +1918,6 @@ a:active {
 }
 .text-link:active {
   color: #fd686a;
-}
-.form-control {
-  color: #383838;
-  height: 2.3em;
-}
-.form-control:focus {
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #cccccc;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #cccccc;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #cccccc;
-  border-color: #b5b5b5;
 }
 .btn.active:focus {
   outline: 0;
@@ -1943,9 +1958,6 @@ header {
   font-size: .9em;
   margin: 0 0 .85em 0;
 }
-.sign-in {
-  margin: 1em auto;
-}
 .btn-group,
 .add-contact {
   font-size: .78em;
@@ -1954,18 +1966,16 @@ header {
   margin-bottom: .8em;
 }
 .add-contact {
-  position: absolute;
-  top: .8em;
-  right: .8em;
+  float: right;
+  margin-top: .8em;
 }
-.add-contact:after {
-  content: ' Add';
-  display: none;
-}
-@media screen and (min-width: 24em) {
-  .add-contact:after {
-    display: inline;
-  }
+.contact__header {
+  display: block;
+  font-size: 1.2em;
+  background-color: #EEE;
+  margin: 2em -1em 0;
+  padding: 0.35em 1em;
+  box-shadow: inset 0 2px 5px -2px rgba(120, 120, 120, 0.75), inset 0 -2px 5px -3px rgba(120, 120, 120, 0.75);
 }
 .contact-list {
   list-style-type: none;
