@@ -1,9 +1,17 @@
 // Load View function courtesy of Stack Overflow. 
 // Way to load partials using Sammy and Knockout.
 // Cleans up bindings when view is no longer used.
+
+var loadViewRequest;
+
 function loadView(url, viewModel) {
-    $.get(url, function (response) {
-        
+
+    loadViewRequest = $.ajax({
+        type: 'GET',
+        url: url
+    });
+
+    loadViewRequest.done(function(response) {
         var container = $('#main');
         var view = container.find('.view');
         var newView = $('<div>').addClass('view').html(response);
@@ -14,7 +22,7 @@ function loadView(url, viewModel) {
 
         container.append(newView);
         ko.applyBindings(viewModel, newView[0]);
-    });
+    })
 }
 
 function loadPartialView(url, viewModel, partialViewContainerId) {
@@ -45,6 +53,7 @@ var app = $.sammy('#main', function() {
         // Redirect if already authenticated.
         if (localStorage.getItem("user")) {
             this.redirect('#/contacts');
+            return;
         }
 
         loadView('views/authenticate/index.html', new authenticateViewModel());
@@ -64,6 +73,14 @@ var app = $.sammy('#main', function() {
         loadPartialView('views/search/index.html', new searchViewModel(), 'searchContainer');
     });
 
+    this.get('#/contacts/:id', function(context) {
+        // Pass current id, so we know which contact to display.
+        var contactId = this.params['id'];
+
+        loadView('views/detail/index.html', new detailViewModel(contactId));
+        loadPartialView('views/search/index.html', new searchViewModel(), 'searchContainer');
+    });
+
     // =======================================================
     // Reminders
     // =======================================================
@@ -74,6 +91,13 @@ var app = $.sammy('#main', function() {
         loadPartialView('views/search/index.html', new searchViewModel(), 'searchContainer');
     });
 
+    // =======================================================
+    // Add
+    // =======================================================
+
+    this.get('#/add', function(context) {
+        loadView('views/add/index.html', new addViewModel());
+    });
 
     // =======================================================
     // Signout

@@ -1,1 +1,15 @@
-<!--Detail View to go here-->
+<!-- ko foreach: contact -->
+  <img class="contact__image" data-bind="attr:{src: image, alt: fullName}" />
+  <h1 data-bind="text: fullName"></h1>
+  <h2>
+    <span data-bind="text: position"></span>,
+    <span data-bind="text: company"></span>
+  </h2>
+
+  <p data-bind="text: phone"></p>
+  <p data-bind="text: email"></p>
+  <p data-bind="text: address"></p>
+
+  <h5>Notes on <span data-bind="text: fullName"></span></h5>
+  <p data-bind="text: notes"></p>
+<!-- /ko -->

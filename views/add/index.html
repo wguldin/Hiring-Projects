@@ -1,0 +1,52 @@
+<h1>Add a Contact</h1>
+
+<form data-bind="submit: addContact">
+  <div class="form-group">
+    <label for="firstname">First Name</label>
+    <input name="firstname" class="form-control" type="text" data-bind="value: firstname"/>
+  </div>
+
+  <div class="form-group">
+    <label for="lastname">Last Name</label>
+    <input name="lastname" class="form-control" type="text" data-bind="value: lastname"/>
+  </div>
+
+  <div class="form-group">
+    <label for="position">Position</label>
+    <input name="position" class="form-control" type="text" data-bind="value: position"/>
+  </div>
+
+
+  <div class="form-group">
+    <label for="company">Company</label>
+    <input name="company" class="form-control" type="text" data-bind="value: company"/>
+  </div>
+
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input name="email" class="form-control" type="email" data-bind="value: email"/>
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Phone</label>
+    <input name="phone" class="form-control" type="tel" data-bind="value: phone"/>
+  </div>
+
+  <div class="form-group">
+    <label for="address">Address</label>
+    <input name="address" class="form-control" type="text" data-bind="value: address"/>
+  </div>
+
+  <div class="form-group">
+    <label for="notes">Notes on Contact</label>
+    <textarea name="notes" class="form-control" data-bind="value: notes"></textarea>
+    <small class="form-note"><a href="#tooltip">Basic markdown formatting</a> supported</small>
+  </div>
+
+  <p><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Reminder</p>
+
+  <p><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Tags</p>
+
+  <button class="btn btn-primary btn-block">Add This Contact</button>
+</form>
