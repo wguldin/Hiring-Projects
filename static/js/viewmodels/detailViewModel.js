@@ -1,19 +1,20 @@
-function tag(id, contactID, tagLabel) {
+function detail_tag(id, contactId, tagLabel) {
     var self = this;
 
     self.id = id;
-    self.contactID = contactID;
+    self.contactId = contactId;
     self.tagLabel = tagLabel;
 }
 
-function reminder(id, contactID, reminderName, reminderNote, reminderDate) {
-    var self = this;
+// TODO: Still not working ...
+function detail_reminder(id, contactId, reminderName, reminderNote, reminderDate) {
+  var self = this;
 
-    self.id = id;
-    self.contactID = contactID;
-    self.reminderName = reminderName;
-    self.reminderNote = reminderNote;
-    self.reminderDate = reminderDate;
+  self.id = id;
+  self.contactId = contactId;
+  self.reminderName = reminderName;
+  self.reminderNote = reminderNote;
+  self.reminderDate = reminderDate;
 }
 
 // Binds json db data to each contact.
@@ -36,16 +37,15 @@ function singleContact(data) {
   self.notes = data.notes;
 
   var processTags =  ko.utils.arrayMap(data.tags, function(item) {
-      return new tag(item.id, item.contactID, item.tagLabel);
+      return new detail_tag(item.id, item.contactId, item.tagLabel);
   });
 
-  self.tags = ko.observableArray(processTags); 
-
-  var processReminders = ko.utils.arrayMap(data.reminders, function(item) {
-      return new reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate);
+  var processReminders =  ko.utils.arrayMap(data.reminders, function(item) {
+      return new detail_reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate);
   });
 
-  self.reminders = ko.observableArray(processReminders); 
+  self.tags = ko.observableArray(processTags);
+  self.reminders = ko.observableArray(processReminders);
 };
 
 function detailViewModel(contactID) {

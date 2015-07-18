@@ -1,10 +1,10 @@
-function reminder(data) {
+function reminders_Reminder(data) {
   var self = this;
 
+  self.id = data.id;
+  self.reminderName = data.reminderName;
   self.reminderNote = data.reminderNote;
   self.reminderDate = data.reminderDate;
-  self.reminderName = data.reminderName;
-  self.id = data.id;
 }
 
 function remindersViewModel() {
@@ -13,9 +13,9 @@ function remindersViewModel() {
   self.reminders = ko.observableArray([]);
 
   // self.arrangeReminders = function() {
-  //   self.reminders.sort(function () {
-  //     // sort here ...
-  //   })
+  //   self.remindersfunction (l, r) {
+  //       return (Date.parse(l.date) == Date.parse(r.date) ? 0 : (Date.parse(l.date) > Date.parse(r.date) ? -1 : 1))
+  //   });
   // }
 
   self.getReminders = function() {
@@ -27,7 +27,7 @@ function remindersViewModel() {
         url: 'http://localhost:3000/reminders',
         dataType: 'json',
         success: function(allData) {
-          var mappedTasks = $.map(allData, function(item) { return new reminder(item) });
+          var mappedTasks = $.map(allData, function(item) { return new reminders_Reminder(item) });
 
           self.reminders(mappedTasks);
         }

@@ -1,42 +1,52 @@
 <h1>Add Contact</h1>
+<a href="#/add/businesscard" class="text-link">Upload a business card</a>
+<a href="#/add/spreadsheet" class="text-link">Import dozens of contacts at once with a spreadsheet</a>
 
-<form data-bind="submit: addContact">
+<form class="form add" data-bind="submit: addContact">
   <label>Full Name
-    <input name="fullname" required class="form-control" type="text" required data-bind="value: fullname"/>
+    <input name="fullname" required class="form-control" type="text" required data-bind="textInput: fullname"/>
   </label>
 
   <label>Email
-    <input name="email" required class="form-control" type="email" data-bind="value: email"/>
+    <input name="email" required class="form-control" type="email" data-bind="textInput: email"/>
   </label>
 
   <label>Phone
-    <input name="phone" required class="form-control" type="tel" data-bind="value: phone"/>
-  </label>
-
-  <label>Image <span class="form__note">(optional)</span>
-    <input type="file" name="image" />
+    <input name="phone" class="form-control" type="tel" data-bind="textInput: phone"/>
   </label>
 
   <label>Position 
-    <input name="position" required class="form-control" type="text" data-bind="value: position"/>
+    <input name="position" class="form-control" type="text" data-bind="textInput: position"/>
   </label>
 
-  <label>Company
-    <input name="company" required class="form-control" type="text" data-bind="value: company"/>
+  <label>Company 
+    <input name="company" required class="form-control" type="text" data-bind="textInput: company"/>
   </label>
 
-  <label>Address <span class="form__note">(optional)</span>
-    <input name="address" class="form-control" type="text" data-bind="value: address"/>
+  <label>Street Address <span class="form__note">(optional)</span>
+    <input name="address" class="form-control" type="text" data-bind="textInput: address"/>
+  </label>
+
+  <label>City <span class="form__note">(optional)</span>
+    <input name="city" class="form-control" type="text" data-bind="textInput: city"/>
+  </label>
+
+  <label>State <span class="form__note">(optional)</span>
+    <input name="state" class="form-control" type="text" data-bind="textInput: state"/>
+  </label>
+
+  <label>Zipcode <span class="form__note">(optional)</span>
+    <input name="zipcode" class="form-control" type="text" data-bind="textInput: zipcode"/>
   </label>
 
   <label>Notes on Contact <span class="form__note">(optional)</span>
-    <textarea name="notes" class="form-control" data-bind="value: notes"></textarea>
-    <small class="form__note"><a href="#tooltip">Basic markdown formatting</a> supported</small>
+    <textarea name="notes" class="form-control" data-provide="markdown" data-bind="textInput: notes"></textarea>
+    <small class="form__note"><a href="#tooltip">Markdown formatting</a> supported</small>
   </label>
 
   <p><i class="fa fa-plus" aria-hidden="true"></i> Add Reminder</p>
 
   <p><i class="fa fa-plus" aria-hidden="true"></i> Add Tags</p>
 
-  <button class="btn btn-primary btn-block">Add This Contact</button>
+  <button type="submit" class="btn btn-primary btn-block">Add This Contact</button>
 </form>

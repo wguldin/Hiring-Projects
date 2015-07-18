@@ -18,6 +18,8 @@
   <!-- /ko -->
 
   <!-- ko foreach: reminders -->
-  <p data-bind="text: reminderNote"></p>
-  <!-- /ko -->
+  <p class="reminder__name" data-bind="text: reminderName"></p>
+  <p class="reminder__note" data-bind="text: reminderNote"></p>
+  <p class="reminder__date" data-bind="text: reminderDate"></p>
+</ul>  <!-- /ko -->
 <!-- /ko -->

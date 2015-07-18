@@ -4,7 +4,7 @@
 
 function loadView(url, viewModel) {
 
-    var loadViewRequest = $.ajax({
+    var loadViewRequest = $.ajax({ 
         type: 'GET',
         url: url
     });
@@ -21,24 +21,6 @@ function loadView(url, viewModel) {
         container.append(newView);
         ko.applyBindings(viewModel, newView[0]);
     })
-}
-
-function loadPartialView(url, viewModel, partialViewContainerId) {
-    $.get(url, function (response) {
-        var container = $('#main');
-
-        var view = container.find('#' + partialViewContainerId);
-
-        // Dynamically create wrapper for partial view, so KO has something to bind to. 
-        var newView = $('<div>').attr('id', partialViewContainerId).html(response);
-        
-        if (view.length) {
-            ko.removeNode(view[0]); // Clean up previous view
-        }
-
-        container.prepend(newView);
-        ko.applyBindings(viewModel, document.getElementById(partialViewContainerId));
-    });
 }
 
 var app = $.sammy('#main', function() {
@@ -61,14 +43,17 @@ var app = $.sammy('#main', function() {
         this.redirect('#/contacts');
     });
 
+    this.bind('user-added', function (e, data) {
+        this.redirect('#/contacts');
+    });
+
     // =======================================================
     // Contacts
     // =======================================================
     
     this.get('#/contacts', function(context) {
         loadView('views/list/index.html', new listViewModel());
-        loadPartialView('views/navigation/index.html', new navigationViewModel(), 'navigationContainer');
-        loadPartialView('views/search/index.html', new searchViewModel(), 'searchContainer');
+        ko.postbox.publish("searchQuery", "");
     });
 
     this.get('#/contacts/:id', function(context) {
@@ -76,7 +61,6 @@ var app = $.sammy('#main', function() {
         var contactId = this.params['id'];
 
         loadView('views/detail/index.html', new detailViewModel(contactId));
-        loadPartialView('views/search/index.html', new searchViewModel(), 'searchContainer');
     });
 
     // =======================================================
@@ -85,8 +69,6 @@ var app = $.sammy('#main', function() {
 
     this.get('#/reminders', function(context) {
         loadView('views/reminders/index.html', new remindersViewModel());
-        loadPartialView('views/navigation/index.html', new navigationViewModel(), 'navigationContainer');
-        loadPartialView('views/search/index.html', new searchViewModel(), 'searchContainer');
     });
 
     // =======================================================

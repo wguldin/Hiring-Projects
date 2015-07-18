@@ -73,8 +73,9 @@ h6 {
 // Forms ======================================================
 
 label {
-  margin-bottom: 1em;
-  font-weight: 500;
+  margin-bottom: 1.4em;
+  font-weight: 600;
+  font-size: .9em; // Label and input text seemed too similar.
   width: 100%;
 }
 
@@ -85,7 +86,7 @@ input, .form-control {
 
 .form-control {
   height: 2.3em;
-  margin-top: .35em;
+  margin-top: .3em;
 
   &:focus {
     // This trailing ';' allows multiple declarations to be passed.
@@ -95,13 +96,19 @@ input, .form-control {
   }
 }
 
+textarea.form-control {
+  height: 8em;
+  resize: vertical;
+}
+
 .form {
   max-width: 23em;
   margin: 1em 0;
 }
 
 .form__note {
-  font-size: .85em;
+  font-size: .9em;
+  font-weight: 500;
   color: @darkgrey; 
 }
 
@@ -109,7 +116,7 @@ input, .form-control {
 
 a {
   text-decoration: none;
-  color: inherit !important;
+  color: inherit;
   
   &:visited, &:hover {
     text-decoration: none;
@@ -139,6 +146,10 @@ a {
 
 .btn.active:focus {
   outline: 0;
+}
+
+.btn {
+  white-space: normal;
 }
 
 .btn.btn-primary {
@@ -199,33 +210,49 @@ header {
   margin-top: .8em;
 }
 
+nav {
+  .btn-default.active {
+    background-color: @accent;
+    color: #fff;
+  }
+}
+
 // ==================================================================
 // Contacts
 // ==================================================================
 
 .contact__header {
+  // Creates a subtle 'sunken' look for each contact header.
+  .box-shadow(inset 0 1px 3px -1px rgba(120, 120, 120, 0.5), inset 0 -2px 5px -3px rgba(120, 120, 120, 0.5););
+  
+  background-color: #f7f7f7;
+  color: #383838;
   display: block;
   font-size: 1.2em;
-  background-color: #EEE;
-  margin: 2em -1em 0;
-  padding: 0.35em 1em;
-  box-shadow: inset 0 2px 5px -2px rgba(120, 120, 120, 0.75),inset 0 -2px 5px -3px rgba(120, 120, 120, 0.75);
+  font-weight: 300;
+  margin: 0 -.8em;
+  padding: .2em .8em;
 }
 
 .contact-list {
   list-style-type: none;
   padding: 0;
+  margin-top: 1em;
 }
 
 .contact {
   .clearfix();
 
-  border-top: 1px solid #ccc;
   padding: 0.8em 1em;
   margin: 0 -1em;
 
   &:first-child { 
     border: 0;
+  }
+
+  & + .contact {
+    // Keeps border from applying to the bottom edge of the letter headers.
+    border-top: 1px solid #eee;
   } 
 }
 

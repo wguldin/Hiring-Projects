@@ -7,3 +7,5 @@ function searchViewModel() {
     // Notifies the listViewModel that search query has changed.
     .publishOn("searchQuery");
 }
+
+ko.applyBindings(new searchViewModel(), document.getElementById('search'));

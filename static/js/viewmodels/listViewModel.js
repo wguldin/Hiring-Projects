@@ -1,5 +1,5 @@
 // Binds json db data to each contact.
-function contact(data) {
+function list_contact(data) {
   var self = this;
 
   self.firstName = data.firstname;
@@ -18,11 +18,12 @@ function contact(data) {
   self.image = data.image;
   self.position = data.position;
   self.company = data.company;
+  self.email = data.email;
 
   // Display properties 
   self.initialLetter = data.lastname.substring(0, 1).toLowerCase();
 };
- 
+
 function listViewModel() {
   var self = this;
 
@@ -45,7 +46,7 @@ function listViewModel() {
         url: 'http://localhost:3000/contacts' + searchText,
         dataType: 'json',
         success: function(allData) {
-          var mappedTasks = $.map(allData, function(item) { return new contact(item) });
+          var mappedTasks = $.map(allData, function(item) { return new list_contact(item) });
 
           self.contacts(mappedTasks);
           self.arrangeContacts();
@@ -54,17 +55,17 @@ function listViewModel() {
       });
     }, 100);
   }
-
+  
   // Whenever the search result changes to a new value, update the contacts.
   ko.postbox.subscribe("searchQuery", function(newValue) {
       // The initial state of the app, and clearing out a search term counts as a 'new value'
       // So, we check if we need the query string or not. 
       if(newValue !== '') {
         self.getContacts('?' + self.searchType() + '=' + newValue);
+      } else {
+        self.getContacts("");
       }
 
   }, self);
-
-  self.getContacts("");
 };
 

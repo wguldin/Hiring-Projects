@@ -20,12 +20,13 @@ function addViewModel() {
   self.email = ko.observable();
   self.phone = ko.observable();
   self.address = ko.observable();
+  self.city = ko.observable();
+  self.state = ko.observable();
+  self.zipcode = ko.observable();
   self.notes = ko.observable();
   self.createdBy = localStorage.getItem("user");
 
   self.addContact = function() {
-    console.log(self.contactInformation());
-
     setTimeout(function(){
       $.ajax({
         type: 'POST',
@@ -33,7 +34,21 @@ function addViewModel() {
         data: self.contactInformation(),
         dataType: 'json',
         success: function(data) {
-          console.log(data)
+          console.log(data);
+
+          app.trigger('user-added', app);
+
+          if ($('.alert-success').length == 0) {
+              // Dismissible bootstrap alert success box
+              var successMessage = '<strong>Success! </strong>' + data.firstname + ' ' + data.lastname +' was added as a new contact!'
+              $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
+          }
+
+          setTimeout(function() {
+            $('.alert-success').fadeOut('180', function() {
+              $(this).remove();
+            });
+          }, 6000);
         }
       });
     }, 100);
@@ -43,11 +58,13 @@ function addViewModel() {
     return ko.toJS({
       "firstname": self.firstname(),
       "lastname": self.lastname(),
-      "position": self.position(),
-      "company": self.company(),
       "email": self.email(),
       "phone": self.phone(),
+      "position": self.position(),
+      "company": self.company(),
       "address": self.address(),
+      "city": self.city(),
+      "state": self.state(),
       "notes": self.notes(),
       "createdBy": self.createdBy,
       "registered": "",
