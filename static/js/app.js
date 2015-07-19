@@ -21,7 +21,6 @@ function showLetterHeadings() {
   });
 }
 
-
 $(function(){
 
   function autoPopulateDetails(emailInput) {

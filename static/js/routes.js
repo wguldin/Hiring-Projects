@@ -12,9 +12,15 @@ function loadView(url, viewModel) {
     loadViewRequest.done(function(response) {
         var container = $('#main');
         var view = container.find('.view');
-        var newView = $('<div>').addClass('view').html(response);
+        var newView = $('<div id="view">').addClass('view').html(response);
 
         if (view.length) {
+            var vm = ko.dataFor(document.getElementById('view'));
+
+            if (typeof vm.unsubscribe === "function") {
+                vm.unsubscribe();
+            }
+
             ko.removeNode(view[0]); // Clean up previous view
         }
 
@@ -25,13 +31,21 @@ function loadView(url, viewModel) {
 
 var app = $.sammy('#main', function() {
 
+    function isUserAuthenticated() {
+        if(localStorage.getItem("user")) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     // =======================================================
     // Authentication Routes
     // =======================================================
     
     this.get('#/', function(context) {
         // Redirect if already authenticated.
-        if (localStorage.getItem("user")) {
+        if (isUserAuthenticated()) {
             this.redirect('#/contacts');
             return;
         }
@@ -52,11 +66,21 @@ var app = $.sammy('#main', function() {
     // =======================================================
     
     this.get('#/contacts', function(context) {
+        if (isUserAuthenticated() === false) {
+            this.redirect('#/')
+            return;
+        }
+
         loadView('views/list/index.html', new listViewModel());
         ko.postbox.publish("searchQuery", "");
     });
 
     this.get('#/contacts/:id', function(context) {
+        if (isUserAuthenticated() === false) {
+            this.redirect('#/')
+            return;
+        }
+
         // Pass current id, so we know which contact to display.
         var contactId = this.params['id'];
 
@@ -68,6 +92,11 @@ var app = $.sammy('#main', function() {
     // =======================================================
 
     this.get('#/reminders', function(context) {
+        if (isUserAuthenticated() === false) {
+            this.redirect('#/')
+            return;
+        }
+
         loadView('views/reminders/index.html', new remindersViewModel());
     });
 
@@ -76,6 +105,11 @@ var app = $.sammy('#main', function() {
     // =======================================================
 
     this.get('#/add', function(context) {
+        if (isUserAuthenticated() === false) {
+            this.redirect('#/')
+            return;
+        }
+
         loadView('views/add/index.html', new addViewModel());
     });
 

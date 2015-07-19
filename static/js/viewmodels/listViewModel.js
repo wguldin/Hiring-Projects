@@ -32,6 +32,8 @@ function listViewModel() {
 
   // Seperating sort from view, per this SO: http://stackoverflow.com/questions/12718699/sorting-an-observable-array-in-knockout
   self.arrangeContacts = function() {
+
+    // These sort functions evaluate the various properties and return '0' if the two arguments are the same, '-1' if the first value is smaller, and '1' if it is larger. 
     self.contacts.sort(function (l, r) {
       return (l.lastName == r.lastName ? (l.firstName > r.firstName ? 1 : -1) : (l.lastName > r.lastName ? 1 : -1))
     })
@@ -55,9 +57,11 @@ function listViewModel() {
       });
     }, 100);
   }
+
+  self.subscriptions = [];
   
   // Whenever the search result changes to a new value, update the contacts.
-  ko.postbox.subscribe("searchQuery", function(newValue) {
+  self.subscriptions.push(ko.postbox.subscribe("searchQuery", function(newValue) {
       // The initial state of the app, and clearing out a search term counts as a 'new value'
       // So, we check if we need the query string or not. 
       if(newValue !== '') {
@@ -65,7 +69,12 @@ function listViewModel() {
       } else {
         self.getContacts("");
       }
-
-  }, self);
+  }, self));
+    
+  self.unsubscribe = function(){
+      _.each(self.subscriptions, function(subscription) { subscription.dispose(); });
+  };
+  
+  
 };
 
