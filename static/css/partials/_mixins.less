@@ -22,7 +22,7 @@
 @text: #383838;
 @primary: #FF5B4B;
 @secondary: softlight(@primary, #555);
-@accent: #FF5B4B;
+@accent: @primary;
 @grey: #ccc;
 @darkgrey: #787878;
 
@@ -43,14 +43,22 @@
   }
 }
 
-// Find better mixin.
-// .calc(@property, @declaration, @fallback) { 
-//   @property: @fallback;
-//   @property: -moz-calc(@declaration); 
-//   @property: -o-calc(@declaration); 
-//   @property: -webkit-calc(@declaration); 
-//   @property: calc(@declaration);
-// }
+.calc-width(@amount, @fallback) {
+    width: @fallback;
+    width: -o-calc(~"100% - "@amount);  
+    width: -webkit-calc(~"100% - "@amount); /** Safari 6, Chrome 19-25 **/
+    width: -moz-calc(~"100% - "@amount); /** FF 4-15  **/
+    width: calc(~"100% - "@amount); /** FF 16+, IE 9+, Opera 15, Chrome 26+, Safari 7 and future other browsers **/
+}
+
+//boo, should be a better way ...
+.calc-add-width(@amount, @fallback) {
+    width: @fallback;
+    width: -o-calc(~"100% + "@amount);  
+    width: -webkit-calc(~"100% + "@amount); /** Safari 6, Chrome 19-25 **/
+    width: -moz-calc(~"100% + "@amount); /** FF 4-15  **/
+    width: calc(~"100% + "@amount); /** FF 16+, IE 9+, Opera 15, Chrome 26+, Safari 7 and future other browsers **/
+}
 
 .transition (@declaration) {
   -webkit-transition: @declaration;  

@@ -71,10 +71,8 @@ function listViewModel() {
       }
   }, self));
     
-  self.unsubscribe = function(){
+  self.unsubscribe = function() {
       _.each(self.subscriptions, function(subscription) { subscription.dispose(); });
   };
-  
-  
 };
 

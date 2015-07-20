@@ -199,14 +199,44 @@
   ],
   "tags": [
     {
-      "id": "t1",
-      "contactId": 1,
-      "tagLabel": "wguldin"
+      "id": "793e9ce7-a6a5-474e-bc04-dab7f69e65b1",
+      "contactId": 12,
+      "tagLabel": "lkasdjf;klasdjflkadsj"
     },
     {
-      "id": "t2",
-      "contactId": 2,
-      "tagLabel": "good prospect"
+      "id": "e36cd16a-225f-4834-87f2-1349b149b8a6",
+      "contactId": 1,
+      "tagLabel": "afsdfadsf"
+    },
+    {
+      "id": "64ee122b-dffd-49a4-99a7-b7fd1fd3c23b",
+      "contactId": 6,
+      "tagLabel": "Insurance Adjustor"
+    },
+    {
+      "id": "16f43903-c043-4b17-99e3-fd22a13a463d",
+      "contactId": 6,
+      "tagLabel": "Likes BriteCore"
+    },
+    {
+      "id": "f9acb481-9cb3-4304-b75c-99e30907e5a2",
+      "contactId": 6,
+      "tagLabel": "Met in 2014"
+    },
+    {
+      "id": "1cbd36cd-8f0d-4304-bdfa-ff6393bfeab2",
+      "contactId": 14,
+      "tagLabel": "asdf"
+    },
+    {
+      "id": "59a43c06-3a8a-421b-a83e-532d8a2b4433",
+      "contactId": 14,
+      "tagLabel": "asdfas"
+    },
+    {
+      "id": "33f5bcd0-0458-412d-9e74-9bda9d5c275d",
+      "contactId": 14,
+      "tagLabel": "adsfadsf"
     }
   ],
   "reminders": [

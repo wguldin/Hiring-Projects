@@ -1,12 +1,16 @@
 <ul id="contactList" class="contact-list" data-bind="foreach: contacts">
-  <li class="contact clearfix" data-bind="attr:{'data-initialLetter': initialLetter}">
+  <li class="contact-list__item clearfix" data-bind="attr:{'data-initialLetter': initialLetter}">
       <a data-bind="attr:{href: link, title: fullName}">
-        <img class="contact__image" data-bind="attr:{alt: fullName}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }"/>
-        <h3 class="contact__name" data-bind="text: fullName"></h3>
-        <p class="contact__description">
-          <span data-bind="text: position"></span>,
-          <span data-bind="text: company"></span>
-        </p>
+        <figure>
+          <img class="contact-list__image" data-bind="attr:{alt: fullName}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }"/>
+          <figcaption class="contact-list__text">
+            <h3 class="contact-list__name" data-bind="text: fullName"></h3>
+            <p class="contact-list__description">
+              <span data-bind="text: position"></span>,
+              <span data-bind="text: company"></span>
+            </p>
+          </figcaption>
+        </figure>
       </a>
   </li>
 </ul>

@@ -19,10 +19,19 @@ html {
 body {
   color: @text;  
   font-family: 'Open Sans', sans-serif;
-  font-weight: 400;
   font-size: 1em;
+  font-weight: 400;  
   min-width: 19em;
   overflow-x: hidden;
+}
+
+ul, ol {
+  list-style-type: none;
+  padding: 0;
+
+  li {
+    display: inline-block;
+  }
 }
 
 // Typography ===============================================
@@ -103,21 +112,21 @@ textarea.form-control {
 }
 
 .form {
+  margin: 1em auto;  
   max-width: 23em;
-  margin: 1em 0;
 }
 
 .form__note {
+  color: @darkgrey; 
   font-size: .9em;
   font-weight: 500;
-  color: @darkgrey; 
 }
 
 // Links and Buttons ==================================================
 
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
   
   &:visited, &:hover {
     text-decoration: none;
@@ -135,7 +144,11 @@ a {
   border-bottom: 1px dotted rgba(252, 79, 82, 0);
   color: @primary;
 
-  &:visited, &:hover {
+  &:visited {
+    color: @primary;
+  }
+
+  &:hover {
     color: @secondary;
     border-color: rgba(252, 79, 82, .5);
   }
@@ -153,6 +166,23 @@ a {
   white-space: normal;
 }
 
+.btn-secondary {
+  .transition(color 120ms @swift-out, background-color 120ms @swift-out;);
+
+  background-color: rgba(255, 91, 75, 0.1); // primary at 10%;
+  border: 1px solid @primary;
+  color: #000;
+
+  &:hover, &:focus, &:focus:active {
+    color: #fff;
+    background-color: @primary;
+  }
+
+  &:active {
+    background-color: lighten(@secondary, 5%);
+  }
+}
+
 .btn.btn-primary {
   .transition(background-color 120ms @swift-out);
 
@@ -163,6 +193,15 @@ a {
   &:active {
     background-color: lighten(@secondary, 5%);
   }
+}
+
+.input-group-btn .btn {
+  // Oddly, bootstrap sets the 'input-group-btn' font-size to zero.
+  // With em-based sizing, of course, this makes the 'btn' inside of it very small.
+  font-size: 16px;
+  font-size: 1rem;
+  margin-top: 5px;
+  margin-top: .3rem;
 }
 
 // ==================================================================
@@ -197,6 +236,23 @@ header {
 // ==================================================================
 // Navigation
 // ==================================================================
+
+#search, #navigation {
+  display: none;
+}
+
+// Use Sammy.js routes to add class to main element, trigger display of these elements on intended pages.
+.search {
+  #search {
+    display: block;
+  }
+}
+
+.navigation {
+  #navigation {
+    display: block;
+  }
+}
 
 .btn-group, .add-contact {
   font-size: .78em; // Fit on one line at smallest resolution.
@@ -242,64 +298,223 @@ nav[role="navigation"] {
 }
 
 // ==================================================================
-// Contacts
+// Sticky Footer
+// Requires fixed footer height, but no wrapper or pusher elements.
+// ==================================================================
+
+// Left these selectors here instead of with more global styles for clarity.
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 5em; /* bottom = footer height */
+}
+
+footer {
+  border-top: 1px solid #CCC;
+  box-shadow: 0 2px 8px 1px #CCC;
+  bottom: 0;
+  height: 5em;
+  left: 0;
+  padding: 1em;
+  position: absolute;
+  width: 100%;
+}
+
+.footer__copyright {
+  font-size: .8em;
+  margin-top: .3em;
+  color: #787878;
+  display: block;
+}
+
+// ==================================================================
+// Contact List Styling
 // ==================================================================
 
 .contact__header {
   // Creates a subtle 'sunken' look for each contact header.
   .box-shadow(inset 0 1px 3px -1px rgba(120, 120, 120, 0.5), inset 0 -2px 5px -3px rgba(120, 120, 120, 0.5););
   
-  background-color: #f7f7f7;
+  background-color: #f7f7f7; // Subtle white/grey.
   color: @darkgrey;
   display: block;
   font-size: 1.2em;
   font-weight: 300;
-  margin: 0 -1em;
+  margin: 0 -1em; // Allows headers to expand past edge of container.
   padding: .2em .9em;
 }
 
 .contact-list {
   list-style-type: none;
-  padding: 0;
   margin-top: 1em;
+  padding: 0;
 }
 
-.contact {
+.contact-list__item {
   .clearfix();
+  .calc-add-width(2em, 100%); // Make our li's full width.
 
-  padding: 0.8em 1em;
-  margin: 0 -1em;
+  margin: 0 -1em; // Allows li's to expand past edge of container.
+  padding: 0.8em 1em; // Scoots the text back in.
 
   &:first-child { 
     border: 0;
   }
 
-  & + .contact {
+  & + .contact-list__item {
     // Keeps border from applying to the bottom edge of the letter headers.
     border-top: 1px solid #eee;
   } 
+
+  a {
+    display: block;
+  }
 }
 
-.contact__image {
-  float: left;
-  width: 3em;
+.contact-list__image {
+  border-radius: 0.6em;
+  display: inline-block;
   height: 3em;
-  margin-right: 1em;
-  border-radius: 0.8em;
+  margin-right: .8em;
+  width: 3em;
+  vertical-align: top;
 }
 
-.contact__name {
+.contact-list__name {
+  color: @primary;  
   font-size: 1.33em;
-  color: @primary;
   margin: 0;
 }
 
-.contact__description {
+.contact-list__description {
+  color: #787878;  
   font-size: 1em;
-  color: #787878;
+  font-weight: 300;
   margin: .25em 0 0 0;
 
   span {
     color: inherit;
   }
 }
+
+.contact-list__text {
+  .calc-width(5.1em, 72%);
+
+  display: inline-block;
+  vertical-align: top;
+}
+
+// ==================================================================
+// Individual Contact Information
+// ==================================================================
+
+.contact {
+  margin-top: 1.5em;
+}
+
+.contact__name__text {
+  display: inline-block;
+  font-size: 1.9em;
+  margin-top: -5px;
+  text-align: left;
+  text-transform: none;
+  word-wrap: break-word;
+}
+
+.contact__name {
+  .calc-width(5.1em, 60%);
+
+  display: inline-block;
+  vertical-align: top;
+}
+
+.contact__image {
+  border-radius: .8em;
+  display: inline-block;
+  height: 4em;
+  margin-right: .8em;
+  width: 4em;
+  vertical-align: top;
+}
+
+.contact__subheader {
+  font-size: .9em;
+  font-weight: 700;
+  margin: 1em 0 .25em 0;
+}
+
+.contact__information {
+  font-size: 1.2em;
+  font-weight: 300;
+}
+
+.contact__location {
+  display: block;
+}
+
+.contact__city {
+  &:after {
+    content: ', '; // If city exists, this will put a nice comma between it and the state.
+  } 
+}
+
+// ==================================================================
+// Tag 'Badge' 
+// ==================================================================
+
+.tag {
+  display: inline-block;
+  font-size: 0.9em;
+  margin: 0.35em .35em .35em 0;
+  overflow: hidden;
+  cursor: default;
+
+  &:hover, &:active, &:focus {
+    color: #000;
+    background: rgba(255, 91, 75, 0.1) !important;
+    border-color: @primary;
+  }
+}
+
+.tag__close {
+  .transition(color 120ms @swift-out, background-color 120ms @swift-out;);
+
+  padding: 0.8em 1.1em 0.8em 0.7em;
+  margin: -0.5em -1.2em -0.5em 0.5em;
+  font-size: 1em;
+  line-height: 0.9;
+  border-left: 1px solid #FF5B4B;
+  cursor: pointer;
+
+  &:hover, &:active {
+    color: #fff;
+    background-color: @primary;
+    border-color: @primary;
+  }
+}
+
+// ==================================================================
+// Add Tag Form 
+// ==================================================================
+
+.add-tag-form__trigger {
+  cursor: pointer;
+}
+
+.add-tag-form__trigger.is-active {
+  & ~ .add-tag-form {
+    max-height: 3em;
+  }
+}
+
+.add-tag-form {
+  .transition(max-height 150ms @swift-out);
+
+  max-height: 0;
+  overflow: hidden;
+}
+
+

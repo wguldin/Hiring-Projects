@@ -1,25 +1,56 @@
-<!-- ko foreach: contact -->
-  <img class="contact__image" data-bind="attr:{src: image, alt: fullName}" />
-  <h1 data-bind="text: fullName"></h1>
+<section class="contact" data-bind="foreach: contact">
+  <figure>
+    <img class="contact__image" data-bind="attr:{alt: fullName}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }" />  
+    <figcaption class="contact__name">
+      <h1 class="contact__name__text" data-bind="text: fullName"></h1>
+    </figcaption>
+  </figure>  
+
   <h2>
     <span data-bind="text: position"></span>,
     <span data-bind="text: company"></span>
   </h2>
 
-  <p data-bind="text: phone"></p>
-  <p data-bind="text: email"></p>
-  <p data-bind="text: address"></p>
+  <h5 class="contact__subheader" data-bind="if: email">Email Address</h5>
+  <a class="contact__information" title="Email them" data-bind="text: email, attr:{href: emailLink}"></a>
 
-  <h5>Notes on <span data-bind="text: fullName"></span></h5>
-  <p data-bind="text: notes"></p>
+  <h5 class="contact__subheader" data-bind="if: phone">Phone</h5>
+  <a class="contact__information" title="Call them" data-bind="text: phone, attr:{href: phoneLink}"></a>
+  
+  <h5 class="contact__subheader" data-bind="if: address">Address</h5>
+  <a class="contact__information" title="Map this address" data-bind="attr:{href: addressLink}">
+    <span data-bind="text: address"></span>
+    <span class="contact__location"><span class="contact__city" data-bind="text: city"></span><span data-bind="text: state"></span></span>
+  </a>
 
-  <!-- ko foreach: tags -->
-  <p data-bind="text: tagLabel"></p>
-  <!-- /ko -->
+  <h5 class="contact__subheader" data-bind="if: notes">Background Notes</h5>
+  <p class="contact__information" data-bind="text: notes"></p>
+
+  <h5 class="contact__subheader" data-bind="if: tags">Tags</h5>
+  <span class="add-tag-form__trigger form__note">Add a new tag</span>
+
+  <ul data-bind="foreach: tags">
+    <li>
+      <button class="tag btn btn-default btn-secondary">
+        <span data-bind="text: tagLabel"></span>
+        <input type="hidden" data-bind="value: id">
+        <i class="tag__close fa fa-close" data-bind="click: $parent.removeTag"></i>
+      </button>
+    </li>
+  </ul>
+  <form class="add-tag-form" data-bind="submit: addTag">
+    <label for="add-tag" class="sr-only">Add a tag</label>
+    <div class="input-group">
+      <input name="add-tag" class="form-control" data-bind="textInput: addTagLabel"/>
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="submit">Add</button>
+      </span>
+    </div>
+  </form>
 
   <!-- ko foreach: reminders -->
   <p class="reminder__name" data-bind="text: reminderName"></p>
   <p class="reminder__note" data-bind="text: reminderNote"></p>
   <p class="reminder__date" data-bind="text: reminderDate"></p>
-</ul>  <!-- /ko -->
-<!-- /ko -->
+  <!-- /ko -->
+</section>

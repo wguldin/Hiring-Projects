@@ -1,5 +1,3 @@
-
-
 function addViewModel() {
   var self = this;
 

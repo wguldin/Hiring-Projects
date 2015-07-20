@@ -3,10 +3,6 @@ function filterContacts(jsonKey, value) {
   ko.postbox.publish("searchQuery", value);
 }
 
-function unfilterContacts() {
-  filterContacts('', '');
-}
-
 // Not perfect, but pretty good. SO: http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
 function validateEmail(email) {
     var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
@@ -22,6 +18,40 @@ function showLetterHeadings() {
 }
 
 $(function(){
+
+  // =========================================================
+  // Event Handlers
+  // =========================================================
+
+  $('#main').on('input', '#searchBox', function(event) {
+    if($(this).val() != '') {
+      ko.postbox.publish("searchQueryType", "q");
+    }
+  });
+
+  $('#main').on('click', '.app-navigation', function() {
+    // If user navigates away from search results, clear the search field.
+    if($('#searchBox').val() != '') {
+      $('#searchBox').val('');
+    }
+  });
+
+  $('#main').on('click', '.add-tag-form__trigger', function() {
+    $(this).toggleClass('is-active');
+    var input = $('input[name="add-tag"]');
+
+    $(input).focus();
+  });
+
+  // Once we have the email address, try to find more information out via fullcontact api.
+  $('#main').on('blur', '.add input[name="email"]', function(event) {
+    autoPopulateDetails(this);
+  });
+
+  var year = new Date().getFullYear();
+
+  // Update year in copyright
+  $('footer').find('.date').text(year);
 
   function autoPopulateDetails(emailInput) {
     var apiKey = '9d88865dfc3cdee7'; // This isn't something I'd do on a live site ...
@@ -117,38 +147,4 @@ $(function(){
       requestCompanyDetails();
     })
   }
-
-  // =========================================================
-  // Event Handlers
-  // =========================================================
-
-  $('#main').on('click', '[data-nav="my-contacts"]', function() {
-    var currentUser = localStorage.getItem("user");
-
-    filterContacts('createdBy', currentUser);
-  });
-
-  $('#main').on('click', '[data-nav="all-contacts"]', function() {
-    var currentUser = localStorage.getItem("user");
-
-    unfilterContacts();
-  });
-
-  $('#main').on('input', '#search', function(event) {
-    ko.postbox.publish("searchQueryType", "q");
-  });
-
-  $('#main').on('blur', '.add input[name="email"]', function(event) {
-    autoPopulateDetails(this);
-  });
-
-  $('#main').on('click', '.app-navigation', function(event) {
-
-      // Remove active class from all buttons
-      $('a').removeClass('active');
-
-      // Add active class to just triggered button.
-      var target = $(event.target);
-      target.addClass('active');
-  });
 }, jQuery);

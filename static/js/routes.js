@@ -1,6 +1,6 @@
-// Load View function courtesy of Stack Overflow. 
-// Way to load partials using Sammy and Knockout.
+// Load View function courtesy of Stack Overflow. Way to load partials using Sammy and Knockout.
 // Cleans up bindings when view is no longer used.
+// http://stackoverflow.com/questions/23481588/knockoutjs-with-sammy-js-spa-suggestion
 
 function loadView(url, viewModel) {
 
@@ -17,6 +17,8 @@ function loadView(url, viewModel) {
         if (view.length) {
             var vm = ko.dataFor(document.getElementById('view'));
 
+            // This removes the KO Postbox subscribtion, preventing extra DB calls. 
+            // https://github.com/rniemeyer/knockout-postbox/issues/38
             if (typeof vm.unsubscribe === "function") {
                 vm.unsubscribe();
             }
@@ -29,36 +31,56 @@ function loadView(url, viewModel) {
     })
 }
 
+// Routing related funcitons.
+function isUserAuthenticated() {
+
+    // Local storage is used as a pseudo logged-in state for the test purposes of the app.
+    if(localStorage.getItem("user")) {
+        return true
+    } else {
+        return false
+    }
+}
+
+// Find the nav link with the matching url to make active.
+function toggleNavigation(currentUrl) {
+    var nav = $('#main').find('.app-navigation');
+    var navlink = nav.find('a[href="' + currentUrl + '"]');
+
+    nav.find('a').removeClass('active');
+    navlink.addClass('active');
+}
+
 var app = $.sammy('#main', function() {
 
-    function isUserAuthenticated() {
-        if(localStorage.getItem("user")) {
-            return true
-        } else {
-            return false
-        }
-    }
+    var mainContainer = $('#main')
 
     // =======================================================
     // Authentication Routes
     // =======================================================
     
     this.get('#/', function(context) {
+        var self = this;
+
         // Redirect if already authenticated.
         if (isUserAuthenticated()) {
-            this.redirect('#/contacts');
+            self.redirect('#/contacts');
             return;
         }
 
+        mainContainer.removeClass('search navigation');
         loadView('views/authenticate/index.html', new authenticateViewModel());
     });
 
-    this.bind('user-authenticated', function (e, data) {
-        this.redirect('#/contacts');
+    // Catch custom events
+    this.bind('user-authenticated', function (event, data) {
+        var self = this;
+        self.redirect('#/contacts');
     });
 
-    this.bind('user-added', function (e, data) {
-        this.redirect('#/contacts');
+    this.bind('user-added', function (event, data) {
+        var self = this;
+        self.redirect('#/contacts');
     });
 
     // =======================================================
@@ -66,25 +88,58 @@ var app = $.sammy('#main', function() {
     // =======================================================
     
     this.get('#/contacts', function(context) {
+        var self = this;
+
         if (isUserAuthenticated() === false) {
-            this.redirect('#/')
+            self.redirect('#/')
+            return;
+        }
+
+        mainContainer.off('input.searchInputRedirect');
+
+        loadView('views/list/index.html', new listViewModel());
+        ko.postbox.publish("searchQuery", "");
+
+        mainContainer.addClass('search navigation');
+        toggleNavigation(self.path);
+    });
+
+    this.get('#/contacts/my-contacts', function(context) {
+        var self = this;
+
+        if (isUserAuthenticated() === false) {
+            self.redirect('#/')
             return;
         }
 
         loadView('views/list/index.html', new listViewModel());
-        ko.postbox.publish("searchQuery", "");
+
+        mainContainer.addClass('search navigation');
+        toggleNavigation(self.path);
+
+        var currentUser = localStorage.getItem("user");
+        filterContacts('createdBy', currentUser);
     });
 
     this.get('#/contacts/:id', function(context) {
+        var self = this;
+
         if (isUserAuthenticated() === false) {
-            this.redirect('#/')
+            self.redirect('#/')
             return;
         }
 
-        // Pass current id, so we know which contact to display.
-        var contactId = this.params['id'];
+        mainContainer.addClass('search navigation');
+        toggleNavigation(self.path);
 
+        // Pass current id, so we know which contact to display.
+        var contactId = self.params['id'];
         loadView('views/detail/index.html', new detailViewModel(contactId));
+
+        mainContainer.on('focus.searchInputRedirect', '#searchBox', function(e) {
+            e.stopImmediatePropagation(); // Needed to stop listViewModel from being applied repeatedly when this event fires. Unsure of what the root cause is though.
+            self.redirect('#/contacts');
+        })
     });
 
     // =======================================================
@@ -92,12 +147,23 @@ var app = $.sammy('#main', function() {
     // =======================================================
 
     this.get('#/reminders', function(context) {
+        var self = this;
+
         if (isUserAuthenticated() === false) {
-            this.redirect('#/')
+            self.redirect('#/')
             return;
         }
 
+        mainContainer.addClass('search navigation');
+        mainContainer.find('#searchBox').val();
+        toggleNavigation(self.path);
+
         loadView('views/reminders/index.html', new remindersViewModel());
+
+        mainContainer.on('focus.searchInputRedirect', '#searchBox', function(e) {
+            e.stopImmediatePropagation(); // Needed to stop listViewModel from being applied repeatedly when this event fires. Unsure of what the root cause is though.
+            self.redirect('#/contacts');
+        })
     });
 
     // =======================================================
@@ -105,11 +171,14 @@ var app = $.sammy('#main', function() {
     // =======================================================
 
     this.get('#/add', function(context) {
+        var self = this;
+
         if (isUserAuthenticated() === false) {
-            this.redirect('#/')
+            self.redirect('#/')
             return;
         }
 
+        mainContainer.removeClass('search navigation');
         loadView('views/add/index.html', new addViewModel());
     });
 
@@ -118,8 +187,10 @@ var app = $.sammy('#main', function() {
     // =======================================================
 
     this.get('#/signout', function(context) {
+        var self = this;        
+
         localStorage.setItem("user", "")
-        this.redirect('#/');
+        self.redirect('#/');
     });
 
     // =======================================================
