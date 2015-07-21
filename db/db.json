@@ -224,19 +224,24 @@
       "tagLabel": "Met in 2014"
     },
     {
-      "id": "1cbd36cd-8f0d-4304-bdfa-ff6393bfeab2",
-      "contactId": 14,
-      "tagLabel": "asdf"
-    },
-    {
       "id": "59a43c06-3a8a-421b-a83e-532d8a2b4433",
       "contactId": 14,
       "tagLabel": "asdfas"
     },
     {
-      "id": "33f5bcd0-0458-412d-9e74-9bda9d5c275d",
+      "id": "812847b9-7dd6-4a1e-86f0-85775c10a7c1",
       "contactId": 14,
-      "tagLabel": "adsfadsf"
+      "tagLabel": "asdfadsf"
+    },
+    {
+      "id": "c35b5852-7273-4886-ae3d-577e26187f38",
+      "contactId": 14,
+      "tagLabel": "asdf"
+    },
+    {
+      "id": "2ad59dc8-fdc2-422e-ac52-adf3b38c2e0f",
+      "contactId": 14,
+      "tagLabel": "asdfasdfasdf"
     }
   ],
   "reminders": [

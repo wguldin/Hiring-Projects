@@ -183,6 +183,26 @@ var app = $.sammy('#main', function() {
     });
 
     // =======================================================
+    // Edit
+    // =======================================================
+
+    this.get('#/edit/:id', function(context) {
+        var self = this;
+
+        if (isUserAuthenticated() === false) {
+            self.redirect('#/')
+            return;
+        }
+
+        mainContainer.removeClass('search navigation');
+        
+        var contactId = self.params['id'];
+        loadView('views/edit/index.html', new editViewModel(contactId));
+
+    });
+
+
+    // =======================================================
     // Signout
     // =======================================================
 

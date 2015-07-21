@@ -1,54 +1,3 @@
-// =========================================================
-// Tag Creation
-// =========================================================
-
-function postTag(id, contactId, tagLabel) {
-  var tagUrl = "http://localhost:3000/tags/";
-  var tagJSON = {"id": id, "contactId": contactId, "tagLabel": tagLabel};
-
-  $.ajax({
-    type: 'POST',
-    url: tagUrl,
-    data: tagJSON
-  });
-}
-
-function deleteTag(tag) {
-  var tagUrl = 'http://localhost:3000/tags/' + tag.id;
-  var tagJSON = {"id": tag.id , "contactId": tag.contactId, "tagLabel": tag.tagLabel};
-
-  $.ajax({
-    type: 'DELETE',
-    url: tagUrl,
-    data: tag
-  });
-}
-
-// =========================================================
-// Reminder Creation
-// =========================================================
-
-/*Reminders go here ....*/
-
-function detail_tag(id, contactId, tagLabel) {
-    var self = this;
-
-    self.id = id;
-    self.contactId = contactId;
-    self.tagLabel = tagLabel;
-}
-
-// TODO: Still not working ...
-function detail_reminder(id, contactId, reminderName, reminderNote, reminderDate) {
-  var self = this;
-
-  self.id = id;
-  self.contactId = contactId;
-  self.reminderName = reminderName;
-  self.reminderNote = reminderNote;
-  self.reminderDate = reminderDate;
-}
-
 // Binds json db data to each contact.
 function singleContact(data) {
   var self = this;
@@ -88,7 +37,7 @@ function singleContact(data) {
   self.addTagLabel = ko.observable("");
 
   self.addTag = function() {
-    self.tags.push(new detail_tag(self.addTagId, self.contactId, self.addTagLabel()));
+    self.tags.push(new single_tag(self.addTagId, self.contactId, self.addTagLabel()));
     postTag(uuid.generate(), self.contactId, self.addTagLabel);
 
     self.addTagLabel(""); // Reset Tag Label after tag is added.
@@ -100,13 +49,13 @@ function singleContact(data) {
   };
 
   var processTags =  ko.utils.arrayMap(data.tags, function(item) {
-      return new detail_tag(item.id, item.contactId, item.tagLabel);
+      return new single_tag(item.id, item.contactId, item.tagLabel);
   });
 
   self.tags = ko.observableArray(processTags);
 
   var processReminders =  ko.utils.arrayMap(data.reminders, function(item) {
-      return new detail_reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate);
+      return new single_reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate);
   });
 
   self.reminders = ko.observableArray(processReminders);

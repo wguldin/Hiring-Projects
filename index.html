@@ -30,24 +30,22 @@
     </a>
   </header>
 
-  <div class="container">
-    <main id="main" role="main">
-      <form id="search">
-        <label class="search">Search
-        <input type="search" id="searchBox" class="form-control" data-bind="textInput: searchText" />
-        </label>
-      </form>
-      <nav id="navigation" role="navigation" class="app-navigation">
-        <div class="btn-group" role="group" aria-label="Navigate BriteSpark Contacts">
-        <a href="/#/contacts" class="btn btn-default">All Contacts</a>
-        <a href="/#/contacts/my-contacts" class="btn btn-default">My Contacts</a>
-        <a href="/#/reminders" class="btn btn-default">Reminders</a>
-        </div>  
-      </nav>
-    </main>
-  </div>
+  <main id="main" role="main">
+    <form id="search">
+      <label class="search">Search
+      <input type="search" id="searchBox" class="form-control" data-bind="textInput: searchText" />
+      </label>
+    </form>
+    <nav id="navigation" role="navigation" class="app-navigation">
+      <div class="btn-group" role="group" aria-label="Navigate BriteSpark Contacts">
+      <a href="/#/contacts" class="btn btn-default">All Contacts</a>
+      <a href="/#/contacts/my-contacts" class="btn btn-default">My Contacts</a>
+      <a href="/#/reminders" class="btn btn-default">Reminders</a>
+      </div>  
+    </nav>
+  </main>
 
-  <footer>
+  <footer role="contentinfo">
     <a href="#/signout" class="sign-out text-link">Sign out</a>
     <small class="footer__copyright">&copy; <span class="date">2015</span> <a href="http://www.britecore.com/">Intuitive Web Solutions</a>, creators of BriteCore</small>
 
@@ -56,11 +54,11 @@
     <script src="static/js/vendor/sammy.js"></script>
     <script src="static/js/vendor/knockout-3.3.0.js"></script>
     <script src="static/js/vendor/underscore.js"></script>
-    <script src="static/js/vendor/bootstrap.js"></script>
+    <script src="static/js/vendor/bootstrap.min.js"></script>
+    <script src="static/js/vendor/knockout-deferred-updates.min.js"></script>
     <script src="static/js/vendor/knockout-postbox.js"></script>
     <script src="static/js/vendor/md5.js"></script>
     <script src="static/js/vendor/knockout-gravatar.js"></script>
-
 
     <!--View Models-->
     <script src="static/js/viewmodels/authenticateViewModel.js"></script>

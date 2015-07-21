@@ -17,6 +17,54 @@ function showLetterHeadings() {
   });
 }
 
+// =========================================================
+// Tag Creation
+// =========================================================
+
+function postTag(id, contactId, tagLabel) {
+  var tagUrl = "http://localhost:3000/tags/";
+  var tagJSON = {"id": id, "contactId": contactId, "tagLabel": tagLabel};
+
+  jQuery.ajax({
+    type: 'POST',
+    url: tagUrl,
+    data: tagJSON
+  });
+}
+
+function deleteTag(tag) {
+  var tagUrl = 'http://localhost:3000/tags/' + tag.id;
+  var tagJSON = {"id": tag.id , "contactId": tag.contactId, "tagLabel": tag.tagLabel};
+
+  jQuery.ajax({
+    type: 'DELETE',
+    url: tagUrl,
+    data: tag
+  });
+}
+
+function single_tag(id, contactId, tagLabel) {
+    var self = this;
+
+    self.id = id;
+    self.contactId = contactId;
+    self.tagLabel = tagLabel;
+}
+
+// =========================================================
+// Reminder Creation
+// =========================================================
+
+function single_reminder(id, contactId, reminderName, reminderNote, reminderDate) {
+  var self = this;
+
+  self.id = id;
+  self.contactId = contactId;
+  self.reminderName = reminderName;
+  self.reminderNote = reminderNote;
+  self.reminderDate = reminderDate;
+}
+
 $(function(){
 
   // =========================================================
@@ -45,13 +93,17 @@ $(function(){
 
   // Once we have the email address, try to find more information out via fullcontact api.
   $('#main').on('blur', '.add input[name="email"]', function(event) {
-    autoPopulateDetails(this);
+    // autoPopulateDetails(this);
   });
 
   var year = new Date().getFullYear();
 
   // Update year in copyright
   $('footer').find('.date').text(year);
+
+  // =========================================================
+  // Add form autofill
+  // =========================================================
 
   function autoPopulateDetails(emailInput) {
     var apiKey = '9d88865dfc3cdee7'; // This isn't something I'd do on a live site ...
