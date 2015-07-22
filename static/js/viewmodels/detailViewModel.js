@@ -3,11 +3,14 @@ function detail_singleContact(data) {
   var self = this;
   
   self.contactId = data.id;
-  self.firstname = ko.observable(data.firstname);
-  self.lastname = ko.observable(data.lastname);
+  self.fullname =  ko.observable(data.firstname + ' ' + data.lastname);
 
-  self.fullName = ko.computed(function() {
-      return self.firstname() + " " + self.lastname();    
+  self.firstname = ko.computed(function() {
+    return self.fullname().substr(0, self.fullname().indexOf(' '));
+  }, self);
+
+  self.lastname = ko.computed(function() {
+    return self.fullname().substr(self.fullname().indexOf(' ') + 1);
   }, self);
 
   self.position = ko.observable(data.position);
@@ -24,7 +27,6 @@ function detail_singleContact(data) {
 
   self.emailLink = 'mailto:' + self.email;
   self.phoneLink = 'tel:' + self.phone;
-  self.editLink = '#/edit/' + self.contactId;
 
   self.addressLink = ko.computed(function() {
     var fullAddress = self.address() + " " + self.city() + " " + self.state();
@@ -33,6 +35,51 @@ function detail_singleContact(data) {
   })
 
   self.addTagLabel = ko.observable("");
+
+  // TODO: this is not work, for some reason.
+  self.updateData = function() {
+    //console.log(self.updatedContactInformation());
+    
+    $.ajax({
+      type: 'PUT',
+      url: 'http://localhost:3000/contacts/' + self.contactId,
+      data: self.updatedContactInformation(),
+      dataType: 'json',
+      success: function(data) {
+
+        if ($('.alert-success').length == 0) {
+            // Dismissible bootstrap alert success box
+            var successMessage = '<strong>Success! </strong> Your changes were saved!'
+            $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
+        }
+
+        setTimeout(function() {
+          $('.alert-success').fadeOut('180', function() {
+            $(this).remove();
+          });
+        }, 6000);
+      }
+    });
+  }
+
+  self.updatedContactInformation = function() {
+    return ko.toJS({
+      "id": self.contactId,
+      "firstname": self.firstname(),
+      "lastname": self.lastname(),
+      "email": self.email(),
+      "phone": self.phone(),
+      "position": self.position(),
+      "company": self.company(),
+      "address": self.address(),
+      "city": self.city(),
+      "state": self.state(),
+      "zipcode": self.zipcode(),
+      "notes": self.notes(),
+      "createdBy": data.createdBy,
+      "registered": data.registered,
+    })
+  }
 
   self.addTag = function() {
     var tagId = uuid.generate();
@@ -59,25 +106,6 @@ function detail_singleContact(data) {
   });
 
   self.reminders = ko.observableArray(processReminders);
-
-  self.updatedContactInformation = function() {
-    return ko.toJS({
-      "id": self.contactId,
-      "firstname": self.firstname(),
-      "lastname": self.lastname(),
-      "email": self.email(),
-      "phone": self.phone(),
-      "position": self.position(),
-      "company": self.company(),
-      "address": self.address(),
-      "city": self.city(),
-      "state": self.state(),
-      "zipcode": self.zipcode(),
-      "notes": self.notes(),
-      "createdBy": data.createdBy,
-      "registered": data.registered,
-    })
-  }
 };
 
 function detailViewModel(contactId) {
@@ -87,42 +115,17 @@ function detailViewModel(contactId) {
   self.getContact = function(id) {
     // JSON-Server is a little too fast. View can show up blank without delay.
     setTimeout(function() {
-      $.ajax({
+      var request = $.ajax({
         type: 'GET',
         url: 'http://localhost:3000/contacts/' + id + '?_embed=tags&_embed=reminders',
-        dataType: 'json',
-        success: function(data) {
-          var contactData = [new detail_singleContact(data)];
-          console.log(contactData)
-          self.contact(contactData);
-        }
+        dataType: 'json'
+
+      }).done(function(data) {
+        var contactData = [new detail_singleContact(data)];
+        console.log(contactData)
+        self.contact(contactData);
       });
     }, 100);
-  }
-
-  // TODO: this is not work, for some reason.
-  self.updateData = function() {
-    //console.log(self.contact());
-    // $.ajax({
-    //   type: 'PUT',
-    //   url: 'http://localhost:3000/contacts/' + contactId,
-    //   data: self.updatedContactInformation(),
-    //   dataType: 'json',
-    //   success: function(data) {
-
-    //     if ($('.alert-success').length == 0) {
-    //         // Dismissible bootstrap alert success box
-    //         var successMessage = '<strong>Success! </strong> Your changes were saved!'
-    //         $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
-    //     }
-
-    //     setTimeout(function() {
-    //       $('.alert-success').fadeOut('180', function() {
-    //         $(this).remove();
-    //       });
-    //     }, 6000);
-    //   }
-    // });
   }
 
   self.getContact(contactId);

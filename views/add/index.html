@@ -49,7 +49,7 @@
     <legend class="form__subheader">Background on Contact (optional)</legend>
 
     <label>Notes
-      <textarea name="notes" class="form-control"></textarea>
+      <textarea name="notes" class="form-control" data-bind="textInput: notes"></textarea>
     </label>
     <small class="form__note"><a tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" title="Markdown Formatting Guide" data-content="With markdown you use simple characters to format text:<ul><li>###A header</li><li>**Bold Text**</li><li>_Italic Text_</li><li>[A Link](http://a-link.com)</li><li>For more, <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'>view this guide</a></li></ul>">Markdown formatting</a> supported</small>
 
@@ -62,9 +62,10 @@
     
     <fieldset class="reminder__sub-form collapse">
       <legend class="sr-only">Create a Reminder</legend>
-      <label>Note for Reminder</label>
-      <textarea name="reminderNote" class="form-control" data-bind="textInput: reminderNote"></textarea>
-      <small class="form__note"><a tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" title="Markdown Formatting Guide" data-content="With markdown you use simple characters to format text:<ul><li>###A header</li><li>**Bold Text**</li><li>_Italic Text_</li><li>[A Link](http://a-link.com)</li><li>For more, <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'>view this guide</a></li></ul>">Markdown formatting</a> supported</small>
+      <label>Note for Reminder
+        <textarea name="reminderNote" class="form-control" data-bind="textInput: reminderNote"></textarea>
+        <small class="form__note"><a tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" title="Markdown Formatting Guide" data-content="With markdown you use simple characters to format text:<ul><li>###A header</li><li>**Bold Text**</li><li>_Italic Text_</li><li>[A Link](http://a-link.com)</li><li>For more, <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'>view this guide</a></li></ul>">Markdown formatting</a> supported</small>
+      </label>
 
       <label>Date for Reminder
         <input name="reminderDate" class="form-control form-control--compact" type="text" id="datepicker" data-bind="textInput: reminderDate">

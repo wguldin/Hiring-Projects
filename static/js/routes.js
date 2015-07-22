@@ -1,41 +1,47 @@
 // Load View function courtesy of Stack Overflow. Way to load partials using Sammy and Knockout.
 // Cleans up bindings when view is no longer used.
 // http://stackoverflow.com/questions/23481588/knockoutjs-with-sammy-js-spa-suggestion
-
 function loadView(url, viewModel) {
+    var $loader = $('#main').find('.loader');
 
-    var loadViewRequest = $.ajax({ 
-        type: 'GET',
-        url: url
-    });
+    $loader.fadeIn(120);
 
-    loadViewRequest.done(function(response) {
-        var container = $('#main');
-        var view = container.find('.view');
-        var newView = $('<div id="view">').addClass('view').html(response);
+    setTimeout(function() {
+        var loadViewRequest = $.ajax({ 
+            type: 'GET',
+            url: url,
+            success: function(response) {
+                var container = $('#main');
+                var view = container.find('.view');
+                var newView = $('<div id="view">').addClass('view').html(response);
 
-        if (view.length) {
-            var vm = ko.dataFor(document.getElementById('view'));
+                if (view.length) {
+                    var vm = ko.dataFor(document.getElementById('view'));
 
-            // This removes the KO Postbox subscribtion, preventing extra DB calls. 
-            // https://github.com/rniemeyer/knockout-postbox/issues/38
-            if (typeof vm.unsubscribe === "function") {
-                vm.unsubscribe();
+                    // This removes the KO Postbox subscribtion, preventing extra DB calls. 
+                    // https://github.com/rniemeyer/knockout-postbox/issues/38
+                    if (typeof vm.unsubscribe === "function") {
+                        vm.unsubscribe();
+                    }
+                    ko.removeNode(view[0]); // Clean up previous view after fade begins.
+                }
+
+                container.append(newView);
+
+                initUIFeatures(container);
+                ko.applyBindings(viewModel, newView[0]);
+
+                $loader.fadeOut(120);
             }
-
-            ko.removeNode(view[0]); // Clean up previous view
-        }
-
-        container.append(newView);
-        initUIFeatures(container);
-
-        ko.applyBindings(viewModel, newView[0]);
-    })
+        });
+    }, 120);
 }
 
 function initUIFeatures(container) {
-    // Because views are being ajax'd, we can't initialize these plugins on load. 
+    // Force new views to go to the top of the page, like a traditional web page.
+    $('html, body').animate({ scrollTop: 0 }, 0);
 
+    // Because views are being ajax'd, we can't initialize these plugins on load. 
     if (container.find('[data-toggle="popover"]')) {
         $('[data-toggle="popover"]').popover();
     }
@@ -49,9 +55,9 @@ function initUIFeatures(container) {
     }
 
     if(container.find('.edit--toggle')) {
-        // Ensure edit is always available on page refresh/back-button navigation while editing, etc.
+        // Initialize edit functionality
         $('.edit--toggle').removeClass('is-disabled');
-    }
+    } 
 }
 
 // Routing related funcitons.
@@ -74,6 +80,18 @@ function toggleNavigation(currentUrl) {
     navlink.addClass('active');
 }
 
+function toggleElements(selector, toggleState) {
+    if (toggleState == 'show') {
+        $(selector).delay(150).fadeIn(120, function() {
+            $(selector).show();
+        });
+    } else if (toggleState == 'hide') {
+        $(selector).fadeOut(150, function() {
+            $(selector).hide();
+        });
+    }
+}
+
 var app = $.sammy('#main', function() {
 
     var mainContainer = $('#main');
@@ -91,8 +109,8 @@ var app = $.sammy('#main', function() {
             self.redirect('#/contacts');
             return;
         }
-
-        body.removeClass('search navigation add');
+        
+        toggleElements('#search, #navigation, .add-contact', 'hide');
         loadView('views/authenticate/index.html', new authenticateViewModel());
     });
 
@@ -124,7 +142,7 @@ var app = $.sammy('#main', function() {
         loadView('views/list/index.html', new listViewModel());
         ko.postbox.publish("searchQuery", "");
 
-        body.addClass('search navigation add');
+        toggleElements('#search, #navigation, .add-contact', 'show');
         toggleNavigation(self.path);
     });
 
@@ -138,7 +156,7 @@ var app = $.sammy('#main', function() {
 
         loadView('views/list/index.html', new listViewModel());
 
-        body.addClass('search navigation add');
+        toggleElements('#search, #navigation, .add-contact', 'show');
         toggleNavigation(self.path);
 
         var currentUser = localStorage.getItem("user");
@@ -153,7 +171,7 @@ var app = $.sammy('#main', function() {
             return;
         }
 
-        body.addClass('search navigation add');
+        toggleElements('#search, #navigation, .add-contact', 'show');
         toggleNavigation(self.path);
 
         // Pass current id, so we know which contact to display.
@@ -178,9 +196,10 @@ var app = $.sammy('#main', function() {
             return;
         }
 
-        body.addClass('search navigation add');
         mainContainer.find('#searchBox').val();
+        
         toggleNavigation(self.path);
+        toggleElements('#search, #navigation, .add-contact', 'show');
 
         loadView('views/reminders/index.html', new remindersViewModel());
 
@@ -202,29 +221,10 @@ var app = $.sammy('#main', function() {
             return;
         }
 
-        body.removeClass('search navigation add');
+        toggleElements('#search, #navigation, .add-contact', 'hide');
 
         loadView('views/add/index.html', new addViewModel());
     });
-
-    // =======================================================
-    // Edit
-    // =======================================================
-
-    this.get('#/edit/:id', function(context) {
-        var self = this;
-
-        if (isUserAuthenticated() === false) {
-            self.redirect('#/')
-            return;
-        }
-
-        body.removeClass('search navigation add'); 
-        
-        var contactId = self.params['id'];
-        loadView('views/edit/index.html', new editViewModel(contactId));
-    });
-
 
     // =======================================================
     // Signout

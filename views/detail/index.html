@@ -1,17 +1,17 @@
 <section class="contact" data-bind="foreach: contact">
   <section class="contact-information">
     <figure>
-      <img class="contact__image" data-bind="attr:{alt: fullName}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }" />  
+      <img class="contact__image" data-bind="attr:{alt: fullname}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }" />  
       <figcaption class="contact__name">
-        <h1 class="contact__name__text" data-bind="text: fullName"></h1>
+        <h1 class="contact__name__text" data-bind="text: fullname"></h1>
       </figcaption>
     </figure>
 
     <div class="contact__section">
       <h5 class="contact__subheader">Position &amp; Company
-        <span class="edit--toggle" data-toggle="collapse">
+        <span class="edit--toggle is-disabled" data-toggle="collapse">
           <i class="fa fa-pencil-square"></i> 
-          Edit
+            Edit
         </span>
       </h5>
 
@@ -20,7 +20,7 @@
         <span class="contact__information" data-bind="text: company"></span>
       </div>
 
-      <form class="contact__form collapse" data-bind="submit: updateData()">
+      <form class="contact__form collapse" data-bind="submit: updateData">
         <label>Position 
           <input name="position" class="form-control" type="text" data-bind="textInput: position"/>
         </label>
@@ -35,16 +35,21 @@
 
     <div class="contact__section">
       <h5 class="contact__subheader">Email Address
-        <span class="edit--toggle" data-toggle="collapse">
+        <span class="edit--toggle is-disabled" data-toggle="collapse">
           <i class="fa fa-pencil-square"></i>
-          Edit
+          <!-- ko if: email  --> 
+            Edit
+          <!-- /ko -->
+          <!-- ko if: !email()  -->
+            Add
+          <!-- /ko -->
         </span>
       </h5>
       <div class="collapse in">
         <a class="contact__information" title="Email them" data-bind="text: email, attr:{href: emailLink}"></a>
       </div>
 
-      <form class="contact__form collapse" data-bind="submit: updateData()">
+      <form class="contact__form collapse" data-bind="submit: updateData">
         <label>Email
           <input name="email" class="form-control" type="email" data-bind="textInput: email"/>
         </label>
@@ -55,16 +60,21 @@
 
     <div class="contact__section">
       <h5 class="contact__subheader">Phone
-        <span class="edit--toggle" data-toggle="collapse">
+        <span class="edit--toggle is-disabled" data-toggle="collapse">
           <i class="fa fa-pencil-square"></i>
-          Edit
+          <!-- ko if: phone  --> 
+            Edit
+          <!-- /ko -->
+          <!-- ko if: !phone()  -->
+            Add
+          <!-- /ko -->
         </span>
       </h5>
       <div class="collapse in">
         <a class="contact__information" title="Call them" data-bind="text: phone, attr:{href: phoneLink}"></a>
       </div>
 
-      <form class="contact__form collapse" data-bind="submit: updateData()">
+      <form class="contact__form collapse" data-bind="submit: updateData">
         <label>Phone
           <input name="phone" class="form-control" type="tel" data-bind="textInput: phone"/>
         </label>
@@ -78,13 +88,18 @@
         <!-- ko if: address --> 
           Address
         <!-- /ko -->
-        <!-- ko if: !address == true && (city || state) --> 
+        <!-- ko if: !address() --> 
           Location
         <!-- /ko -->
-        <span class="edit--toggle" data-toggle="collapse">
-          <i class="fa fa-pencil-square"></i>
-          Edit
-        </span>
+          <span class="edit--toggle is-disabled" data-toggle="collapse">
+            <i class="fa fa-pencil-square"></i>
+            <!-- ko if: address() || city() || state() || zipcode()  --> 
+              Edit
+            <!-- /ko -->
+            <!-- ko if: !address() && !city() && !state() && !zipcode()  -->
+              Add
+            <!-- /ko -->
+          </span>
       </h5>
       <div class="collapse in">
         <!-- ko if: address --> 
@@ -102,14 +117,18 @@
         </a>
         <!-- /ko -->
 
-        <!-- ko if: !address == true && (city || state) --> 
+        <!-- ko if: !address() == true && (city() || state()) --> 
         <span class="contact__location contact__information">
           <span class="contact__city" data-bind="text: city"></span>
           <span data-bind="text: state"></span>
         </span>
         <!-- /ko -->
+
+        <!-- ko if: !address() && !city() && !state() && !zipcode()  -->
+          <span class="contact__information" data-toggle="collapse">Add a location or an address.</span>
+        <!-- /ko -->
       </div>
-      <form class="contact__form collapse" data-bind="submit: updateData()">
+      <form class="contact__form collapse" data-bind="submit: updateData">
         <label>Street Address <span class="form__note--optional">(optional)</span>
           <input name="address" class="form-control" type="text" data-bind="textInput: address"/>
         </label>
@@ -142,40 +161,61 @@
 
   </div>
   <section class="contact-background">
-    <!-- ko if: notes -->
-    <h5 class="contact__subheader">Background Notes
-      <span class="edit--toggle" data-toggle="collapse" data-target=".contact__form, .contact__information__section">
-        Edit
-        <i class="fa fa-pencil-square"></i>
-      </span>
-    </h5>
-    <p class="contact__information" data-bind="text: notes"></p>
-    <!-- /ko -->
-
-    <!-- ko if: tags -->
-    <h5 class="contact__subheader">Tags</h5>
-    <!-- /ko -->
-
-    <form class="add-tag-form" data-bind="submit: addTag">
-      <label for="add-tag">Add a new tag</label>
-      <div class="input-group">
-        <input name="add-tag" class="form-control" data-bind="textInput: addTagLabel"/>
-        <span class="input-group-btn">
-          <button class="btn btn-primary" type="submit">Add</button>
+    <div class="contact__section">
+      <h5 class="contact__subheader">Background Notes
+        <span class="edit--toggle is-disabled" data-toggle="collapse">
+          <i class="fa fa-pencil-square"></i>
+          <!-- ko if: notes -->
+            Edit
+          <!-- /ko -->    
+          <!-- ko if: !notes() -->
+            Add
+          <!-- /ko -->    
         </span>
+      </h5>
+
+      <div class="collapse in">
+        <!-- ko if: notes -->
+        <p class="contact__information" data-bind="text: notes"></p>
+        <!-- /ko -->
+        <!-- ko if: !notes() -->
+        <span class="contact__information" data-toggle="collapse">Add a note</span>
+        <!-- /ko -->
       </div>
-    </form>
-    
-    <!-- ko if: tags -->
-    <ul data-bind="foreach: tags">
-      <li>
-        <button class="tag btn btn-default btn-secondary">
-          <span data-bind="text: tagLabel"></span>
-          <input type="hidden" data-bind="value: id">
-          <i class="tag__close fa fa-close" data-bind="click: $parent.removeTag"></i>
-        </button>
-      </li>
-    </ul>
-    <!-- /ko -->
+
+      <form class="contact__form collapse" data-bind="submit: updateData">
+        <label>Notes
+          <textarea name="notes" class="form-control" data-bind="textInput: notes"></textarea>
+        </label>
+        <small class="form__note"><a tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" title="Markdown Formatting Guide" data-content="With markdown you use simple characters to format text:<ul><li>###A header</li><li>**Bold Text**</li><li>_Italic Text_</li><li>[A Link](http://a-link.com)</li><li>For more, <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'>view this guide</a></li></ul>">Markdown formatting</a> supported</small>
+      
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+      </form>
+    </div>
+    <div class="contact__section">
+      <h5 class="contact__subheader">Tags</h5>
+      
+      <form class="add-tag-form" data-bind="submit: addTag">
+        <label for="add-tag" class="sr-only">Add a new tag</label>
+        <div class="input-group">
+          <input placeholder="Add a tag" name="add-tag" class="form-control" data-bind="textInput: addTagLabel"/>
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit">Add</button>
+          </span>
+        </div>
+      </form>
+
+      <!-- ko if: tags -->
+      <ul data-bind="foreach: tags">
+        <li>
+          <button class="tag btn btn-default btn-secondary">
+            <span data-bind="text: tagLabel"></span>
+            <input type="hidden" data-bind="value: id">
+            <i class="tag__close fa fa-close" data-bind="click: $parent.removeTag"></i>
+          </button>
+        </li>
+      </ul>
+      <!-- /ko -->
+    </div>
   </div>
 </section>

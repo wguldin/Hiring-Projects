@@ -1820,6 +1820,7 @@ main[role="main"] {
   margin: 0 auto;
   padding-left: 1em;
   padding-right: 1em;
+  position: relative;
 }
 @media screen and (min-width: 36em) {
   main[role="main"] {
@@ -1834,6 +1835,16 @@ ol {
 ul li,
 ol li {
   display: inline-block;
+}
+.loader {
+  background-color: #FFF;
+  display: none;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  z-index: 999;
 }
 h1,
 h2,
@@ -1901,7 +1912,7 @@ h6 {
   font-size: .9em;
   font-weight: 400;
   margin: 1.8em -1.3em 0.5em;
-  padding: 0.45em 1.3em .45em 1.2em;
+  padding: 0.45em 1.3em .45em 1.4em;
 }
 label {
   margin-bottom: 1.4em;
@@ -1909,7 +1920,7 @@ label {
   font-size: .9em;
   width: 100%;
 }
-button[type="submit"] {
+button[type="submit"].btn-block {
   margin-top: 0.8em;
 }
 input,
@@ -2124,15 +2135,6 @@ header {
 #navigation,
 .add-contact {
   display: none;
-}
-.search #search {
-  display: block;
-}
-.navigation #navigation {
-  display: block;
-}
-.add .add-contact {
-  display: block;
 }
 .btn-group,
 .add-contact {

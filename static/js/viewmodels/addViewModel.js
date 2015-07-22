@@ -57,13 +57,25 @@ function addViewModel() {
     return array;
   }
 
-    function createTags() {
-      var array = createTagArray();
+  function createTags() {
+    var array = createTagArray();
+    var tagObject = {};
+    
+    for (var i = 0; i < array.length; i++) {
+      var tag = {
+        tagId: "",
+        contactId: "",
+        tagLabel: ""
+      };
 
-      for (var i = 0; i < array.length; i++) {
-        self.tags().push(new single_tag(uuid.generate(), self.contactId, array[i]));
-      }
+      tag.tagId = uuid.generate();
+      tag.contactId = self.contactId;
+      tag.tagLabel =  array[i];
+
+      postTag(tag.tagId, tag.contactId, tag.tagLabel);
     }
+  }
+  
 
   // var processTags =  ko.utils.arrayMap(tagsArray, function(item) {
   //     return new single_tag(item.id, item.contactId, item.tagLabel);
@@ -112,62 +124,83 @@ function addViewModel() {
   // ===============================================
 
   self.addContact = function() {
-    if (self.errors().length !== 0) {
-      self.errors.showAllMessages();
+    // if (self.errors().length !== 0) {
+    //   self.errors.showAllMessages();
 
-      return;
-    }
+    //   return;
+    // }
 
-    createTags();
-    console.log(self.contactInformation());
+    console.log(createTags());
 
     //createReminder();
 
-    // $.ajax({
-    //   type: 'POST',
-    //   url: 'http://localhost:3000/contacts',
-    //   data: self.contactInformation(),
-    //   dataType: 'json',
-    //   success: function(data) {
-    //     console.log(data);
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:3000/contacts',
+      data: self.contactInformation(),
+      dataType: 'json',
+      success: function(data) {
+        console.log(data);
 
-    //     app.trigger('user-added', app);
+        // app.trigger('user-added', app);
 
-    //     if ($('.alert-success').length == 0) {
-    //         // Dismissible bootstrap alert success box
-    //         var successMessage = '<strong>Success! </strong>' + data.firstname + ' ' + data.lastname +' was added as a new contact!'
-    //         $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
-    //     }
+        // if ($('.alert-success').length == 0) {
+        //     // Dismissible bootstrap alert success box
+        //     var successMessage = '<strong>Success! </strong>' + data.firstname + ' ' + data.lastname +' was added as a new contact!'
+        //     $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
+        // }
 
-    //     setTimeout(function() {
-    //       $('.alert-success').fadeOut('180', function() {
-    //         $(this).remove();
-    //       });
-    //     }, 6000);
-    //   }
-    // });
+        // setTimeout(function() {
+        //   $('.alert-success').fadeOut('180', function() {
+        //     $(this).remove();
+        //   });
+        // }, 6000);
+      }
+    });
+
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:3000/contacts',
+      data: self.contactInformation(),
+      dataType: 'json',
+      success: function(data) {
+        console.log(data);
+
+        // app.trigger('user-added', app);
+
+        // if ($('.alert-success').length == 0) {
+        //     // Dismissible bootstrap alert success box
+        //     var successMessage = '<strong>Success! </strong>' + data.firstname + ' ' + data.lastname +' was added as a new contact!'
+        //     $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
+        // }
+
+        // setTimeout(function() {
+        //   $('.alert-success').fadeOut('180', function() {
+        //     $(this).remove();
+        //   });
+        // }, 6000);
+      }
+    });
   }
 
-    self.contactInformation = function() {
-      return ko.toJS({
-        "id": self.contactId,
-        "firstname": self.firstname(),
-        "lastname": self.lastname(),
-        "email": self.email(),
-        "phone": self.phone(),
-        "position": self.position(),
-        "company": self.company(),
-        "address": self.address(),
-        "city": self.city(),
-        "state": self.state(),
-        "zipcode": self.zipcode(),
-        "notes": self.notes(),
-        "createdBy": self.createdBy,
-        "registered": self.registered,
-        "tags": ko.toJS(self.tags()),
-        //"reminders": self.reminders(),
-      })
-    }
+  self.contactInformation = function() {
+    return ko.toJS({
+      "id": self.contactId,
+      "firstname": self.firstname(),
+      "lastname": self.lastname(),
+      "email": self.email(),
+      "phone": self.phone(),
+      "position": self.position(),
+      "company": self.company(),
+      "address": self.address(),
+      "city": self.city(),
+      "state": self.state(),
+      "zipcode": self.zipcode(),
+      "notes": self.notes(),
+      "createdBy": self.createdBy,
+      "registered": self.registered
+    })
+  }
 };
 
 

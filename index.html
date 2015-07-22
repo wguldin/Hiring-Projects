@@ -30,7 +30,7 @@
     </a>
   </header>
 
-  <main id="main" role="main">
+  <main id="main" role="main" class="is-loading">
     <form id="search">
       <label class="search">Search
       <input type="search" id="searchBox" class="form-control" data-bind="textInput: searchText" />
@@ -43,6 +43,7 @@
       <a href="/#/reminders" class="btn btn-default">Reminders</a>
       </div>  
     </nav>
+    <div class="loader"></div>
   </main>
 
   <footer role="contentinfo">
@@ -58,6 +59,7 @@
     <script src="static/js/vendor/knockout-3.3.0.js"></script>
     <script src="static/js/vendor/knockout-deferred-updates.min.js"></script>
     <script src="static/js/vendor/knockout-postbox.js"></script>
+    <script src="static/js/vendor/knockout-mapping.js"></script>
     <script src="static/js/vendor/underscore.js"></script>
 
     <!--Vendor UI Enhancement libraries-->
@@ -75,7 +77,6 @@
     <script src="static/js/viewmodels/searchViewModel.js"></script>
     <script src="static/js/viewmodels/remindersViewModel.js"></script>
     <script src="static/js/viewmodels/addViewModel.js"></script>
-    <script src="static/js/viewmodels/editViewModel.js"></script>
 
     <!--App-->
     <script src="static/js/helpers.js"></script>

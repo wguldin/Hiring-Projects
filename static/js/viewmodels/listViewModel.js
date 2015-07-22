@@ -57,7 +57,7 @@ function listViewModel() {
             if ($('.contact__header').length == 0) {
               showLetterHeadings(); // Prevents headers from being created twice 
             }
-          }, 50);
+          }, 100);
         }
       });
     }, 100);
