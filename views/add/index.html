@@ -5,8 +5,10 @@
 <a href="#/add/spreadsheet" class="text-link">Import dozens of contacts at once with a spreadsheet</a>
  -->
 
-<form class="form add" data-bind="submit: addContact">
-  <div role="group" aria-label="contact information">
+<form class="form form--add" name="addContact" method="post" data-bind="submit: addContact">
+  <fieldset class="form__information">
+    <legend class="sr-only">Contact Information</legend>
+
     <label>Full Name
       <input name="fullname" class="form-control" type="text" data-bind="textInput: fullname"/>
     </label>
@@ -27,40 +29,47 @@
       <input name="company" class="form-control" type="text" data-bind="textInput: company"/>
     </label>
 
-    <label>Street Address <span class="form__note">(optional)</span>
+    <label>Street Address <span class="form__note--optional">(optional)</span>
       <input name="address" class="form-control" type="text" data-bind="textInput: address"/>
     </label>
 
-    <label>City <span class="form__note">(optional)</span>
+    <label>Zipcode <span class="form__note--optional">(optional)</span>
+      <input name="zipcode" class="form-control form-control--compact" type="text" data-bind="textInput: zipcode"/>
+    </label>
+
+    <label>City <span class="form__note--optional">(optional)</span>
       <input name="city" class="form-control" type="text" data-bind="textInput: city"/>
     </label>
 
-    <label>State <span class="form__note">(optional)</span>
+    <label>State <span class="form__note--optional">(optional)</span>
       <input name="state" class="form-control" type="text" data-bind="textInput: state"/>
     </label>
+  </fieldset>
+  <fieldset class="form__background">
+    <legend class="form__subheader">Background on Contact (optional)</legend>
 
-    <label>Zipcode <span class="form__note">(optional)</span>
-      <input name="zipcode" class="form-control" type="text" data-bind="textInput: zipcode"/>
+    <label>Notes
+      <textarea name="notes" class="form-control"></textarea>
     </label>
+    <small class="form__note"><a tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" title="Markdown Formatting Guide" data-content="With markdown you use simple characters to format text:<ul><li>###A header</li><li>**Bold Text**</li><li>_Italic Text_</li><li>[A Link](http://a-link.com)</li><li>For more, <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'>view this guide</a></li></ul>">Markdown formatting</a> supported</small>
 
-  </div>
-  <div role="group" aria-labelledby="background">
-    <h2 class="form__subheader" id="background">Background on Contact</h2>
-
-    <label>Notes <span class="form__note">(optional)</span>
-      <textarea name="notes" class="form-control" data-provide="markdown" data-bind="textInput: notes"></textarea>
-      <small class="form__note"><a href="#tooltip">Markdown formatting</a> supported</small>
-    </label>
-
-    <label clss="add-tag">Add tags <span class="form__note">(optional)</span>
+    <label>Add tags
       <input name="add-tag" class="form-control" data-bind="textInput: tagString"/>
       <small class="form__note">Seperate multiple tags with commas</small>
     </label>
 
-    <label><input type="checkbox" name="add-reminder-checkbox"/> Setup a reminder?</label>
-   
+    <label class="reminder__checkbox" data-target=".reminder__sub-form" data-bind="checked: requireReminder()" data-toggle="collapse"><input class="reminder__checkbox__input" type="checkbox" name="add-reminder-checkbox"/> Setup a reminder?</label>
+    
+    <fieldset class="reminder__sub-form collapse">
+      <legend class="sr-only">Create a Reminder</legend>
+      <label>Note for Reminder</label>
+      <textarea name="reminderNote" class="form-control" data-bind="textInput: reminderNote"></textarea>
+      <small class="form__note"><a tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" title="Markdown Formatting Guide" data-content="With markdown you use simple characters to format text:<ul><li>###A header</li><li>**Bold Text**</li><li>_Italic Text_</li><li>[A Link](http://a-link.com)</li><li>For more, <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'>view this guide</a></li></ul>">Markdown formatting</a> supported</small>
 
-
-  </div>
+      <label>Date for Reminder
+        <input name="reminderDate" class="form-control form-control--compact" type="text" id="datepicker" data-bind="textInput: reminderDate">
+      </label>
+    </fieldset>
+  </fieldset>
   <button type="submit" class="btn btn-primary btn-block">Add This Contact</button>
 </form>

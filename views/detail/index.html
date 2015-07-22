@@ -1,45 +1,163 @@
 <section class="contact" data-bind="foreach: contact">
-  <div>
+  <section class="contact-information">
     <figure>
       <img class="contact__image" data-bind="attr:{alt: fullName}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }" />  
       <figcaption class="contact__name">
         <h1 class="contact__name__text" data-bind="text: fullName"></h1>
       </figcaption>
-    </figure>  
+    </figure>
 
-    <h5 class="contact__subheader" data-bind="if: position">Title &amp; Company</h5>
-      <span class="contact__information" data-bind="text: position"></span>,
-      <span class="contact__information" data-bind="text: company"></span>
-    </h2>
+    <div class="contact__section">
+      <h5 class="contact__subheader">Position &amp; Company
+        <span class="edit--toggle" data-toggle="collapse">
+          <i class="fa fa-pencil-square"></i> 
+          Edit
+        </span>
+      </h5>
 
-    <h5 class="contact__subheader" data-bind="if: email">Email Address</h5>
-    <a class="contact__information" title="Email them" data-bind="text: email, attr:{href: emailLink}"></a>
+      <div class="collapse in">
+        <span class="contact__information" data-bind="text: position"></span>
+        <span class="contact__information" data-bind="text: company"></span>
+      </div>
 
-    <h5 class="contact__subheader" data-bind="if: phone">Phone</h5>
-    <a class="contact__information" title="Call them" data-bind="text: phone, attr:{href: phoneLink}"></a>
+      <form class="contact__form collapse" data-bind="submit: updateData()">
+        <label>Position 
+          <input name="position" class="form-control" type="text" data-bind="textInput: position"/>
+        </label>
+
+        <label>Company 
+          <input name="company" class="form-control" type="text" data-bind="textInput: company"/>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+      </form>
+    </div>
+
+    <div class="contact__section">
+      <h5 class="contact__subheader">Email Address
+        <span class="edit--toggle" data-toggle="collapse">
+          <i class="fa fa-pencil-square"></i>
+          Edit
+        </span>
+      </h5>
+      <div class="collapse in">
+        <a class="contact__information" title="Email them" data-bind="text: email, attr:{href: emailLink}"></a>
+      </div>
+
+      <form class="contact__form collapse" data-bind="submit: updateData()">
+        <label>Email
+          <input name="email" class="form-control" type="email" data-bind="textInput: email"/>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+      </form>
+    </div>
+
+    <div class="contact__section">
+      <h5 class="contact__subheader">Phone
+        <span class="edit--toggle" data-toggle="collapse">
+          <i class="fa fa-pencil-square"></i>
+          Edit
+        </span>
+      </h5>
+      <div class="collapse in">
+        <a class="contact__information" title="Call them" data-bind="text: phone, attr:{href: phoneLink}"></a>
+      </div>
+
+      <form class="contact__form collapse" data-bind="submit: updateData()">
+        <label>Phone
+          <input name="phone" class="form-control" type="tel" data-bind="textInput: phone"/>
+        </label>
+ 
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+      </form>
+    </div>
+   
+    <div class="contact__section">
+      <h5 class="contact__subheader">
+        <!-- ko if: address --> 
+          Address
+        <!-- /ko -->
+        <!-- ko if: !address == true && (city || state) --> 
+          Location
+        <!-- /ko -->
+        <span class="edit--toggle" data-toggle="collapse">
+          <i class="fa fa-pencil-square"></i>
+          Edit
+        </span>
+      </h5>
+      <div class="collapse in">
+        <!-- ko if: address --> 
+        <a class="contact__information" title="Map this address" data-bind="attr:{href: addressLink}">
+          <span data-bind="text: address"></span>
+          <span class="contact__location">
+            <!-- ko if: city --> 
+            <span class="contact__city" data-bind="text: city"></span>
+            <!-- /ko -->
+
+            <!-- ko if: state --> 
+            <span data-bind="text: state"></span>
+            <!-- /ko -->
+          </span>
+        </a>
+        <!-- /ko -->
+
+        <!-- ko if: !address == true && (city || state) --> 
+        <span class="contact__location contact__information">
+          <span class="contact__city" data-bind="text: city"></span>
+          <span data-bind="text: state"></span>
+        </span>
+        <!-- /ko -->
+      </div>
+      <form class="contact__form collapse" data-bind="submit: updateData()">
+        <label>Street Address <span class="form__note--optional">(optional)</span>
+          <input name="address" class="form-control" type="text" data-bind="textInput: address"/>
+        </label>
+
+        <label>Zipcode <span class="form__note--optional">(optional)</span>
+          <input name="zipcode" class="form-control form-control--compact" type="text" data-bind="textInput: zipcode"/>
+        </label>
+
+        <label>City <span class="form__note--optional">(optional)</span>
+          <input name="city" class="form-control" type="text" data-bind="textInput: city"/>
+        </label>
+
+        <label>State <span class="form__note--optional">(optional)</span>
+          <input name="state" class="form-control" type="text" data-bind="textInput: state"/>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+      </form>
+    </div>
     
-    <h5 class="contact__subheader" data-bind="if: address">Address</h5>
-    <a class="contact__information" title="Map this address" data-bind="attr:{href: addressLink}">
-      <span data-bind="text: address"></span>
-      <span class="contact__location"><span class="contact__city" data-bind="text: city"></span><span data-bind="text: state"></span></span>
-    </a>
-
-    <h5 class="contact__subheader" data-bind="if: reminders">Reminders</h5>
+    <!-- ko if: reminders -->
+    <h5 class="contact__subheader">Reminders</h5>
     <ul data-bind="foreach: reminders">
       <li class="contact__information">
         <p data-bind="text: reminderNote"></p>
         <small>Reminder set for <span data-bind="text: reminderDate"></span></small>
       </li>
     </ul>
-  </div>
-  <div>
-    <h5 class="contact__subheader" data-bind="if: notes">Background Notes</h5>
-    <p class="contact__information" data-bind="text: notes"></p>
+    <!-- /ko -->    
 
-    <h5 class="contact__subheader" data-bind="if: tags">Tags</h5>
-    <span class="add-tag-form__trigger form__note">Add a new tag</span>
+  </div>
+  <section class="contact-background">
+    <!-- ko if: notes -->
+    <h5 class="contact__subheader">Background Notes
+      <span class="edit--toggle" data-toggle="collapse" data-target=".contact__form, .contact__information__section">
+        Edit
+        <i class="fa fa-pencil-square"></i>
+      </span>
+    </h5>
+    <p class="contact__information" data-bind="text: notes"></p>
+    <!-- /ko -->
+
+    <!-- ko if: tags -->
+    <h5 class="contact__subheader">Tags</h5>
+    <!-- /ko -->
+
     <form class="add-tag-form" data-bind="submit: addTag">
-      <label for="add-tag" class="sr-only">Add a tag</label>
+      <label for="add-tag">Add a new tag</label>
       <div class="input-group">
         <input name="add-tag" class="form-control" data-bind="textInput: addTagLabel"/>
         <span class="input-group-btn">
@@ -47,7 +165,8 @@
         </span>
       </div>
     </form>
-
+    
+    <!-- ko if: tags -->
     <ul data-bind="foreach: tags">
       <li>
         <button class="tag btn btn-default btn-secondary">
@@ -57,5 +176,6 @@
         </button>
       </li>
     </ul>
+    <!-- /ko -->
   </div>
 </section>

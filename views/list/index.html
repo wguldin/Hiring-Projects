@@ -1,5 +1,5 @@
 <ul id="contactList" class="contact-list" data-bind="foreach: contacts">
-  <li class="contact-list__item clearfix" data-bind="attr:{'data-initialLetter': initialLetter}">
+  <li class="contact-list__item clearfix" data-bind="attr:{'data-initial-letter': initial_letter}">
       <a data-bind="attr:{href: link, title: fullName}">
         <figure>
           <img class="contact-list__image" data-bind="attr:{alt: fullName}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }"/>

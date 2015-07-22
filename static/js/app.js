@@ -12,7 +12,7 @@ function validateEmail(email) {
 function showLetterHeadings() {
   var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
   jQuery.each(alphabet, function(index, value) {
-    var contactsThatMatchLetter = jQuery('li[data-initialLetter="' + value + '"]');
+    var contactsThatMatchLetter = jQuery('li[data-initial-letter="' + value + '"]');
     contactsThatMatchLetter.first().before('<h2 class="contact__header">' + value.toUpperCase() + '</h2>');
   });
 }
@@ -68,7 +68,7 @@ function single_reminder(id, contactId, reminderName, reminderNote, reminderDate
 $(function(){
 
   // =========================================================
-  // Event Handlers
+  // Navigation
   // =========================================================
 
   $('#main').on('input', '#searchBox', function(event) {
@@ -84,26 +84,61 @@ $(function(){
     }
   });
 
-  $('#main').on('click', '.add-tag-form__trigger', function() {
-    $(this).toggleClass('is-active');
-    var input = $('input[name="add-tag"]');
+  // Update year in copyright
+  var year = new Date().getFullYear();
+  $('footer').find('.date').text(year);
 
-    $(input).focus();
+  // =========================================================
+  // Edit button
+  // =========================================================
+
+  function triggerCollapsableElements(eventTarget) {
+    var target = eventTarget;
+    var container = target.closest('.contact__section');
+    var collapsableElement = container.find('.collapse');
+
+    collapsableElement.collapse('toggle');
+  };
+
+  $('#main').on('click', '[data-toggle="collapse"]',function(event) {
+    triggerCollapsableElements($(event.target));
+    $('.edit--toggle').addClass('is-disabled');
   });
+
+  $('#main').on('submit', '.contact__form', function(event) {
+    triggerCollapsableElements($(event.target));
+    $('.edit--toggle').removeClass('is-disabled');
+  });
+
+  // =========================================================
+  // Add form 
+  // =========================================================
 
   // Once we have the email address, try to find more information out via fullcontact api.
   $('#main').on('blur', '.add input[name="email"]', function(event) {
     // autoPopulateDetails(this);
   });
 
-  var year = new Date().getFullYear();
+  $('#main').on('input', '.add input[name="zipcode"]', function(event) {
+    // http://zip.getziptastic.com/v2/US/65203
+  });
 
-  // Update year in copyright
-  $('footer').find('.date').text(year);
+  // // Trigger reminder form on change of checkbox 
+  // $('#main').on('change', '.reminder__checkbox__input', function(event) {
+  //   triggerReminderForm();
+  // });
 
-  // =========================================================
-  // Add form autofill
-  // =========================================================
+  // function triggerReminderForm() {
+  //   var reminderForm = $('#main').find('.reminder__sub-form');
+
+  //   reminderForm.toggleClass('is-active');
+
+  //   if (reminderForm.hasClass('is-active')) {
+  //     reminderForm.find('input, textarea').attr('required');
+  //   } else {
+  //     reminderForm.find('input, textarea').removeAttr('required');
+  //   }
+  // }
 
   function autoPopulateDetails(emailInput) {
     var apiKey = '9d88865dfc3cdee7'; // This isn't something I'd do on a live site ...

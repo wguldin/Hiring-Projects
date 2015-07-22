@@ -1,0 +1,45 @@
+<form class="form form--edit" name="addContact" method="post" data-bind="foreach: contact, submit: editContact">
+<!--   <figure>
+    <img class="contact__image" data-bind="attr:{alt: fullname}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }" />  
+    <figcaption class="contact__name">
+      <h1 class="contact__name__text" data-bind="text: fullname"></h1>
+    </figcaption>
+  </figure> -->
+
+  <label>Full Name
+    <input name="fullname" class="form-control" type="text" data-bind="textInput: fullname"/>
+  </label>
+
+  <label>Email
+    <input name="email" class="form-control" type="email" data-bind="textInput: email"/>
+  </label>
+
+  <label>Phone
+    <input name="phone" class="form-control" type="tel" data-bind="textInput: phone"/>
+  </label>
+
+  <label>Position 
+    <input name="position" class="form-control" type="text" data-bind="textInput: position"/>
+  </label>
+
+  <label>Company 
+    <input name="company" class="form-control" type="text" data-bind="textInput: company"/>
+  </label>
+
+  <label>Street Address <span class="form__note--optional">(optional)</span>
+    <input name="address" class="form-control" type="text" data-bind="textInput: address"/>
+  </label>
+
+  <label>Zipcode <span class="form__note--optional">(optional)</span>
+    <input name="zipcode" class="form-control form-control--compact" type="text" data-bind="textInput: zipcode"/>
+  </label>
+
+  <label>City <span class="form__note--optional">(optional)</span>
+    <input name="city" class="form-control" type="text" data-bind="textInput: city"/>
+  </label>
+
+  <label>State <span class="form__note--optional">(optional)</span>
+    <input name="state" class="form-control" type="text" data-bind="textInput: state"/>
+  </label>
+  <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+</form>

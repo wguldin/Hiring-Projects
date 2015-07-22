@@ -27,8 +27,31 @@ function loadView(url, viewModel) {
         }
 
         container.append(newView);
+        initUIFeatures(container);
+
         ko.applyBindings(viewModel, newView[0]);
     })
+}
+
+function initUIFeatures(container) {
+    // Because views are being ajax'd, we can't initialize these plugins on load. 
+
+    if (container.find('[data-toggle="popover"]')) {
+        $('[data-toggle="popover"]').popover();
+    }
+
+    if (container.find('#datepicker')) {
+        var picker = new Pikaday({
+            field: document.getElementById('datepicker'),
+            format: 'MMMM D, YYYY',
+            minDate: new Date()
+        });
+    }
+
+    if(container.find('.edit--toggle')) {
+        // Ensure edit is always available on page refresh/back-button navigation while editing, etc.
+        $('.edit--toggle').removeClass('is-disabled');
+    }
 }
 
 // Routing related funcitons.
@@ -53,7 +76,8 @@ function toggleNavigation(currentUrl) {
 
 var app = $.sammy('#main', function() {
 
-    var mainContainer = $('#main')
+    var mainContainer = $('#main');
+    var body = $('body');
 
     // =======================================================
     // Authentication Routes
@@ -68,7 +92,7 @@ var app = $.sammy('#main', function() {
             return;
         }
 
-        mainContainer.removeClass('search navigation');
+        body.removeClass('search navigation add');
         loadView('views/authenticate/index.html', new authenticateViewModel());
     });
 
@@ -100,7 +124,7 @@ var app = $.sammy('#main', function() {
         loadView('views/list/index.html', new listViewModel());
         ko.postbox.publish("searchQuery", "");
 
-        mainContainer.addClass('search navigation');
+        body.addClass('search navigation add');
         toggleNavigation(self.path);
     });
 
@@ -114,7 +138,7 @@ var app = $.sammy('#main', function() {
 
         loadView('views/list/index.html', new listViewModel());
 
-        mainContainer.addClass('search navigation');
+        body.addClass('search navigation add');
         toggleNavigation(self.path);
 
         var currentUser = localStorage.getItem("user");
@@ -129,7 +153,7 @@ var app = $.sammy('#main', function() {
             return;
         }
 
-        mainContainer.addClass('search navigation');
+        body.addClass('search navigation add');
         toggleNavigation(self.path);
 
         // Pass current id, so we know which contact to display.
@@ -154,7 +178,7 @@ var app = $.sammy('#main', function() {
             return;
         }
 
-        mainContainer.addClass('search navigation');
+        body.addClass('search navigation add');
         mainContainer.find('#searchBox').val();
         toggleNavigation(self.path);
 
@@ -178,7 +202,8 @@ var app = $.sammy('#main', function() {
             return;
         }
 
-        mainContainer.removeClass('search navigation');
+        body.removeClass('search navigation add');
+
         loadView('views/add/index.html', new addViewModel());
     });
 
@@ -194,11 +219,10 @@ var app = $.sammy('#main', function() {
             return;
         }
 
-        mainContainer.removeClass('search navigation');
+        body.removeClass('search navigation add'); 
         
         var contactId = self.params['id'];
         loadView('views/edit/index.html', new editViewModel(contactId));
-
     });
 
 

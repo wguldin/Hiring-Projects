@@ -1,5 +1,7 @@
+// =========================================================
 // polyfill from MDN for the EMCA 6 endsWith functionality.
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith
+// =========================================================
 
 if (!String.prototype.endsWith) {
   String.prototype.endsWith = function(searchString, position) {
@@ -12,6 +14,27 @@ if (!String.prototype.endsWith) {
       return lastIndex !== -1 && lastIndex === position;
   };
 }
+
+// =========================================================
+// KO form validation
+// =========================================================
+
+ko.validation.rules.pattern.message = 'Invalid.';
+
+ko.validation.init({
+    registerExtenders: true,
+    messagesOnModified: true,
+    decorateInputElement: true,
+    insertMessages: true,
+    parseInputAttributes: false,
+    messageTemplate: null,
+    errorElementClass: 'has-error',
+    errorMessageClass: 'form__note error'
+}, true);
+
+// =========================================================
+// Custom Handlers
+// =========================================================
 
 ko.bindingHandlers.fadeVisible = {
     init: function(element, valueAccessor) {
@@ -26,12 +49,12 @@ ko.bindingHandlers.fadeVisible = {
     } 
 };
 
-/**
- * Fast UUID generator, RFC4122 version 4 compliant.
- * @author Jeff Ward (jcward.com).
- * @license MIT license
- * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
- **/
+// =========================================================
+// Fast UUID generator, RFC4122 version 4 compliant.
+// @author Jeff Ward (jcward.com).
+// @license MIT license
+// @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
+// =========================================================
 
 // Generate safe ids in our database.
 var uuid = (function() {

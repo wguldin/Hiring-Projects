@@ -21,7 +21,7 @@ function list_contact(data) {
   self.email = data.email;
 
   // Display properties 
-  self.initialLetter = data.lastname.substring(0, 1).toLowerCase();
+  self.initial_letter = data.lastname.substring(0, 1).toLowerCase();
 };
 
 function listViewModel() {
@@ -52,7 +52,12 @@ function listViewModel() {
 
           self.contacts(mappedTasks);
           self.arrangeContacts();
-          showLetterHeadings();
+
+          setTimeout(function(){
+            if ($('.contact__header').length == 0) {
+              showLetterHeadings(); // Prevents headers from being created twice 
+            }
+          }, 50);
         }
       });
     }, 100);
