@@ -8,7 +8,7 @@
 // ==================================================================
 
 html {
-  font-size: 16px; // Use browser standard.
+  font-size: 18px; // Use browser standard.
   .box-sizing(border-box); // Paul Irish FTW: http://www.paulirish.com/2012/box-sizing-border-box-ftw/
 }
 
@@ -26,6 +26,8 @@ body {
 }
 
 main[role="main"] {
+  .clearfix();
+
   margin: 0 auto;
   padding-left: 1em;
   padding-right: 1em;
@@ -34,6 +36,10 @@ main[role="main"] {
   @media screen and (min-width: 36em) {
     margin: 0 3%;
   }
+}
+
+header {
+  .clearfix();
 }
 
 ul, ol {
@@ -108,7 +114,7 @@ h6 {
   font-size: 1em;
 }
 
-.contact__header, .contact__subheader, .form__subheader {
+.contact-list__header, .contact__subheader, .form__subheader {
   // Creates a subtle 'sunken' look for each contact header.
   .box-shadow(inset 0 1px 3px -1px rgba(120, 120, 120, 0.5), inset 0 -2px 5px -3px rgba(120, 120, 120, 0.5););
   
@@ -119,6 +125,13 @@ h6 {
   font-weight: 400;
   margin: 1.8em -1.3em 0.5em;
   padding: 0.45em 1.3em .45em 1.4em;
+
+  @media screen and (min-width: 36em) {    
+    background-color: #F7F7F7;
+    box-shadow: none;
+    border-bottom: 1px solid @grey; //#ccc opacity;
+    margin: 2.4em 0 .5em;
+  }
 }
 
 // ==========================================================
@@ -192,6 +205,10 @@ label + .form__note {
 
 .form__subheader {
   margin: 0.4em -1.3em 0.8em;
+
+  @media screen and (min-width: 36em) {
+    margin-left: 0;
+  }
 }
 
 .form-control--compact {
@@ -203,6 +220,11 @@ legend.form__subheader {
 
   padding-left: 1.3em;
   border-bottom: 0;
+
+  @media screen and (min-width: 36em) {
+    width: 100%;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.35); //#ccc opacity;
+  }
 }
 
 // ==========================================================
@@ -342,6 +364,14 @@ a {
   }
 }
 
+.btn-default:hover {
+  background-color: #EEE;
+}
+
+.btn-primary {
+  background-color: @accent;
+}
+
 .input-group-btn .btn {
   // Oddly, bootstrap sets the 'input-group-btn' font-size to zero.
   // With em-based sizing, of course, this makes the 'btn' inside of it very small.
@@ -360,11 +390,19 @@ header {
   
   border-bottom: 1px solid @grey;
   margin-bottom: 1.2em;
-  padding: 0 1em;
+  padding: 0 1em 1em;
+
+  @media screen and (min-width: 54em) {
+    padding: 0.5em 1.5em 1.3em;
+  }
 }
 
 .logo {
   border: 0;
+
+  @media screen and (min-width: 45em) {
+    float: left;
+  }
 }
 
 .logo__image {
@@ -372,12 +410,16 @@ header {
   margin: 0 0 .25em 0.05em; // '.05' aligns it with tagline.
   max-width: 12em;
   width: 100%;
+
+  @media screen and (min-width: 54em) {
+    max-width: 16.2em;
+  }
 }
 
 .logo__tagline {
   display: inline-block;
   font-size: .9em;
-  margin: 0 0 .85em 0;
+  margin: 0;
 }
 
 // ==================================================================
@@ -388,23 +430,90 @@ header {
   display: none;
 }
 
-.btn-group, .add-contact {
-  font-size: .78em; // Fit on one line at smallest resolution.
+.search-form {
+  margin: .85em 0 1em 0;
+
+  @media screen and (min-width: 45em) {
+    .clearfix();
+
+    float: left;
+    margin: 1.1em 0 1em 1.5em;
+    max-width: 22em;
+  }
+
+  @media screen and (min-width: 54em) {
+    font-size: .9em;
+    margin: 1.15em 0 0.5em 5em;
+  }
 }
 
-.btn-group {
-  margin-bottom: .8em;
+.search-form__label {
+  display: none;
+  margin-bottom: 0;
+
+  @media screen and (min-width: 54em) {
+    display: block;
+  }
+}
+
+.input-group .search-form__submit {
+  @media screen and (min-width: 54em) {
+    font-size: 17px;
+    margin-top: 3px;
+  }
+}
+
+.search-form__icon {
+  display: inline;
+} 
+
+.search-form__button-text {
+  display: none;
+
+  @media screen and (min-width: 54em) {
+    display: inline;
+  }
+}
+
+.btn-group, .add-contact {
+  font-size: .78em; // Fit on one line at smallest resolution, at least in Chrome.
+
+  @media screen and (min-width: 36em) {
+    font-size: .85em;
+  }
 }
 
 .add-contact {
   float: right;
   margin-top: .8em;
+
+  @media screen and (min-width: 45em) {
+    display: none;
+  }
 }
 
 nav[role="navigation"] {
-  
+  margin: 1.2em 0 0.5em;
+
+  @media screen and (min-width: 36em) {
+    clear: left;
+    float: left;
+    margin: .5em 0;
+  }
+
+  @media screen and (min-width: 54em) {
+    border-top: 1px dotted #CCC;
+    margin: 0.7em 0 .5em 0;
+    padding-top: 1.3em;
+    width: 100%;
+  }
+
   .btn-group {
     .flex-display(flex);
+
+    @media screen and (min-width: 54em) {
+      max-width: 37em;
+    }
   }
 
   .btn {
@@ -423,12 +532,17 @@ nav[role="navigation"] {
   }
 }
 
-.btn-default:hover {
-  background-color: #EEE;
-}
+.navigation__add-contact {
+  display: none;
 
-.btn-primary {
-  background-color: @accent;
+  @media screen and (min-width: 45em) {
+    display: block;
+  }
+
+  .fa-plus {
+    font-size: .85em;
+    margin-right: 0.6em;
+  }
 }
 
 // ==================================================================
@@ -457,7 +571,7 @@ footer {
   width: 100%;
 }
 
-.footer__copyright {
+.footer__copyright { 
   font-size: .8em;
   margin-top: .3em;
   color: #787878;
@@ -468,11 +582,24 @@ footer {
 // Contact List Styling
 // ==================================================================
 
-.contact__header {
+.contact-list__head {
+  &.is-searching {
+    font-size: 2em;
+    word-wrap: break-word; // Handles really long searches.
+  }
+}
+  
+.contact-list__header {
   font-size: 1.2em;
   font-weight: 300;
   margin: 0 -1em; 
   padding: .2em .9em .2em 1em;
+
+  @media screen and (min-width: 36em) {
+    margin: 1.5em 0 0.3em;
+    padding-left: 0.7em;
+    clear: left;
+  }
 }
 
 .contact-list {
@@ -488,13 +615,28 @@ footer {
   margin: 0 -1em; // Allows li's to expand past edge of container.
   padding: 0.8em 1em; // Scoots the text back in.
 
+  @media screen and (min-width: 36em) {    
+    margin: 0;
+    display: inline-block;
+    width: 50%;
+    margin-right: -3px; // Fixes natural space between inline block elements: https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+    vertical-align: top;
+  }
+
+  @media screen and (min-width: 56em) {
+    width: 33%;
+  }
+
   &:first-child { 
     border: 0;
   }
 
-  & + .contact-list__item {
-    // Keeps border from applying to the bottom edge of the letter headers.
+  & + .contact-list__item { // & + selector keeps border from applying to the bottom edge of the letter headers.
     border-top: 1px solid #eee;
+
+    @media screen and (min-width: 36em) {
+      border-top: 0;
+    }
   } 
 
   a {
@@ -544,28 +686,41 @@ footer {
 }
 
 .contact__name__text {
-  display: inline-block;
+  display: block;
   font-size: 1.9em;
   margin-top: -5px;
   text-align: left;
   text-transform: none;
-  word-wrap: break-word;
+
+  @media screen and (min-width: 54em) {
+    font-size: 2.2em;
+  }
+
+  @media screen and (min-width: 54em) {
+    margin-bottom: 24px;
+    margin-bottom: 1.5rem;
+    font-size: 2.7em;
+  }
 }
 
-.contact__name {
-  .calc-width(5.1em, 60%);
+.contact__subheader {
+  @media screen and (min-width: 54em) {
+    padding-left: .9em;
+  }
+}
 
-  display: inline-block;
-  vertical-align: top;
+.contact__subheader--top {
+  @media screen and (min-width: 54em) {
+    margin-top: 0;
+  }
 }
 
 .contact__image {
   border-radius: .8em;
-  display: inline-block;
-  height: 4em;
-  margin-right: .8em;
-  width: 4em;
-  vertical-align: top;
+  float: left;
+  height: auto;
+  margin: 0.3em 1em 0 0.1em;
+  width: 3.5em;
 }
 
 .contact__information {
@@ -577,14 +732,69 @@ footer {
   display: block;
 }
 
-.contact__city {
-  &:after {
-    content: ', '; // If city exists, this will put a nice comma between it and the state.
+.contact__career, .contact__location {
+  // Applies to state field and company field, if city and title are present, respectively.
+  // First span, if not the only span.
+  span:first-of-type:not(:only-of-type) {
+    &:after {
+      content: ', '
+    }
+  }
+}
+
+.contact__career {
+  // Position
+  span + span { 
+    display: block;
+
+    @media screen and (min-width: 54em) {
+      display: inline;
+    }
+
+    @media screen and (min-width: 72em) {
+      display: block;
+    }
+  }
+}
+
+.contact__display {
+  .clearfix();
+
+  @media screen and (min-width: 54em) {
+    padding-left: .7em;
   } 
 }
 
+.contact__form {
+  padding-top: 0.4em;
+  max-width: 22em;
+
+  @media screen and (min-width: 36em) {
+    padding-top: 1em;
+  }
+
+  @media screen and (min-width: 54em) {
+    padding: .4em 0 0 .8em;
+  }
+}
+
+.contact-details {
+  @media screen and (min-width: 54em) {
+    display: inline-block;
+    margin-right: 5%;
+    width: 31%;
+    vertical-align: top;
+  }
+}
+
 .contact-background {
-  margin-bottom: 9em; // Sticky footer position means this has to be larger than expected.
+  margin-bottom: 3em;
+
+  @media screen and (min-width: 54em) {
+    display: inline-block;
+    vertical-align: top;    
+    width: 63%;
+  }
 }
 
 // ==================================================================
@@ -623,10 +833,15 @@ footer {
 }
 
 .add-tag-form {
-  margin: .6em 0 .8em;
+  margin: 1em 0 .8em;
+  max-width: 22em;
 
   label {
     margin-bottom: 0;
+  }
+
+  @media screen and (min-width: 36em) {
+    margin-top: 1.2em;
   }
 }
 
@@ -653,7 +868,7 @@ footer {
 }
 
 // ==================================================================
-// Editing a contact
+// Edit Button
 // ==================================================================
 
 .edit--toggle {
@@ -674,8 +889,4 @@ footer {
       color: @secondary;
     }
   }
-}
-
-.contact__form {
-  padding-top: 0.4em;
 }

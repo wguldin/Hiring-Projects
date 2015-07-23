@@ -16,6 +16,7 @@ function list_contact(data) {
   }, self);
 
   self.image = data.image;
+ 
   self.position = data.position;
   self.company = data.company;
   self.email = data.email;
@@ -29,6 +30,8 @@ function listViewModel() {
 
   self.contacts = ko.observableArray([]);
   self.searchType = ko.observable("").subscribeTo("searchQueryType");
+  self.listHeader = ko.observable("");
+  self.listHeaderClass = ko.observable("");
 
   // Seperating sort from view, per this SO: http://stackoverflow.com/questions/12718699/sorting-an-observable-array-in-knockout
   self.arrangeContacts = function() {
@@ -54,7 +57,7 @@ function listViewModel() {
           self.arrangeContacts();
 
           setTimeout(function(){
-            if ($('.contact__header').length == 0) {
+            if ($('.contact-list__header').length == 0) {
               showLetterHeadings(); // Prevents headers from being created twice 
             }
           }, 100);
@@ -70,9 +73,24 @@ function listViewModel() {
       // The initial state of the app, and clearing out a search term counts as a 'new value'
       // So, we check if we need the query string or not. 
       if(newValue !== '') {
+        var currentUser = localStorage.getItem("user");
+
+        if(newValue == currentUser) {
+          self.listHeader("My Contacts");
+          self.listHeaderClass("");
+
+        } else {
+          self.listHeader("Showing results for “" + newValue + "”");
+          self.listHeaderClass("is-searching");
+        }
+
         self.getContacts('?' + self.searchType() + '=' + newValue);
+
       } else {
         self.getContacts("");
+
+        self.listHeader("All Contacts");
+        self.listHeaderClass("");
       }
   }, self));
     

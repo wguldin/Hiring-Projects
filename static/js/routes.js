@@ -73,7 +73,7 @@ function isUserAuthenticated() {
 
 // Find the nav link with the matching url to make active.
 function toggleNavigation(currentUrl) {
-    var nav = $('#main').find('.app-navigation');
+    var nav = $('#navigation');
     var navlink = nav.find('a[href="' + currentUrl + '"]');
 
     nav.find('a').removeClass('active');
@@ -110,7 +110,7 @@ var app = $.sammy('#main', function() {
             return;
         }
         
-        toggleElements('#search, #navigation, .add-contact', 'hide');
+        toggleElements('#search, #navigation, .add-contact, .sign-out', 'hide');
         loadView('views/authenticate/index.html', new authenticateViewModel());
     });
 
@@ -142,7 +142,7 @@ var app = $.sammy('#main', function() {
         loadView('views/list/index.html', new listViewModel());
         ko.postbox.publish("searchQuery", "");
 
-        toggleElements('#search, #navigation, .add-contact', 'show');
+        toggleElements('#search, #navigation, .add-contact, .sign-out', 'show');
         toggleNavigation(self.path);
     });
 
@@ -156,7 +156,7 @@ var app = $.sammy('#main', function() {
 
         loadView('views/list/index.html', new listViewModel());
 
-        toggleElements('#search, #navigation, .add-contact', 'show');
+        toggleElements('#search, #navigation, .add-contact, .sign-out', 'show');
         toggleNavigation(self.path);
 
         var currentUser = localStorage.getItem("user");
@@ -171,7 +171,7 @@ var app = $.sammy('#main', function() {
             return;
         }
 
-        toggleElements('#search, #navigation, .add-contact', 'show');
+        toggleElements('#search, #navigation, .add-contact, .sign-out', 'show');
         toggleNavigation(self.path);
 
         // Pass current id, so we know which contact to display.
@@ -199,7 +199,7 @@ var app = $.sammy('#main', function() {
         mainContainer.find('#searchBox').val();
         
         toggleNavigation(self.path);
-        toggleElements('#search, #navigation, .add-contact', 'show');
+        toggleElements('#search, #navigation, .add-contact, .sign-out', 'show');
 
         loadView('views/reminders/index.html', new remindersViewModel());
 

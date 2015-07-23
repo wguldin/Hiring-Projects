@@ -35,6 +35,8 @@ function detail_singleContact(data) {
   })
 
   self.addTagLabel = ko.observable("");
+  self.reminderDate = ko.observable("");
+  self.reminderNote = ko.observable("");
 
   // TODO: this is not work, for some reason.
   self.updateData = function() {

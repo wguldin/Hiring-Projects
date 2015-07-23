@@ -13,7 +13,7 @@ function showLetterHeadings() {
   var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
   jQuery.each(alphabet, function(index, value) {
     var contactsThatMatchLetter = jQuery('li[data-initial-letter="' + value + '"]');
-    contactsThatMatchLetter.first().before('<h2 class="contact__header">' + value.toUpperCase() + '</h2>');
+    contactsThatMatchLetter.first().before('<h2 class="contact-list__header">' + value.toUpperCase() + '</h2>');
   });
 }
 
@@ -71,13 +71,21 @@ $(function(){
   // Navigation
   // =========================================================
 
-  $('#main').on('input', '#searchBox', function(event) {
+  $('#searchBox').on('input', function(event) {
     if($(this).val() != '') {
       ko.postbox.publish("searchQueryType", "q");
     }
-  });
+  }); 
 
-  $('#main').on('click', '.app-navigation', function() {
+  $('#search').on('submit', function(event) {
+    event.preventDefault();
+
+    if($(this).val() != '') {
+      ko.postbox.publish("searchQueryType", "q");
+    }
+  }); 
+
+  $('#navigation').on('click', function() {
     // If user navigates away from search results, clear the search field.
     if($('#searchBox').val() != '') {
       $('#searchBox').val('');
@@ -122,23 +130,6 @@ $(function(){
   $('#main').on('input', '.add input[name="zipcode"]', function(event) {
     // http://zip.getziptastic.com/v2/US/65203
   });
-
-  // // Trigger reminder form on change of checkbox 
-  // $('#main').on('change', '.reminder__checkbox__input', function(event) {
-  //   triggerReminderForm();
-  // });
-
-  // function triggerReminderForm() {
-  //   var reminderForm = $('#main').find('.reminder__sub-form');
-
-  //   reminderForm.toggleClass('is-active');
-
-  //   if (reminderForm.hasClass('is-active')) {
-  //     reminderForm.find('input, textarea').attr('required');
-  //   } else {
-  //     reminderForm.find('input, textarea').removeAttr('required');
-  //   }
-  // }
 
   function autoPopulateDetails(emailInput) {
     var apiKey = '9d88865dfc3cdee7'; // This isn't something I'd do on a live site ...

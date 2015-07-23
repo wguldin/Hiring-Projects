@@ -91,6 +91,16 @@
   box-sizing:         @declaration;
 }
 
+@white: #fff;
+.linear-gradient (@direction: to left, @fallback: @white,  @stops){
+    background-color: @fallback;
+    background: -webkit-linear-gradient(@direction, @stops) @fallback no-repeat;
+    background:    -moz-linear-gradient(@direction, @stops) @fallback no-repeat;
+    background:     -ms-linear-gradient(@direction, @stops) @fallback no-repeat;
+    background:      -o-linear-gradient(@direction, @stops) @fallback no-repeat;
+    background:         linear-gradient(@direction, @stops) @fallback no-repeat;
+}
+
 // ==========================================================
 // Flexbox LESS mixins
 // The spec: http://www.w3.org/TR/css3-flexbox

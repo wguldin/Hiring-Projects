@@ -1,21 +1,16 @@
 <section class="contact" data-bind="foreach: contact">
-  <section class="contact-information">
-    <figure>
-      <img class="contact__image" data-bind="attr:{alt: fullname}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }" />  
-      <figcaption class="contact__name">
-        <h1 class="contact__name__text" data-bind="text: fullname"></h1>
-      </figcaption>
-    </figure>
-
+  <h1 class="contact__name__text" data-bind="text: fullname"></h1>
+  <div class="contact-details">
     <div class="contact__section">
-      <h5 class="contact__subheader">Position &amp; Company
+      <h5 class="contact__subheader contact__subheader--top">Position &amp; Company
         <span class="edit--toggle is-disabled" data-toggle="collapse">
           <i class="fa fa-pencil-square"></i> 
             Edit
         </span>
       </h5>
 
-      <div class="collapse in">
+      <div class="collapse in contact__display contact__career">
+        <img class="contact__image" data-bind="attr:{alt: fullname}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }" />   
         <span class="contact__information" data-bind="text: position"></span>
         <span class="contact__information" data-bind="text: company"></span>
       </div>
@@ -45,7 +40,7 @@
           <!-- /ko -->
         </span>
       </h5>
-      <div class="collapse in">
+      <div class="collapse in contact__display">
         <a class="contact__information" title="Email them" data-bind="text: email, attr:{href: emailLink}"></a>
       </div>
 
@@ -70,7 +65,7 @@
           <!-- /ko -->
         </span>
       </h5>
-      <div class="collapse in">
+      <div class="collapse in contact__display">
         <a class="contact__information" title="Call them" data-bind="text: phone, attr:{href: phoneLink}"></a>
       </div>
 
@@ -101,13 +96,13 @@
             <!-- /ko -->
           </span>
       </h5>
-      <div class="collapse in">
+      <div class="collapse in contact__display">
         <!-- ko if: address --> 
         <a class="contact__information" title="Map this address" data-bind="attr:{href: addressLink}">
           <span data-bind="text: address"></span>
           <span class="contact__location">
             <!-- ko if: city --> 
-            <span class="contact__city" data-bind="text: city"></span>
+            <span data-bind="text: city"></span>
             <!-- /ko -->
 
             <!-- ko if: state --> 
@@ -122,7 +117,7 @@
           <span class="contact__city" data-bind="text: city"></span>
           <span data-bind="text: state"></span>
         </span>
-        <!-- /ko -->
+        <!-- /ko --> 
 
         <!-- ko if: !address() && !city() && !state() && !zipcode()  -->
           <span class="contact__information" data-toggle="collapse">Add a location or an address.</span>
@@ -148,21 +143,10 @@
         <button class="btn btn-primary" type="submit">Save Changes</button>
       </form>
     </div>
-    
-    <!-- ko if: reminders -->
-    <h5 class="contact__subheader">Reminders</h5>
-    <ul data-bind="foreach: reminders">
-      <li class="contact__information">
-        <p data-bind="text: reminderNote"></p>
-        <small>Reminder set for <span data-bind="text: reminderDate"></span></small>
-      </li>
-    </ul>
-    <!-- /ko -->    
-
   </div>
-  <section class="contact-background">
+  <div class="contact-background">
     <div class="contact__section">
-      <h5 class="contact__subheader">Background Notes
+      <h5 class="contact__subheader contact__subheader--top">Background Notes
         <span class="edit--toggle is-disabled" data-toggle="collapse">
           <i class="fa fa-pencil-square"></i>
           <!-- ko if: notes -->
@@ -174,7 +158,7 @@
         </span>
       </h5>
 
-      <div class="collapse in">
+      <div class="collapse in contact__display">
         <!-- ko if: notes -->
         <p class="contact__information" data-bind="text: notes"></p>
         <!-- /ko -->
@@ -192,6 +176,49 @@
         <button class="btn btn-primary" type="submit">Save Changes</button>
       </form>
     </div>
+    
+    <div class="contact__section">
+      <h5 class="contact__subheader">Reminders
+        <span class="edit--toggle is-disabled" data-toggle="collapse">
+          <i class="fa fa-pencil-square"></i>
+          <!-- ko if: reminders -->
+            Edit
+          <!-- /ko -->    
+          <!-- ko if: !reminders() -->
+            Add
+          <!-- /ko -->    
+        </span>
+      </h5>
+
+      <div class="collapse in contact__display">
+        <!-- ko if: reminders -->
+        <ul data-bind="foreach: reminders">
+          <li class="contact__information">
+            <p data-bind="text: reminderNote"></p>
+            <small>Reminder set for <span data-bind="text: reminderDate"></span></small>
+          </li>
+        </ul>
+        <!-- /ko -->
+        <!-- ko if: !reminders() -->
+          <span class="contact__information" data-toggle="collapse">Add a reminder</span>
+        <!-- /ko -->
+      </div>
+
+      <form class="contact__form collapse">
+        <legend class="sr-only">Create a Reminder</legend>
+        <label>Note for Reminder
+          <textarea name="reminderNote" class="form-control" data-bind="textInput: reminderNote"></textarea>
+          <small class="form__note"><a tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" title="Markdown Formatting Guide" data-content="With markdown you use simple characters to format text:<ul><li>###A header</li><li>**Bold Text**</li><li>_Italic Text_</li><li>[A Link](http://a-link.com)</li><li>For more, <a href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'>view this guide</a></li></ul>">Markdown formatting</a> supported</small>
+        </label>
+
+        <label>Date for Reminder
+          <input name="reminderDate" class="form-control form-control--compact" type="text" id="datepicker" data-bind="textInput: reminderDate">
+        </label>
+
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+      </form>  
+    </div>
+
     <div class="contact__section">
       <h5 class="contact__subheader">Tags</h5>
       
