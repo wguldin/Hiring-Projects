@@ -20,7 +20,9 @@ function list_contact(data) {
   self.position = data.position;
   self.company = data.company;
   self.email = data.email;
-
+  self.customImage = data.customImage;
+  self.phone = data.phone;
+  
   // Display properties 
   self.initial_letter = data.lastname.substring(0, 1).toLowerCase();
 };
@@ -73,9 +75,7 @@ function listViewModel() {
       // The initial state of the app, and clearing out a search term counts as a 'new value'
       // So, we check if we need the query string or not. 
       if(newValue !== '') {
-        var currentUser = localStorage.getItem("user");
-
-        if(newValue == currentUser) {
+        if(newValue == currentUser()) {
           self.listHeader("My Contacts");
           self.listHeaderClass("");
 

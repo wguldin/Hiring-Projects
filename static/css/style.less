@@ -62,6 +62,14 @@ ul, ol {
   z-index: 999;
 }
 
+.is-hidden {
+  display: none;
+}
+
+.view {
+  position: relative;
+}
+
 // ==========================================================
 // Base - Typography 
 // ==========================================================
@@ -114,7 +122,7 @@ h6 {
   font-size: 1em;
 }
 
-.contact-list__header, .contact__subheader, .form__subheader {
+.contact-list__header, .contact__subheader, .form__subheader, .reminder__subheader {
   // Creates a subtle 'sunken' look for each contact header.
   .box-shadow(inset 0 1px 3px -1px rgba(120, 120, 120, 0.5), inset 0 -2px 5px -3px rgba(120, 120, 120, 0.5););
   
@@ -124,7 +132,7 @@ h6 {
   font-size: .9em;
   font-weight: 400;
   margin: 1.8em -1.3em 0.5em;
-  padding: 0.45em 1.3em .45em 1.4em;
+  padding: 0.45em 1.3em;
 
   @media screen and (min-width: 36em) {    
     background-color: #F7F7F7;
@@ -132,6 +140,16 @@ h6 {
     border-bottom: 1px solid @grey; //#ccc opacity;
     margin: 2.4em 0 .5em;
   }
+}
+
+.slash-separator {
+  color: @grey;
+  letter-spacing: -.02em;
+  margin: 0 0.15em 0 0.1em;
+}
+
+.page-title {
+  letter-spacing: .1em;
 }
 
 // ==========================================================
@@ -227,6 +245,21 @@ legend.form__subheader {
   }
 }
 
+.form__alternate-action {
+  position: relative;
+  margin-left: 1.5em;
+
+  &:before {
+    border-left: 1px solid #787878;
+    bottom: 0;
+    content: '';
+    left: -1em;
+    margin: 0 .25em;
+    position: absolute;
+    top: 0.2em;
+  }
+}
+
 // ==========================================================
 // Validation 
 // ==========================================================
@@ -285,18 +318,33 @@ textarea.has-error, input.has-error {
 }
 
 // ==========================================================
+// Icon Overrides
+// ==========================================================
+
+.sm {
+  font-size: 0.7em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: .6em;
+}
+
+// ==========================================================
 // Base - Links & Buttons
 // ==========================================================
 
 a {
   color: inherit;
   text-decoration: none;
-  
+
   &:visited, &:hover {
     text-decoration: none;
   }
   
   &:active {
+    text-decoration: none;
+  }
+
+  &:focus {
     text-decoration: none;
   }
 }
@@ -306,8 +354,20 @@ a {
   opacity: .5;
 }
 
-// If this was applied to all links, some buttons and header elements would have to be overridden.
+// Standard inline link. 
 .text-link {
+  .transition(color 120ms @swift-out, border-color 120ms @swift-out;);
+
+  cursor: pointer;
+  border-bottom: 1px dotted #949494;
+
+  &:hover {
+    border-color: #000;
+  }
+}
+
+// Orange colors pops a little too much for regular links
+.highlight-link {
   .transition(color 150ms ease, border-color 150ms ease;);
 
   border-bottom: 1px dotted rgba(252, 79, 82, 0);
@@ -442,8 +502,9 @@ header {
   }
 
   @media screen and (min-width: 54em) {
-    font-size: .9em;
-    margin: 1.15em 0 0.5em 5em;
+    font-size: .85em;
+    margin: 1.3em 0 0.5em 5em;
+    max-width: 27em;
   }
 }
 
@@ -458,8 +519,8 @@ header {
 
 .input-group .search-form__submit {
   @media screen and (min-width: 54em) {
-    font-size: 17px;
-    margin-top: 3px;
+    font-size: 15.5px; 
+    margin-top: 3.8px;
   }
 }
 
@@ -488,7 +549,7 @@ header {
   margin-top: .8em;
 
   @media screen and (min-width: 45em) {
-    display: none;
+    display: none !important; // Override show() from routing.
   }
 }
 
@@ -502,10 +563,9 @@ nav[role="navigation"] {
   }
 
   @media screen and (min-width: 54em) {
-    border-top: 1px dotted #CCC;
-    margin: 0.7em 0 .5em 0;
-    padding-top: 1.3em;
+    margin: 1.2em 0 0 0;
     width: 100%;
+    font-size: .9em;
   }
 
   .btn-group {
@@ -537,11 +597,6 @@ nav[role="navigation"] {
 
   @media screen and (min-width: 45em) {
     display: block;
-  }
-
-  .fa-plus {
-    font-size: .85em;
-    margin-right: 0.6em;
   }
 }
 
@@ -644,6 +699,47 @@ footer {
   }
 }
 
+// Single search result
+.contact-list__item:only-of-type {
+  width: 100%;  
+
+  .contact-list__description {
+    span + span {
+      display: block;
+    }
+  }
+}
+
+.contact-list__additional {
+  display: none;
+  padding-top: .5em;
+  margin-top: 1.1em;
+  border-top: 1px dotted #ccc;
+
+  // Single search result
+  .contact-list__item:only-of-type & {
+    display: block;
+
+    &:hover {
+      color: @text;
+      text-decoration: none;
+    }
+  }
+}
+
+.contact-list__additional__header {
+  margin: .5em 0 1em 0;
+  width: 10em;
+  float: left;
+}
+
+.contact-list__additional__text {
+  display: block;
+  color: @darkgrey;
+  font-weight: 300;
+  font-size: 1.1em;
+}
+
 .contact-list__image {
   border-radius: 0.6em;
   display: inline-block;
@@ -703,6 +799,56 @@ footer {
   }
 }
 
+.contact__options {
+  position: absolute;
+  top: 0;
+  right: 1em;
+}
+
+.contact__options__dropdown {
+  li {
+    .transition(background-color 150ms @swift-out);
+
+    display: block;
+    margin: 1em 0;
+    padding: 0 0.7em;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      background-color: #eee;
+    }
+  }
+
+  li:first-child {
+    margin-top: .5em;
+  }
+
+  // Create border above delete. More semantic than bootstap solution.
+  li:last-child {
+    margin-bottom: .5em;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -.5em;
+      margin: 0 0.8em;
+      height: 1px;
+      background: #ccc;
+    }
+  }
+}
+
+.dropdown__label {
+  display: none;
+
+  @media screen and (min-width: 36em) {
+    display: inline;
+  }
+}
+
 .contact__subheader {
   @media screen and (min-width: 54em) {
     padding-left: .9em;
@@ -728,11 +874,7 @@ footer {
   font-weight: 300;
 }
 
-.contact__location {
-  display: block;
-}
-
-.contact__career, .contact__location {
+.contact__career, .contact__location, .contact-list__description {
   // Applies to state field and company field, if city and title are present, respectively.
   // First span, if not the only span.
   span:first-of-type:not(:only-of-type) {
@@ -766,8 +908,8 @@ footer {
 }
 
 .contact__form {
-  padding-top: 0.4em;
   max-width: 22em;
+  padding-top: 0.4em;
 
   @media screen and (min-width: 36em) {
     padding-top: 1em;
@@ -776,6 +918,11 @@ footer {
   @media screen and (min-width: 54em) {
     padding: .4em 0 0 .8em;
   }
+}
+
+.contact__form--name {
+  margin: 2em 0;
+  padding: 0;
 }
 
 .contact-details {
@@ -890,3 +1037,96 @@ footer {
     }
   }
 }
+
+// ==================================================================
+// Reminders Page
+// ==================================================================
+
+.contact-list--reminder {
+  .contact__header {
+    margin: 1.3em -1.3em 0.8em;
+  }
+
+  .contact-list__name {
+    .clearfix();
+
+    font-size: 1em;
+
+    h3 {
+      font-size: 1.33em;
+    }
+  }
+}
+
+// ==================================================================
+// Reminder Alert 
+// ==================================================================
+
+@reminderAlertBackground: #4b95ff; // Split compliment of primary color.
+@reminderAlertText: #47648E;
+
+.reminder-alert {
+  background: lighten(@reminderAlertBackground, 33%);
+  border-bottom: 1px solid @reminderAlertBackground;
+  color: @reminderAlertText;
+  margin-bottom: .5em;
+  padding: 0.6em 1em 1em;
+
+  .slash-separator {
+    color: @reminderAlertBackground;
+  }
+}
+
+.reminder-alert__actions {
+  font-size: .9em;
+
+  form {
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background-color: @reminderAlertBackground;
+    border-color: @reminderAlertText;
+    padding: 0.25em 0.9em;
+
+    &:hover {
+      background-color: @reminderAlertText;
+    }
+  }
+
+  .text-link {
+    color: @reminderAlertBackground;
+
+    &:hover {
+      color: @reminderAlertText;
+    }
+  }
+}
+
+.reminder-alert__header {
+  font-size: 1.33em;
+  font-weight: 300;
+}
+
+.reminder-alert__text {
+  font-weight: 300;
+  margin: .3em 0 .5em 0;
+}
+
+.reminder-alert__list {
+  .default-ul();
+
+  padding-left: 1.6em;
+  margin: 0.6em 0 0.9em;
+}
+
+.reminder-alert__list__item {
+  color: @reminderAlertBackground; // Set bullet point color.
+
+  p {
+    color: @reminderAlertText;
+    display: inline;
+    left: -0.2em;
+  }
+}
+

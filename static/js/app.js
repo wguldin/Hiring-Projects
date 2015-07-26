@@ -3,6 +3,10 @@ function filterContacts(jsonKey, value) {
   ko.postbox.publish("searchQuery", value);
 }
 
+function currentUser() {
+  return localStorage.getItem("user");
+}
+
 // Not perfect, but pretty good. SO: http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
 function validateEmail(email) {
     var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
@@ -21,9 +25,22 @@ function showLetterHeadings() {
 // Tag Creation
 // =========================================================
 
+// Processes tags from db to display.
+function single_tag(id, contactId, tagLabel) {
+    var self = this;
+
+    self.id = id;
+    self.contactId = contactId;
+    self.tagLabel = tagLabel;
+}
+
 function postTag(id, contactId, tagLabel) {
   var tagUrl = "http://localhost:3000/tags/";
-  var tagJSON = {"id": id, "contactId": contactId, "tagLabel": tagLabel};
+  var tagJSON = {
+    "id": id, 
+    "contactId": contactId, 
+    "tagLabel": tagLabel
+  };
 
   jQuery.ajax({
     type: 'POST',
@@ -34,7 +51,11 @@ function postTag(id, contactId, tagLabel) {
 
 function deleteTag(tag) {
   var tagUrl = 'http://localhost:3000/tags/' + tag.id;
-  var tagJSON = {"id": tag.id , "contactId": tag.contactId, "tagLabel": tag.tagLabel};
+  var tagJSON = {
+    "id": tag.id ,
+    "contactId": tag.contactId,
+    "tagLabel": tag.tagLabel
+  };
 
   jQuery.ajax({
     type: 'DELETE',
@@ -43,19 +64,12 @@ function deleteTag(tag) {
   });
 }
 
-function single_tag(id, contactId, tagLabel) {
-    var self = this;
-
-    self.id = id;
-    self.contactId = contactId;
-    self.tagLabel = tagLabel;
-}
-
 // =========================================================
-// Reminder Creation
+// Reminders
 // =========================================================
 
-function single_reminder(id, contactId, reminderName, reminderNote, reminderDate) {
+// Processes reminders from db.
+function single_reminder(id, contactId, reminderName, reminderNote, reminderDate, createdBy) {
   var self = this;
 
   self.id = id;
@@ -63,6 +77,45 @@ function single_reminder(id, contactId, reminderName, reminderNote, reminderDate
   self.reminderName = reminderName;
   self.reminderNote = reminderNote;
   self.reminderDate = reminderDate;
+  self.createdBy = createdBy;
+}
+
+function postReminder(id, contactId, reminderName, reminderNote, reminderDate, createdBy) {
+  var reminderUrl = "http://localhost:3000/reminders/";
+  
+  var reminderJSON = {
+    "id": id,
+    "contactId": contactId,
+    "reminderName": reminderName,
+    "reminderNote": reminderNote,
+    "reminderDate": new Date(reminderDate).toISOString(),
+    "createdBy": createdBy
+  };
+
+  jQuery.ajax({
+    type: 'POST',
+    url: reminderUrl,
+    data: reminderJSON
+  });
+}
+
+function deleteReminder(id, contactId, reminderName, reminderNote, reminderDate, createdBy) {
+  var reminderUrl = 'http://localhost:3000/reminders/' + id;
+  
+  var reminderJSON = {
+    "id": id,
+    "contactId": contactId,
+    "reminderName": reminderName,
+    "reminderNote": reminderNote,
+    "reminderDate": new Date(reminderDate).toISOString(),
+    "createdBy": createdBy
+  };
+
+  jQuery.ajax({
+    type: 'DELETE',
+    url: reminderUrl,
+    data: reminderJSON
+  });
 }
 
 $(function(){
@@ -97,20 +150,25 @@ $(function(){
   $('footer').find('.date').text(year);
 
   // =========================================================
-  // Edit button
+  // Edit Contact Forms
   // =========================================================
 
   function triggerCollapsableElements(eventTarget) {
     var target = eventTarget;
-    var container = target.closest('.contact__section');
+    var container = target.closest('[data-collapse="container"]');
     var collapsableElement = container.find('.collapse');
 
     collapsableElement.collapse('toggle');
   };
 
-  $('#main').on('click', '[data-toggle="collapse"]',function(event) {
-    triggerCollapsableElements($(event.target));
-    $('.edit--toggle').addClass('is-disabled');
+  $('body').on('click', '[data-toggle="collapse"]',function(event) {
+    var target = $(event.target);
+
+    triggerCollapsableElements(target);
+
+    if ($('.edit--toggle').length > 0) {
+      $('.edit--toggle').addClass('is-disabled');
+    } 
   });
 
   $('#main').on('submit', '.contact__form', function(event) {
@@ -118,17 +176,32 @@ $(function(){
     $('.edit--toggle').removeClass('is-disabled');
   });
 
+  $('#main').on('click', '.contact__form__cancel', function(event) {
+    $('.edit--toggle').removeClass('is-disabled');
+    
+    triggerCollapsableElements($(event.target));
+  });
+
   // =========================================================
   // Add form 
   // =========================================================
 
   // Once we have the email address, try to find more information out via fullcontact api.
-  $('#main').on('blur', '.add input[name="email"]', function(event) {
-    // autoPopulateDetails(this);
+  $('#main').on('blur', '.form--add input[name="email"]', function(event) {
+  //  autoPopulateDetails(this);
   });
 
-  $('#main').on('input', '.add input[name="zipcode"]', function(event) {
-    // http://zip.getziptastic.com/v2/US/65203
+  $('#main').on('input', '.form--add input[name="zipcode"]', function(event) {
+    var zipcode = $(this).val();
+    var stateInput = $('input[name="state"]');
+    var cityInput = $('input[name="city"]');
+
+    if (zipcode.length == 5 && stateInput.val().length == 0 && cityInput.val().length == 0) {
+      $.get('http://zip.getziptastic.com/v2/US/' + zipcode, function(response) {
+        cityInput.val(response.city);
+        stateInput.val(response.state);
+      });
+    }
   });
 
   function autoPopulateDetails(emailInput) {
@@ -175,7 +248,7 @@ $(function(){
       var emailDomain = emailChunks[emailChunks.length -1]; // should return domain of email
 
       // Some common domain names, courtesy of MailCheck plugin.
-      var commonDomains = ["aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com", "gmx.com", "googlemail.com", "google.com", "hotmail.com", "hotmail.co.uk", "mac.com", "me.com", "mail.com", "msn.com", "live.com", "sbcglobal.net", "verizon.net", "yahoo.com", "yahoo.co.uk", "email.com", "games.com", "gmx.net", "hush.com", "hushmail.com", "inbox.com", "lavabit.com", "love.com", "pobox.com", "rocketmail.com", "safe-mail.net", "wow.com", "ygm.com", "ymail.com", "zoho.com", "fastmail.fm", "bellsouth.net", "charter.net", "cox.net", "earthlink.net", "juno.com",];
+      var commonDomains = ["aol.com", "att.net", "comcast.net", "example.com", "facebook.com", "gmail.com", "gmx.com", "googlemail.com", "google.com", "hotmail.com", "hotmail.co.uk", "mac.com", "me.com", "mail.com", "msn.com", "live.com", "sbcglobal.net", "verizon.net", "yahoo.com", "yahoo.co.uk", "email.com", "games.com", "gmx.net", "hush.com", "hushmail.com", "inbox.com", "lavabit.com", "love.com", "pobox.com", "rocketmail.com", "safe-mail.net", "wow.com", "ygm.com", "ymail.com", "zoho.com", "fastmail.fm", "bellsouth.net", "charter.net", "cox.net", "earthlink.net", "juno.com",];
       
       //We'll make sure our email isn't one of them before assuming it is a work email.
       function isPersonalEmail(emailDomain, commonDomains) {
@@ -199,13 +272,6 @@ $(function(){
             return; // This means no match was immediately found. To prevent bad user experience, end autofilling.
           }
 
-          var companyAddress = response.organization.contactInfo.addresses;
-          var companyLine1 = companyAddress[0].addressLine1;
-          var companyLine2 = companyAddress[0].addressLine2;
-          var companyState = companyAddress[0].region.name;
-          var companyCity  = companyAddress[0].locality;
-          var companyZip   = companyAddress[0].postalCode;
-
           function scrubValue(variable) {
             if (variable == null) {
               variable = '';
@@ -214,11 +280,23 @@ $(function(){
             return variable;
           }
 
+          var companyAddress = scrubValue(response.organization.contactInfo.addresses);
+          var companyLine1   = scrubValue(companyAddress[0].addressLine1);
+          var companyLine2   = scrubValue(companyAddress[0].addressLine2);
+          var companyState   = scrubValue(companyAddress[0].region.name);
+          var companyCity    = scrubValue(companyAddress[0].locality);
+          var companyZip     = scrubValue(companyAddress[0].postalCode);
+
+
           // Autofill remaining values. change() is needed so knockout registers the updated values.
-          address.val(scrubValue(companyLine1) + ' ' + scrubValue(companyLine2)).change();
-          state.val(scrubValue(companyState)).change();
-          city.val(scrubValue(companyCity)).change();
-          zipcode.val(scrubValue(companyZip)).change();
+          address.val(companyLine1 + ' ' + companyLine2).change();
+          state.val(companyState).change();
+          city.val(companyCity).change();
+          setTimeout(function() {
+            // Gives the app time to fill in city and state before zipcode,
+            // so that zipcode js doesn't do an api call to find the already filled in city and state.
+            zipcode.val(companyZip).change();
+          }, 10);
         })
       }
 

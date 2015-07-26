@@ -3,8 +3,14 @@ function reminders_Reminder(data) {
 
   self.id = data.id;
   self.reminderName = data.reminderName;
+  self.contactId = data.contactId;
   self.reminderNote = data.reminderNote;
+  self.createdBy = data.createdBy;
   self.reminderDate = data.reminderDate;
+
+  self.reminderLink = '#/contacts/' + self.contactId;
+
+  self.formattedReminderDate = formatDate(data.reminderDate, true);
 }
 
 function remindersViewModel() {
@@ -30,14 +36,36 @@ function remindersViewModel() {
         url: 'http://localhost:3000/reminders',
         dataType: 'json',
         success: function(allData) {
-          var mappedTasks = $.map(allData, function(item) { return new reminders_Reminder(item) });
+          var mappedTasks = $.map(allData, function(item) { 
+            if (item.createdBy === currentUser()) {
+              return new reminders_Reminder(item);
+            }
+          });
 
           self.reminders(mappedTasks);
           self.arrangeReminders();
+          
+          setTimeout(function(){
+            eliminateDuplicateHeaders();
+          }, 50);
         }
       });
     }, 100);
   }
 
   self.getReminders();
+}
+
+function eliminateDuplicateHeaders() {
+  var headers = $('.contact-list--reminder .contact__subheader');
+
+  if (headers.length) {
+    $.each(headers, function (el, index) {
+      var previousHeader = $(index).prev('li').prev('.contact__subheader');
+
+      if ($(previousHeader).length && $(index).text() == $(previousHeader).text()) {
+        $(index).remove();
+      } 
+    });
+  }
 }

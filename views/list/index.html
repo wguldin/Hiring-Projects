@@ -1,17 +1,30 @@
-<h1 class="contact-list__head" data-bind="text: listHeader, css: listHeaderClass"></h1>
+<h1 class="contact-list__head page-title" data-bind="text: listHeader, css: listHeaderClass"></h1>
 <ul id="contactList" class="contact-list" data-bind="foreach: contacts">
   <li class="contact-list__item clearfix" data-bind="attr:{'data-initial-letter': initial_letter}">
       <a data-bind="attr:{href: link, title: fullName}">
         <figure>
-          <img class="contact-list__image" data-bind="attr:{alt: fullName}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }"/>
+          <!-- ko if: customImage -->
+          <img class="contact__image" data-bind="attr:{src: customImage, alt: fullName}" />          
+          <!-- /ko -->
+          <!-- ko if: !customImage -->
+          <img class="contact__image" data-bind="attr:{alt: fullName}, gravatar: { credential: email, rating: 'pg', defaultImage: 'mm' }" />
+          <!-- /ko -->          
           <figcaption class="contact-list__text">
             <h3 class="contact-list__name" data-bind="text: fullName"></h3>
             <p class="contact-list__description">
-              <span data-bind="text: position"></span>,
+              <span data-bind="text: position"></span>
               <span data-bind="text: company"></span>
             </p>
           </figcaption>
         </figure>
       </a>
+      <div class="contact-list__additional">
+        <label>Phone
+        <span data-bind="text: phone"></span>
+        </label>
+        <label>Email
+        <span data-bind="text: email"></span>
+        </label>
+      </div>
   </li>
 </ul>

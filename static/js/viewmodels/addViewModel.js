@@ -76,34 +76,32 @@ function addViewModel() {
     }
   }
   
-
-  // var processTags =  ko.utils.arrayMap(tagsArray, function(item) {
-  //     return new single_tag(item.id, item.contactId, item.tagLabel);
-  // }); 
-
-  // self.tags = ko.observableArray(processTags);
-
-  // var processReminders =  ko.utils.arrayMap(data.reminders, function(item) {
-  //     return new single_reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate);
-  // });
-
-  // self.reminders = ko.observableArray(processReminders);
-
   // ===============================================
   // Reminders
   // ===============================================
 
-  // self.reminders = ko.observableArray([]);
   self.reminderNote = ko.observable("");
   self.reminderDate = ko.observable("");
 
-  // function formattedReminderDate() {
-  //   return new Date(self.reminderDate()).toISOString();
-  // }
+  function createReminder(reminderNote, reminderDate) {
+    var reminder = {
+      reminderId: "",
+      contactId: "",
+      reminderName: "",
+      reminderNote: "",
+      reminderDate: "",
+      createdBy: "",
+    };
+     
+    reminder.reminderId = uuid.generate();
+    reminder.contactId = self.contactId;
+    reminder.reminderName =  self.fullnameFormatted();
+    reminder.reminderNote = self.reminderNote();
+    reminder.reminderDate = self.reminderDate();
+    reminder.createdBy = localStorage.getItem("user");
 
-  // function createReminder() {
-  //   self.reminders().push(new single_reminder(uuid.generate(), self.contactId, self.fullnameFormatted(), self.reminderNote(), self.reminderDate()));
-  // }
+    postReminder(reminder.reminderId, reminder.contactId, reminder.reminderName, reminder.reminderNote, reminder.reminderDate, reminder.createdBy);
+  }
 
   // ===============================================
   // Validation
@@ -112,51 +110,34 @@ function addViewModel() {
   self.errors = ko.validation.group(self);
 
   // If reminder checkbox is selected, make the reminder fields required.
-  self.requireReminder = function() {
-  
-    // TODO: Do I need to unset these? Think so ....
+  self.reminderValidation = function() {
+
+    if (ko.validation.utils.isValidatable(self.reminderNote) &&
+        ko.validation.utils.isValidatable(self.reminderDate) ) {
+      
+      self.reminderNote.rules.removeAll();
+      self.reminderDate.rules.removeAll();
+      return;
+    }
+
     self.reminderNote.extend({required: true});
     self.reminderDate.extend({required: true});
   };
 
   // ===============================================
-  // Reminders
+  // Add Contact
   // ===============================================
 
   self.addContact = function() {
-    // if (self.errors().length !== 0) {
-    //   self.errors.showAllMessages();
+    if (self.errors().length !== 0) {
+      self.errors.showAllMessages();
 
-    //   return;
-    // }
+      return;
+    }
 
-    console.log(createTags());
-
-    //createReminder();
-
-    $.ajax({
-      type: 'POST',
-      url: 'http://localhost:3000/contacts',
-      data: self.contactInformation(),
-      dataType: 'json',
-      success: function(data) {
-        console.log(data);
-
-        // app.trigger('user-added', app);
-
-        // if ($('.alert-success').length == 0) {
-        //     // Dismissible bootstrap alert success box
-        //     var successMessage = '<strong>Success! </strong>' + data.firstname + ' ' + data.lastname +' was added as a new contact!'
-        //     $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
-        // }
-
-        // setTimeout(function() {
-        //   $('.alert-success').fadeOut('180', function() {
-        //     $(this).remove();
-        //   });
-        // }, 6000);
-      }
-    });
+    // These AJAX requests have to be sent separately.
+    createReminder();
+    createTags();
 
     $.ajax({
       type: 'POST',
@@ -166,19 +147,19 @@ function addViewModel() {
       success: function(data) {
         console.log(data);
 
-        // app.trigger('user-added', app);
+        app.trigger('user-added', app);
 
-        // if ($('.alert-success').length == 0) {
-        //     // Dismissible bootstrap alert success box
-        //     var successMessage = '<strong>Success! </strong>' + data.firstname + ' ' + data.lastname +' was added as a new contact!'
-        //     $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
-        // }
+        if ($('.alert-success').length == 0) {
+            // Dismissible bootstrap alert success box
+            var successMessage = '<strong>Success! </strong>' + data.firstname + ' ' + data.lastname +' was added as a new contact!'
+            $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
+        }
 
-        // setTimeout(function() {
-        //   $('.alert-success').fadeOut('180', function() {
-        //     $(this).remove();
-        //   });
-        // }, 6000);
+        setTimeout(function() {
+          $('.alert-success').fadeOut('180', function() {
+            $(this).remove();
+          });
+        }, 6000);
       }
     });
   }

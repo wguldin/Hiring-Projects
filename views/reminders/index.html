@@ -1,7 +1,8 @@
-<ul class="reminder-list" data-bind="foreach: reminders">
-  <li class="reminder clearfix">
-    <p class="reminder__name" data-bind="text: reminderName"></p>
-    <p class="reminder__note" data-bind="text: reminderNote"></p>
-    <p class="reminder__date" data-bind="text: reminderDate"></p>
+<h1 class="page-title">Reminders</h1>
+<ul class="contact-list contact-list--reminder" data-bind="foreach: reminders">
+  <h2 class="contact__subheader" data-bind="text: formattedReminderDate"></h2>
+  <li class="contact-list__item clearfix">
+    <a class="contact-list__name" data-bind="attr: {href: reminderLink}"><h3 data-bind="text: reminderName"></h3></a>
+    <p class="contact-list__description" data-bind="text: reminderNote"></p>
   </li>
-</ul>
+</ul> 

@@ -22,11 +22,12 @@ function detail_singleContact(data) {
   self.state = ko.observable(data.state);
   self.zipcode = ko.observable(data.zipcode);
   self.notes = ko.observable(data.notes);
-  self.createdBy = data.createdBy,
-  self.registered = data.registered
+  self.customImage = ko.observable(data.customImage);
+  self.createdBy = data.createdBy;
+  self.registered = data.registered;
 
-  self.emailLink = 'mailto:' + self.email;
-  self.phoneLink = 'tel:' + self.phone;
+  self.emailLink = 'mailto:' + self.email();
+  self.phoneLink = 'tel:' + self.phone();
 
   self.addressLink = ko.computed(function() {
     var fullAddress = self.address() + " " + self.city() + " " + self.state();
@@ -35,13 +36,116 @@ function detail_singleContact(data) {
   })
 
   self.addTagLabel = ko.observable("");
-  self.reminderDate = ko.observable("");
-  self.reminderNote = ko.observable("");
 
-  // TODO: this is not work, for some reason.
-  self.updateData = function() {
-    //console.log(self.updatedContactInformation());
+  // ===================================================
+  // Tags
+  // ===================================================
+
+  var processTagsFromDB =  ko.utils.arrayMap(data.tags, function(item) {
+    return new single_tag(item.id, item.contactId, item.tagLabel);
+  });
+
+  self.tags = ko.observableArray(processTagsFromDB);
+
+  self.addTag = function() {
+    var tagId = uuid.generate();
+
+    self.tags.push(new single_tag(tagId, self.contactId, self.addTagLabel()));
+    postTag(tagId, self.contactId, self.addTagLabel);
+
+    self.addTagLabel(""); // Reset Tag Label after tag is added.
+  }
+
+  self.removeTag = function(tag) {
+    deleteTag(tag);
+    self.tags.destroy(tag);
+  }
+  
+  // ===================================================
+  // Reminders
+  // ===================================================
+
+  var processRemindersFromDB =  ko.utils.arrayMap(data.reminders, function(item) {
+
+    // Prevent reminder from being applied if it doesn't belong to the current user.
+    if (item.createdBy != currentUser()) {
+      return; 
+    }
+
+    return new single_reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate, item.createdBy);
+  });
+
+  self.reminders = ko.observableArray(processRemindersFromDB);
+
+  self.reminderId   = ko.observable("");
+  self.reminderNote = ko.observable("");
+  self.reminderDate = ko.observable("");
+  self.reminderCreatedBy = currentUser();
+
+  setReminderInformation();
+
+  function setReminderInformation() {
+    // Only one reminder per person, so our reminder will always be the first item in the array.
+    var reminder = self.reminders()[0];
+
+    if (reminder == null) {
+      self.reminders('');
+    }
+
+    // If reminder exists, apply it to the view.
+    if (reminder != null) {
+      self.reminderId(reminder.id);
+      self.reminderNote(reminder.reminderNote);
+      self.reminderDate(formatDate(reminder.reminderDate, true));
+    }
+  }
+
+  function setReminderId(reminderId) {
+    if (reminderId == '') {
+      return uuid.generate(); // For a new reminder.
+    } else {
+      return reminderId; // For a pre-existing reminder.
+    }
+  }
+
+  self.updateReminder = function() {
+    var id = setReminderId(self.reminderId());
+    var contactId = self.contactId;
+    var reminderName =  self.fullname();
+    var reminderNote = self.reminderNote();
+    var reminderDate = self.reminderDate();
+    var reminderCreatedBy = self.reminderCreatedBy;
+
+    // Empty the array
+    self.reminders([]);
+
+    // Push updated/new reminder to it.
+    self.reminders.push(new single_reminder(id, contactId, reminderName, reminderNote, reminderDate, reminderCreatedBy));
+
+    // Post reminder to DB.
+    postReminder(id, contactId, reminderName, reminderNote, reminderDate, reminderCreatedBy);
     
+    // Set observables in view to reflect updated information.
+    setReminderInformation();
+  }
+
+  // ===================================================
+  // Form Update AJAX
+  // ===================================================
+
+  self.deleteContact = function() {
+    $.ajax({
+      type: 'DELETE',
+      url: 'http://localhost:3000/contacts/' + self.contactId,
+      data: self.updatedContactInformation(),
+      dataType: 'json',
+      success: function(data) {
+        app.trigger('contact-deleted', app);
+      }
+    });
+  }
+
+  self.updateData = function() {    
     $.ajax({
       type: 'PUT',
       url: 'http://localhost:3000/contacts/' + self.contactId,
@@ -73,6 +177,7 @@ function detail_singleContact(data) {
       "phone": self.phone(),
       "position": self.position(),
       "company": self.company(),
+      "customImage": self.customImage(),
       "address": self.address(),
       "city": self.city(),
       "state": self.state(),
@@ -82,32 +187,6 @@ function detail_singleContact(data) {
       "registered": data.registered,
     })
   }
-
-  self.addTag = function() {
-    var tagId = uuid.generate();
-
-    self.tags.push(new single_tag(tagId, self.contactId, self.addTagLabel()));
-    postTag(tagId, self.contactId, self.addTagLabel);
-
-    self.addTagLabel(""); // Reset Tag Label after tag is added.
-  }
-
-  self.removeTag = function(tag) {
-    deleteTag(tag);
-    self.tags.destroy(tag);
-  };
-
-  var processTags =  ko.utils.arrayMap(data.tags, function(item) {
-      return new single_tag(item.id, item.contactId, item.tagLabel);
-  });
-
-  self.tags = ko.observableArray(processTags);
-
-  var processReminders =  ko.utils.arrayMap(data.reminders, function(item) {
-      return new single_reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate);
-  });
-
-  self.reminders = ko.observableArray(processReminders);
 };
 
 function detailViewModel(contactId) {
@@ -124,7 +203,6 @@ function detailViewModel(contactId) {
 
       }).done(function(data) {
         var contactData = [new detail_singleContact(data)];
-        console.log(contactData)
         self.contact(contactData);
       });
     }, 100);

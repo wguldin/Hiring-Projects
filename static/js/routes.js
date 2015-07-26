@@ -37,6 +37,30 @@ function loadView(url, viewModel) {
     }, 120);
 }
 
+function loadReminders() {    
+    setTimeout(function() {
+        var loadViewRequest = $.ajax({ 
+            type: 'GET',
+            url: 'views/reminderAlert/index.html',
+            success: function(response) {
+                var container = $('body');
+                var view = container.find('#reminderAlert');
+                var newView = $('<div id="reminderAlert" data-collapse="container">').html(response);
+
+                if (view.length) {
+                    var vm = ko.dataFor(document.getElementById('reminderAlert'));
+                    ko.removeNode(view[0]); // Clean up previous view after fade begins.
+                }
+                
+                container.prepend(newView);
+
+                ko.applyBindings(new reminderAlertViewModel, newView[0]);
+            }
+        });
+    }, 120);
+}
+
+
 function initUIFeatures(container) {
     // Force new views to go to the top of the page, like a traditional web page.
     $('html, body').animate({ scrollTop: 0 }, 0);
@@ -46,25 +70,43 @@ function initUIFeatures(container) {
         $('[data-toggle="popover"]').popover();
     }
 
-    if (container.find('#datepicker')) {
-        var picker = new Pikaday({
-            field: document.getElementById('datepicker'),
-            format: 'MMMM D, YYYY',
-            minDate: new Date()
-        });
-    }
-
     if(container.find('.edit--toggle')) {
         // Initialize edit functionality
         $('.edit--toggle').removeClass('is-disabled');
     } 
+
+    initPikaday(container);
+}
+
+function initPikaday(selector) {
+  if (selector.find('#datepicker')) {
+
+    // Date picker doesn't always initailize without short setTimeout.
+    setTimeout(function(){
+      var presetDate = $('#datepicker').val();
+
+      var picker = new Pikaday({
+        field: document.getElementById('datepicker'),
+        format: 'MMMM D, YYYY',
+        minDate: new Date()
+      });
+
+      if (presetDate == null) {
+        return;
+      }
+
+      if(presetDate.length > 0) {
+        picker.setDate(presetDate);
+      }
+    }, 100);
+  }
 }
 
 // Routing related funcitons.
 function isUserAuthenticated() {
 
     // Local storage is used as a pseudo logged-in state for the test purposes of the app.
-    if(localStorage.getItem("user")) {
+    if(currentUser()) {
         return true
     } else {
         return false
@@ -140,6 +182,7 @@ var app = $.sammy('#main', function() {
         mainContainer.off('input.searchInputRedirect');
 
         loadView('views/list/index.html', new listViewModel());
+        loadReminders();
         ko.postbox.publish("searchQuery", "");
 
         toggleElements('#search, #navigation, .add-contact, .sign-out', 'show');
@@ -155,7 +198,8 @@ var app = $.sammy('#main', function() {
         }
 
         loadView('views/list/index.html', new listViewModel());
-
+        loadReminders();
+        
         toggleElements('#search, #navigation, .add-contact, .sign-out', 'show');
         toggleNavigation(self.path);
 
@@ -177,6 +221,7 @@ var app = $.sammy('#main', function() {
         // Pass current id, so we know which contact to display.
         var contactId = self.params['id'];
         loadView('views/detail/index.html', new detailViewModel(contactId));
+        loadReminders();
 
         mainContainer.on('focus.searchInputRedirect', '#searchBox', function(e) {
             e.stopImmediatePropagation(); // Needed to stop listViewModel from being applied repeatedly when this event fires. Unsure of what the root cause is though.
@@ -202,6 +247,7 @@ var app = $.sammy('#main', function() {
         toggleElements('#search, #navigation, .add-contact, .sign-out', 'show');
 
         loadView('views/reminders/index.html', new remindersViewModel());
+        loadReminders();
 
         mainContainer.on('focus.searchInputRedirect', '#searchBox', function(e) {
             e.stopImmediatePropagation(); // Needed to stop listViewModel from being applied repeatedly when this event fires. Unsure of what the root cause is though.
@@ -224,6 +270,7 @@ var app = $.sammy('#main', function() {
         toggleElements('#search, #navigation, .add-contact', 'hide');
 
         loadView('views/add/index.html', new addViewModel());
+        loadReminders();
     });
 
     // =======================================================

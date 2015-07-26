@@ -8,7 +8,7 @@ function authenticateViewModel() {
   var self = this;
 
   // Are we remembered?
-  if (localStorage.getItem("user") && Modernizr.localstorage) {
+  if (currentUser()) {
     app.trigger('user-authenticated', app);
   }
 
@@ -29,9 +29,7 @@ function authenticateViewModel() {
     // Using the first part of the email address as a user name.
     userName = email.split("@")[0];
   
-    if (Modernizr.localstorage) {
-      localStorage.setItem("user", userName);
-    }
+    localStorage.setItem("user", userName);
 
     app.trigger('user-authenticated', app);
   }

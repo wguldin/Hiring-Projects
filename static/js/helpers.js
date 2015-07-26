@@ -50,6 +50,39 @@ ko.bindingHandlers.fadeVisible = {
 };
 
 // =========================================================
+// Helper functions
+// =========================================================
+
+function ordinal(date) {
+  if(date > 20 || date < 10) {
+    switch(date%10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+    }
+  }
+  return "th";
+}
+
+function formatDate(dateToFormat, showYears) {
+  var date = new Date(dateToFormat);
+  var monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];  
+
+  month = monthNames[date.getMonth()]
+
+  if (showYears === true) {
+    return month + ' ' + date.getDate() + ', ' + date.getFullYear();
+  } else {
+    return month + ' ' + date.getDate();
+
+  }
+}
+
+// =========================================================
 // Fast UUID generator, RFC4122 version 4 compliant.
 // @author Jeff Ward (jcward.com).
 // @license MIT license

@@ -21,13 +21,13 @@
 </head>
 
 <body>
-
   <header role="banner">
     <a class="btn btn-secondary add-contact" href="#/add" title="Add A Contact"><i class="fa fa-plus"  aria-hidden="true"></i> Add</a>
     <a class="logo" title="BriteSpark Homepage" href="/#/contacts">
       <img class="logo__image" src="static/img/britespark_logo_v2.png" alt="BriteSpark Logo"/>
-      <h2 class="logo__tagline text-link">Keep close to key business contacts</h2>
+      <h2 class="logo__tagline highlight-link">Keep close to key business contacts</h2>
     </a>
+
     <form class="search-form" id="search">
       <label for="search" class="search-form__label">Search</label>
       <div class="input-group">
@@ -37,11 +37,12 @@
         </span>
       </div>
     </form>
+
     <nav id="navigation" role="navigation" class="app-navigation">
       <div class="btn-group" role="group" aria-label="Navigate BriteSpark Contacts">
       <a href="/#/contacts" class="btn btn-default">All Contacts</a>
       <a href="/#/contacts/my-contacts" class="btn btn-default">My Contacts</a>
-      <a href="/#/add" class="navigation__add-contact btn btn-default"><i class="fa fa-plus"></i>Add a Contact</a>
+      <a href="/#/add" class="navigation__add-contact btn btn-default"><i class="fa fa-plus sm"></i>Add a Contact</a>
       <a href="/#/reminders" class="btn btn-default">Reminders</a>
       </div>  
     </nav>
@@ -52,7 +53,7 @@
   </main>
 
   <footer role="contentinfo">
-    <a href="#/signout" class="sign-out text-link">Sign out</a>
+    <a href="#/signout" class="sign-out highlight-link">Sign out</a>
     <small class="footer__copyright">&copy; <span class="date">2015</span> <a href="http://www.britecore.com/">Intuitive Web Solutions</a>, creators of BriteCore</small>
 
     <!-- Non-essential CSS -->
@@ -76,15 +77,16 @@
     <script src="static/js/vendor/knockout-validation.min.js"></script>
 
     <!--View Models-->
+    <script src="static/js/helpers.js"></script>
     <script src="static/js/viewmodels/authenticateViewModel.js"></script>
     <script src="static/js/viewmodels/listViewModel.js"></script>
     <script src="static/js/viewmodels/detailViewModel.js"></script>
     <script src="static/js/viewmodels/searchViewModel.js"></script>
     <script src="static/js/viewmodels/remindersViewModel.js"></script>
     <script src="static/js/viewmodels/addViewModel.js"></script>
+    <script src="static/js/viewmodels/reminderAlertViewModel.js"></script>
 
     <!--App-->
-    <script src="static/js/helpers.js"></script>
     <script src="static/js/routes.js"></script>
     <script src="static/js/app.js"></script>
   </footer>

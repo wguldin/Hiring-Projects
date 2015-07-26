@@ -1,0 +1,37 @@
+<!-- ko if: activeReminders().length > 0 -->
+  <div class="reminder-alert collapse in">
+      <!-- ko if: activeReminders().length == 1 -->
+        <!-- ko foreach: activeReminders -->
+          <h3 class="reminder-alert__header">Reminder</h3>
+          <p class="reminder-alert__text"><span data-bind="text: reminderName"></span> <span class="slash-separator">//</span> <span data-bind="text: reminderNote"></span></p>
+          <div class="reminder-alert__actions">
+            <form data-bind="submit: $parent.dismissReminders">
+              <button class="btn btn-primary" data-toggle="collapse">
+                <i class="fa fa-close"></i> Dismiss
+              </button>
+            </form>
+            <span class="text-link form__alternate-action" data-toggle="collapse" data-bind="click: $parent.snoozeReminders">Snooze until <span data-bind="text: $parent.snoozeDate"></span><sup data-bind="text: $parent.snoozeDateSuffix"></sup></span>
+          </div>
+        <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if: activeReminders().length > 1 -->
+      <h3 class="reminder-alert__header">Multiple Reminders</h3>
+      <ul class="reminder-alert__list">
+        <!-- ko foreach: activeReminders -->
+        <li class="reminder-alert__list__item"><p class="reminder-alert__text"><span data-bind="text: reminderName"></span> <span class="slash-separator">//</span> <span data-bind="text: reminderNote"></span></p></li>
+        <!-- /ko -->
+      </ul>
+      <div class="reminder-alert__actions">
+        <form data-bind="submit: dismissReminders">
+          <button class="btn btn-primary" data-toggle="collapse">
+            <i class="fa fa-close"></i> Dismiss
+          </button>
+        </form>
+        <span class="text-link form__alternate-action" data-bind="click: snoozeReminders">Snooze until 
+          <span data-bind="text: snoozeDate"></span>
+          <sup data-bind="text: snoozeDateSuffix"></sup>
+        </span>
+      </div>
+      <!-- /ko -->
+  </div>
+<!-- /ko -->
