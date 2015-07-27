@@ -21,7 +21,7 @@ function addViewModel() {
   self.position = ko.observable("").extend({ required: true});
   self.company = ko.observable("").extend({ required: true});
   self.email = ko.observable("").extend({ required: true});
-  self.phone = ko.observable("").extend({ required: true});
+  self.phone = ko.observable("");
   self.address = ko.observable("");
   self.city = ko.observable("");
   self.state = ko.observable("");
@@ -183,5 +183,3 @@ function addViewModel() {
     })
   }
 };
-
-

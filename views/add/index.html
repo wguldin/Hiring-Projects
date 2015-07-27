@@ -13,7 +13,7 @@
     </label>
 
     <label>Phone
-      <input name="phone" class="form-control" type="tel" data-bind="textInput: phone"/>
+      <input inputmode="numeric" maxlength="12" name="phone" id="phoneMask" class="form-control" type="tel" data-bind="textInput: phone"/>
     </label>
 
     <label>Position 
@@ -24,7 +24,7 @@
       <input name="company" class="form-control" type="text" data-bind="textInput: company"/>
     </label>
 
-    <span data-toggle="collapse" data-hide-trigger="true" data-target=".address__sub-form"><i class="fa fa-plus sm"></i>Add a business address?</span>
+    <span class="sub-form__trigger" data-toggle="collapse" data-hide-trigger="true" data-target=".address__sub-form"><i class="fa fa-plus sm"></i>Add a business address?</span>
     
     <fieldset class="collapse address__sub-form">
       <label>Street Address <span class="form__note--optional">(optional)</span>
@@ -50,7 +50,7 @@
     <label>Notes
       <textarea name="notes" class="form-control" data-bind="textInput: notes"></textarea>
     </label>
-    <small class="form__note"><a class="text-link" tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" title="Markdown Formatting Guide" data-content="With markdown you use simple characters to format text:<ul><li>###A header</li><li>**Bold Text**</li><li>_Italic Text_</li><li>[A Link](http://a-link.com)</li><li>For more, <a class='text-link' href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'>view this guide</a></li></ul>">Markdown formatting supported</a></small>
+    <small class="form__note"><a class="text-link" tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" title="Markdown Formatting Guide" data-content="With markdown you use simple characters to format text:<ul><li>### A header</li><li>**Bold Text**</li><li>_Italic Text_</li><li>[A Link](http://a-link.com)</li><li>For more, <a class='text-link' href='https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'>view this guide</a></li></ul>">Markdown formatting supported</a></small> 
 
     <label>Add tags
       <input name="add-tag" class="form-control" data-bind="textInput: tagString"/>
@@ -62,7 +62,7 @@
     <fieldset class="reminder__sub-form collapse">
       <legend class="sr-only">Create a Reminder</legend>
       <label>Note for Reminder
-        <textarea name="reminderNote" class="form-control" data-bind="textInput: reminderNote"></textarea>
+        <textarea name="reminderNote" class="form-control form-control--reminder-note" data-bind="textInput: reminderNote"></textarea>
       </label>
 
       <label>Date for Reminder

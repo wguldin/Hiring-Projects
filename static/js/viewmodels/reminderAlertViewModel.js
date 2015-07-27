@@ -29,18 +29,16 @@ function reminderAlertViewModel() {
 
   self.snoozeReminders = function() {
     var updatedReminderDate = self.snoozeDate + ' ' + new Date().getFullYear();
-    var fomattedUpdatedReminderDate = new Date(updatedReminderDate).toISOString();
+    var formattedUpdatedReminderDate = new Date(updatedReminderDate).toISOString();
 
     ko.utils.arrayForEach(self.activeReminders(), function(reminder) {
-      postReminder(reminder.id, reminder.contactId, reminder.reminderName, reminder.reminderNote, fomattedUpdatedReminderDate, reminder.createdBy);
+      postReminder(reminder.id, reminder.contactId, reminder.reminderName, reminder.reminderNote, formattedUpdatedReminderDate, reminder.createdBy);
     });
   } 
 
   self.dismissReminders = function () {
-    console.log('in');
-
     ko.utils.arrayForEach(self.activeReminders(), function(reminder) {
-      deleteReminder(reminder.id, reminder.contactId, reminder.reminderName, reminder.reminderNote, fomattedUpdatedReminderDate, reminder.createdBy);
+      deleteReminder(reminder.id, reminder.contactId, reminder.reminderName, reminder.reminderNote, reminder.reminderDate, reminder.createdBy);
     });
   }
 

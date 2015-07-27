@@ -65,15 +65,14 @@ function initUIFeatures(container) {
     // Force new views to go to the top of the page, like a traditional web page.
     $('html, body').animate({ scrollTop: 0 }, 0);
 
-    // Because views are being ajax'd, we can't initialize these plugins on load. 
-    if (container.find('[data-toggle="popover"]')) {
-        $('[data-toggle="popover"]').popover();
-    }
-
     if(container.find('.edit--toggle')) {
         // Initialize edit functionality
         $('.edit--toggle').removeClass('is-disabled');
     } 
+
+    if ($('[data-toggle="popover"]').length > 0) {
+      $('[data-toggle="popover"]').popover();
+    }
 
     initPikaday(container);
 }
@@ -163,6 +162,16 @@ var app = $.sammy('#main', function() {
     });
 
     this.bind('user-added', function (event, data) {
+        var self = this;
+        self.redirect('#/contacts');
+    });
+
+    this.bind('contact-deleted', function (event, data) {
+        var self = this;
+        self.redirect('#/contacts');
+    }); 
+
+    this.bind('search-focused', function(event, data) {
         var self = this;
         self.redirect('#/contacts');
     });

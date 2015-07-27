@@ -1,23 +1,6 @@
 {
   "contacts": [
     {
-      "firstname": "Bart",
-      "lastname": "Lorang",
-      "email": "bart@fullcontact.com",
-      "phone": "asdf",
-      "position": "Co-Founder & CEO",
-      "company": "FullContact",
-      "address": "aasdfadsf",
-      "city": "Denver",
-      "state": "Colorado",
-      "zipcode": "",
-      "customImage": "",
-      "notes": "asdfasdfadsf",
-      "createdBy": "wguldin",
-      "registered": "",
-      "id": 14
-    },
-    {
       "id": "04868da8-46cd-4d34-b76d-358343f432ed",
       "firstname": "Matt",
       "lastname": "Fleming",
@@ -33,23 +16,6 @@
       "notes": "",
       "createdBy": "wguldin",
       "registered": "2015-07-23T12:24:56.189Z"
-    },
-    {
-      "id": "390b7f06-1e75-4c9d-8b80-b192fc864b99",
-      "firstname": "Phil",
-      "lastname": "Reynolds",
-      "email": "phil@britecore.com",
-      "phone": "417-666-7777",
-      "position": "CEO / Founder",
-      "company": "Intuitive Web Solutions",
-      "address": " ",
-      "city": "Springfield",
-      "state": "Missouri",
-      "zipcode": "",
-      "customImage": "",
-      "notes": "",
-      "createdBy": "wguldin",
-      "registered": "2015-07-23T12:26:38.982Z"
     },
     {
       "id": "e6f37cc2-6351-4e82-992b-e52413b0679c",
@@ -155,8 +121,8 @@
     },
     {
       "id": "435f2ed8-c6ab-47a4-9b9a-dbd9a17073ab",
-      "firstname": "Karl",
-      "lastname": "Baymar",
+      "firstname": "Carl",
+      "lastname": "Baymard",
       "email": "karl@example.com",
       "phone": "182-555-7777",
       "position": "Digital Marketing Specialist",
@@ -165,7 +131,7 @@
       "city": "Omaha",
       "state": "Nebraska",
       "zipcode": "",
-      "notes": "",
+      "notes": "### Header here\n\nSome **bold** text here, and some *underlined* text here. [A link](http://a-link.com)",
       "createdBy": "wguldin",
       "registered": "2015-07-23T13:16:51.135Z",
       "customImage": "https://randomuser.me/api/portraits/thumb/men/31.jpg"
@@ -239,20 +205,20 @@
       "customImage": "https://randomuser.me/api/portraits/thumb/men/51.jpg"
     },
     {
-      "id": "5f0ff5e8-0fcf-4d25-bbf6-8d576833ef36",
+      "id": "90620f16-b269-4ea7-8442-75a4ac1f51d6",
       "firstname": "Will",
       "lastname": "Guldin",
       "email": "wguldin@gmail.com",
-      "phone": "555-777-9999",
-      "position": "web designer",
-      "company": "freelance",
+      "phone": "501-920-7064",
+      "position": "Web Designer",
+      "company": "Freelancer",
       "address": "",
       "city": "",
       "state": "",
       "zipcode": "",
-      "notes": "",
+      "notes": "### Header here\n\n*From his website*\n\nAfter working for an eCommerce company for the past two years, my wife and I just moved. Now, I'm looking for a full-time design or front-end development position. To get in touch, email me at wguldin@gmail.com, or call 501.920.7064.",
       "createdBy": "test",
-      "registered": "2015-07-24T19:16:16.187Z"
+      "registered": "2015-07-27T02:31:31.934Z"
     }
   ],
   "tags": [
@@ -270,6 +236,26 @@
       "id": "ff9622b2-da25-45dc-800c-2750c3916d57",
       "contactId": "e6df1036-c503-45a0-836a-052f44f22cbe",
       "tagLabel": "madison small business conference"
+    },
+    {
+      "id": "ff0c9b38-68ba-49c6-a58c-5004fc5ee0f0",
+      "contactId": "435f2ed8-c6ab-47a4-9b9a-dbd9a17073ab",
+      "tagLabel": "Test Tag"
+    },
+    {
+      "id": "41869a18-3148-4ac0-bd08-107e276ad8bf",
+      "contactId": "0a2c7a42-2b45-4ef4-a337-4dc488533aaa",
+      "tagLabel": "good customer"
+    },
+    {
+      "id": "6d4305da-1f05-4b4c-a940-f5531df44c26",
+      "contactId": "90620f16-b269-4ea7-8442-75a4ac1f51d6",
+      "tagLabel": "Web Designer"
+    },
+    {
+      "id": "7e24c153-cbf1-47cd-8101-2cea772c6edf",
+      "contactId": "90620f16-b269-4ea7-8442-75a4ac1f51d6",
+      "tagLabel": "Interested in BriteCore"
     }
   ],
   "reminders": [
@@ -282,35 +268,35 @@
       "createdBy": "test"
     },
     {
-      "id": "4075de69-32d3-4c4d-8e92-e8eb49cf12e3",
-      "contactId": "435f2ed8-c6ab-47a4-9b9a-dbd9a17073ab",
-      "reminderName": "Karl Baymard",
-      "reminderNote": "Test Reminder",
-      "reminderDate": "2015-07-31T05:00:00.000Z",
-      "createdBy": "wguldin"
-    },
-    {
       "id": "6f05bf78-166f-4130-bf83-26da292ebd2d",
       "contactId": "04868da8-46cd-4d34-b76d-358343f432ed",
       "reminderName": "Matt Fleming",
-      "reminderNote": "test test",
-      "reminderDate": "2015-07-25T05:00:00.000Z",
+      "reminderNote": "Attending the conference with him next week.",
+      "reminderDate": "2015-08-04T05:00:00.000Z",
       "createdBy": "wguldin"
     },
     {
-      "id": "d2ea0129-8177-45e9-88a8-cdc2da8d6a02",
-      "contactId": "6c74f300-4e8e-46f0-9310-36c97a28527b",
-      "reminderName": "James Smith",
-      "reminderNote": "Test test test",
-      "reminderDate": "2015-07-25T05:00:00.000Z",
-      "createdBy": "wguldin"
-    },
-    {
-      "id": "f1fdb19c-ac91-47eb-b49f-fd78e96e636b",
+      "id": "3ab1207b-7e42-4baf-901a-f9937b665fdb",
       "contactId": "435f2ed8-c6ab-47a4-9b9a-dbd9a17073ab",
-      "reminderName": "Karl Baymard",
-      "reminderNote": "asdfadsf",
+      "reminderName": "Carl Baymard",
+      "reminderNote": "Test Test",
       "reminderDate": "2015-07-29T05:00:00.000Z",
+      "createdBy": "wguldin"
+    },
+    {
+      "id": "70d8f510-de02-49ef-8b23-7ab1707d085b",
+      "contactId": "435f2ed8-c6ab-47a4-9b9a-dbd9a17073ab",
+      "reminderName": "Carl Baymard",
+      "reminderNote": "Test Reminder here",
+      "reminderDate": "2015-08-01T05:00:00.000Z",
+      "createdBy": "test"
+    },
+    {
+      "id": "6c0c11f6-b669-4666-9053-a6f79add9ee9",
+      "contactId": "90620f16-b269-4ea7-8442-75a4ac1f51d6",
+      "reminderName": "Will Guldin",
+      "reminderNote": "Test Reminder",
+      "reminderDate": "2015-07-28T05:00:00.000Z",
       "createdBy": "test"
     }
   ],

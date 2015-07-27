@@ -65,32 +65,25 @@ function detail_singleContact(data) {
   // Reminders
   // ===================================================
 
-  var processRemindersFromDB =  ko.utils.arrayMap(data.reminders, function(item) {
+  self.reminders = ko.observableArray([]);
 
-    // Prevent reminder from being applied if it doesn't belong to the current user.
-    if (item.createdBy != currentUser()) {
-      return; 
-    }
+  function processRemindersFromDB() {
+    ko.utils.arrayMap(data.reminders, function(item) {
+      if (item.createdBy == currentUser()) {
+        self.reminders.push(new single_reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate, item.createdBy));
+      }
+    })
+  }
 
-    return new single_reminder(item.id, item.contactId, item.reminderName, item.reminderNote, item.reminderDate, item.createdBy);
-  });
-
-  self.reminders = ko.observableArray(processRemindersFromDB);
+  processRemindersFromDB();
 
   self.reminderId   = ko.observable("");
   self.reminderNote = ko.observable("");
   self.reminderDate = ko.observable("");
-  self.reminderCreatedBy = currentUser();
 
-  setReminderInformation();
-
-  function setReminderInformation() {
+  self.setReminderInformation = function () {
     // Only one reminder per person, so our reminder will always be the first item in the array.
     var reminder = self.reminders()[0];
-
-    if (reminder == null) {
-      self.reminders('');
-    }
 
     // If reminder exists, apply it to the view.
     if (reminder != null) {
@@ -100,8 +93,10 @@ function detail_singleContact(data) {
     }
   }
 
+  self.setReminderInformation();
+
   function setReminderId(reminderId) {
-    if (reminderId == '') {
+    if (reminderId == null) {
       return uuid.generate(); // For a new reminder.
     } else {
       return reminderId; // For a pre-existing reminder.
@@ -114,9 +109,9 @@ function detail_singleContact(data) {
     var reminderName =  self.fullname();
     var reminderNote = self.reminderNote();
     var reminderDate = self.reminderDate();
-    var reminderCreatedBy = self.reminderCreatedBy;
+    var reminderCreatedBy = currentUser();
 
-    // Empty the array
+    // Empty the array 
     self.reminders([]);
 
     // Push updated/new reminder to it.
@@ -126,7 +121,7 @@ function detail_singleContact(data) {
     postReminder(id, contactId, reminderName, reminderNote, reminderDate, reminderCreatedBy);
     
     // Set observables in view to reflect updated information.
-    setReminderInformation();
+    self.setReminderInformation();
   }
 
   // ===================================================
@@ -140,6 +135,18 @@ function detail_singleContact(data) {
       data: self.updatedContactInformation(),
       dataType: 'json',
       success: function(data) {
+        if ($('.alert-success').length == 0) {
+            // Dismissible bootstrap alert success box
+            var successMessage = '<strong>Success! </strong> A contact was deleted.'
+            $('#main').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + successMessage + '</div>');
+        }
+
+        setTimeout(function() {
+          $('.alert-success').fadeOut('180', function() {
+            $(this).remove();
+          });
+        }, 6000);
+
         app.trigger('contact-deleted', app);
       }
     });

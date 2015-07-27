@@ -139,6 +139,7 @@ h6 {
     box-shadow: none;
     border-bottom: 1px solid @grey; //#ccc opacity;
     margin: 2.4em 0 .5em;
+    padding-left: 0.8em;
   }
 }
 
@@ -150,6 +151,30 @@ h6 {
 
 .page-title {
   letter-spacing: .1em;
+}
+
+// Prevent styling that breaks notes section
+.markdown {
+  h1, h2, h3, h4, h5, h6 {
+    font-size: 21px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: left;
+    text-transform: none;
+    margin-bottom: .5em;
+  }
+
+  a {
+    &:extend(.text-link);
+  }
+
+  p {
+    font-size: .9em;
+  }
+
+  strong {
+    font-weight: 600;
+  } 
 }
 
 // ==========================================================
@@ -194,6 +219,10 @@ textarea.form-control {
   height: 8em;
   resize: vertical;
   max-height: 30em;
+}
+
+textarea.form-control--reminder-note {
+  height: 3.8em; // Hint to user that reminders should be short.
 }
 
 .form {
@@ -498,13 +527,13 @@ header {
 
     float: left;
     margin: 1.1em 0 1em 1.5em;
-    max-width: 22em;
+    width: 20em;
   }
 
   @media screen and (min-width: 54em) {
     font-size: .85em;
     margin: 1.3em 0 0.5em 5em;
-    max-width: 27em;
+    width: 27em;
   }
 }
 
@@ -727,7 +756,7 @@ footer {
   }
 }
 
-.contact-list__additional__header {
+.contact-list__additional__block {
   margin: .5em 0 1em 0;
   width: 10em;
   float: left;
@@ -782,14 +811,22 @@ footer {
 }
 
 .contact__name__text {
+  .calc-width(2.5em, 90%);
+
   display: block;
   font-size: 1.9em;
   margin-top: -5px;
   text-align: left;
   text-transform: none;
 
-  @media screen and (min-width: 54em) {
+  @media screen and (min-width: 36em) {
+    .calc-width(3.5em, 75%);
+
     font-size: 2.2em;
+  }
+
+  @media screen and (min-width: 45em) {
+    font-size: 2.4em;
   }
 
   @media screen and (min-width: 54em) {
@@ -874,6 +911,10 @@ footer {
   font-weight: 300;
 }
 
+.contact__information--email {
+  word-break: break-word;
+}
+
 .contact__career, .contact__location, .contact-list__description {
   // Applies to state field and company field, if city and title are present, respectively.
   // First span, if not the only span.
@@ -902,7 +943,7 @@ footer {
 .contact__display {
   .clearfix();
 
-  @media screen and (min-width: 54em) {
+  @media screen and (min-width: 36em) {
     padding-left: .7em;
   } 
 }
@@ -917,6 +958,17 @@ footer {
 
   @media screen and (min-width: 54em) {
     padding: .4em 0 0 .8em;
+  }
+}
+
+.contact__form--wide {
+  max-width: 48em;
+
+  textarea {
+
+    @media screen and (min-width: 54em) {
+      height: 15em;
+    }
   }
 }
 
@@ -942,6 +994,10 @@ footer {
     vertical-align: top;    
     width: 63%;
   }
+}
+
+.contact__reminder-date {
+  padding-left: .2em;
 }
 
 // ==================================================================
@@ -1012,6 +1068,18 @@ footer {
 
 .form--add, .form--edit {
   margin-bottom: 9.5em; // Sticky footer position means this has to be larger than expected.
+}
+
+.address__sub-form {
+  position: relative;
+  top: -2.2em; // position above trigger so the interaction is one way.
+  background-color: #FFF;
+  margin-bottom: -2.2em;
+}
+
+.sub-form__trigger {
+  margin-bottom: 1em;
+  display: inline-block;
 }
 
 // ==================================================================

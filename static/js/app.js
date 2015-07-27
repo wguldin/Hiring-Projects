@@ -107,7 +107,7 @@ function deleteReminder(id, contactId, reminderName, reminderNote, reminderDate,
     "contactId": contactId,
     "reminderName": reminderName,
     "reminderNote": reminderNote,
-    "reminderDate": new Date(reminderDate).toISOString(),
+    "reminderDate": new Date(reminderDate).toISOString(), 
     "createdBy": createdBy
   };
 
@@ -129,6 +129,12 @@ $(function(){
       ko.postbox.publish("searchQueryType", "q");
     }
   }); 
+
+  $('body').on('focus', '#searchBox', function() {
+      if(window.location.hash != '#/contacts') {
+          app.trigger('search-focused')
+      };
+  })
 
   $('#search').on('submit', function(event) {
     event.preventDefault();
@@ -169,11 +175,19 @@ $(function(){
     if ($('.edit--toggle').length > 0) {
       $('.edit--toggle').addClass('is-disabled');
     } 
+
+    if ($('[data-toggle="popover"]').length > 0) {
+      $('[data-toggle="popover"]').popover();
+    }
   });
 
   $('#main').on('submit', '.contact__form', function(event) {
     triggerCollapsableElements($(event.target));
     $('.edit--toggle').removeClass('is-disabled');
+  });
+
+  $('body').on('submit', '.reminder-alert__form', function(event) {
+    triggerCollapsableElements($(event.target));
   });
 
   $('#main').on('click', '.contact__form__cancel', function(event) {
@@ -188,7 +202,7 @@ $(function(){
 
   // Once we have the email address, try to find more information out via fullcontact api.
   $('#main').on('blur', '.form--add input[name="email"]', function(event) {
-  //  autoPopulateDetails(this);
+    autoPopulateDetails(this);
   });
 
   $('#main').on('input', '.form--add input[name="zipcode"]', function(event) {
@@ -303,4 +317,91 @@ $(function(){
       requestCompanyDetails();
     })
   }
+
+  // =========================================================
+  // Phone Number Mask
+  // Adapted from my credit card mask: http://blog.willguldin.com/a-better-credit-card-mask/ 
+  // =========================================================
+
+  var delimiter = '-';
+  var longestInputLength = 0; 
+        
+  $('#main').on('input', '#phoneMask', function() {
+    var $this = $('#phoneMask');
+    var phoneNumber = $this.val();
+    
+    delimiter = determineDelimiter(phoneNumber);
+    phoneNumberFormat(phoneNumber, $this);
+  });
+
+  function phoneNumberFormat(phoneNumber, selector) {
+    
+    var phoneNumberStripped = phoneNumber.replace(/\D+/g, '');
+    var currentInputLength = phoneNumber.length;
+
+    // If this is true, the phone number is being edited, so we don't want the mask active.
+    if (currentInputLength > 0 && currentInputLength < longestInputLength) {
+      return;
+    }
+    
+    // Standard Phone Number Format
+    // 0 1 2 | 4 5 6 | 8 9 0 1
+    // 5 5 5 - 5 5 5 - 5 5 5 5
+    var phonePattern = [[0, 3], [3, 6], [6, 10]];
+
+    // For people leading with a '1'
+    if(phoneNumberStripped.charAt(0) == '1') {
+
+      // Leading 1 Phone Number Format
+      // 0 | 2 3 4 | 5 6 7 | 8 9 0 1
+      // 1 - 5 5 5 - 5 5 5 - 5 5 5 5
+
+      phonePattern = [[0, 1], [1, 4], [4, 7], [7, 11]];
+      selector.attr('maxlength', '14');
+    }
+
+    selector.val(applyMask(phonePattern, phoneNumberStripped)).change();
+  };
+
+  function determineDelimiter(phoneNumber) {
+    var firstDelimiter = phoneNumber.charAt(3);
+    var isDelimiter = /\D+/g;
+
+    if (isDelimiter.test(firstDelimiter) && firstDelimiter != '-') {
+      return firstDelimiter; // Custom Spacer Entered
+    
+    } else {
+      return delimiter;
+
+    }
+  };
+
+  function applyMask(phonePattern, phoneNumberStripped) {
+
+    var phoneNumberFormatted = '';
+
+    for (i = 0; i < phonePattern.length; i++) {
+      
+      // For each number range, capture a substring of the phone number.
+      var subStart = phonePattern[i].slice(0, 1);
+      var subEnd   = phonePattern[i].slice(1);
+
+      var numberPiece    = phoneNumberStripped.substring(subStart, subEnd);
+      var maxPieceLength = subEnd - subStart;
+
+      var currentDelimiter = delimiter;
+
+      // These checks prevent extra delimiters from being added.
+      if (numberPiece.length == 0 || numberPiece.length != maxPieceLength || i + 1 == phonePattern.length) {
+        currentDelimiter = '';
+      }
+
+      phoneNumberFormatted += numberPiece + currentDelimiter;
+    } 
+
+    longestInputLength = phoneNumberFormatted.length;
+
+    return phoneNumberFormatted.trim(); // Trim makes sure our default delimiter is inserted later.
+  }
+
 }, jQuery);
